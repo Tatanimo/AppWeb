@@ -19,7 +19,4 @@ jobs:
           "cd tatanimo.mds-lille.yt/ &&
           git fetch origin preprod &&
           git reset --hard origin/preprod &&
-          composer install &&
-          npm install &&
-          npm run build &&
           php bin/console d:m:m -n"
