@@ -13,6 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: echo secrets
+        run:  
+          "echo APP_USER: ${{ secrets.APP_USER }}"
+          
       - name: APT UPDATE and INSTALL SSHPASS
         run:  
           sshpass -e ssh -o stricthostkeychecking=no -p 5022 ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
