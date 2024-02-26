@@ -17,7 +17,8 @@ jobs:
         run:  
           sshpass -e ssh -o stricthostkeychecking=no -p 5022 gxxgzxxc@185.221.182.104
           "cd tatanimo.mds-lille.yt/ &&
-          git pull origin/preprod &&
+          git fetch origin preprod &&
+          git reset --hard origin preprod &&
           composer install &&
           npm install &&
           npm run build &&
