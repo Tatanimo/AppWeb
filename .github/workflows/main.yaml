@@ -15,8 +15,10 @@ jobs:
           
       - name: APT UPDATE and INSTALL SSHPASS
         run:  
-          sshpass -e ssh -o stricthostkeychecking=no -p 5022 gxxgzxxc@185.221.182.104
+          sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd tatanimo.mds-lille.yt/ &&
-          git fetch origin preprod &&
-          git reset --hard origin/preprod &&
+          git pull origin preprod &&
+          composer install &&
+          npm install &&
+          npm run build &&
           php bin/console d:m:m -n"
