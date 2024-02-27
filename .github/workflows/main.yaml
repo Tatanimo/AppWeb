@@ -16,8 +16,7 @@ jobs:
       - name: APT UPDATE and INSTALL SSHPASS
         run:  
           sshpass -p ${{ secrets.APP_PASS }} ssh -o stricthostkeychecking=no -p 5022 ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
-          "source ~/.bashrc &&
-          cd tatanimo.mds-lille.yt/ &&
+          "cd tatanimo.mds-lille.yt/ &&
           git pull origin preprod &&
-          composer install &&
+          /home/gxxgzxxc/composer.phar install &&
           php bin/console d:m:m -n"
