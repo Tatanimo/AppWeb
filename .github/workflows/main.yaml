@@ -13,9 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
           
-      - name: APT UPDATE and INSTALL SSHPASS
+      - name: SSHPASS and DEPLOY project
         run:  
           sshpass -p ${{ secrets.APP_PASS }} ssh -o stricthostkeychecking=no -p 5022 ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd tatanimo.mds-lille.yt/ &&
           git pull origin preprod &&
-          /home/gxxgzxxc/composer.phar install"
+          /home/gxxgzxxc/composer.phar install &&
+          php bin/console d:m:m -n"
