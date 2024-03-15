@@ -25,8 +25,7 @@
 ###< symfony/asset-mapper ###
 
 ### Docker
-Dockerfile
-compose.override.yaml
-compose.prod.yaml
 compose.yaml
-frankenphp
+compose.prod.yaml
+compose.override.yaml
+Dockerfile
