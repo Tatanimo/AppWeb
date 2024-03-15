@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FamilyAnimalsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,6 +24,14 @@ class FamilyAnimals
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $image = null;
+
+    #[ORM\OneToMany(targetEntity: CategoryAnimals::class, mappedBy: 'fk_family')]
+    private Collection $categoryAnimals;
+
+    public function __construct()
+    {
+        $this->categoryAnimals = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,6 +70,36 @@ class FamilyAnimals
     public function setImage(?string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CategoryAnimals>
+     */
+    public function getCategoryAnimals(): Collection
+    {
+        return $this->categoryAnimals;
+    }
+
+    public function addCategoryAnimal(CategoryAnimals $categoryAnimal): static
+    {
+        if (!$this->categoryAnimals->contains($categoryAnimal)) {
+            $this->categoryAnimals->add($categoryAnimal);
+            $categoryAnimal->setFkFamily($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategoryAnimal(CategoryAnimals $categoryAnimal): static
+    {
+        if ($this->categoryAnimals->removeElement($categoryAnimal)) {
+            // set the owning side to null (unless already changed)
+            if ($categoryAnimal->getFkFamily() === $this) {
+                $categoryAnimal->setFkFamily(null);
+            }
+        }
 
         return $this;
     }
