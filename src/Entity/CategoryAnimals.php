@@ -28,6 +28,10 @@ class CategoryAnimals
     #[ORM\OneToMany(targetEntity: Animals::class, mappedBy: 'fk_category')]
     private Collection $animals;
 
+    #[ORM\ManyToOne(inversedBy: 'categoryAnimals')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?FamilyAnimals $fk_family = null;
+
     public function __construct()
     {
         $this->animals = new ArrayCollection();
@@ -100,6 +104,18 @@ class CategoryAnimals
                 $animal->setFkCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFkFamily(): ?FamilyAnimals
+    {
+        return $this->fk_family;
+    }
+
+    public function setFkFamily(?FamilyAnimals $fk_family): static
+    {
+        $this->fk_family = $fk_family;
 
         return $this;
     }
