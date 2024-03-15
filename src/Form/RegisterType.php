@@ -39,7 +39,7 @@ class RegisterType extends AbstractType
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => `Merci d'entrer un mot de passe`
+                        'message' => "Merci d'entrer un mot de passe"
                     ]),
                     new Length([
                         'min' => 8,
@@ -59,7 +59,7 @@ class RegisterType extends AbstractType
             ->add('first_name')
             ->add('last_name')
             ->add('submit_button', SubmitType::class, [
-                'label' => `S'enregistrer`,
+                'label' => "S'enregistrer",
             ])
         ;
     }
