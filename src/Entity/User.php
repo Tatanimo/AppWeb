@@ -73,11 +73,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Animals::class, mappedBy: 'fk_user', orphanRemoval: true)]
     private Collection $animals;
 
+    #[ORM\OneToMany(targetEntity: AvisUser::class, mappedBy: 'fk_user_sender', orphanRemoval: true)]
+    private Collection $avisUsers;
+
+    #[ORM\OneToMany(targetEntity: AvisUser::class, mappedBy: 'fk_user_receiver', orphanRemoval: true)]
+    private Collection $avisUsersReceiver;
+
+    #[ORM\OneToMany(targetEntity: Agenda::class, mappedBy: 'fk_user_1', orphanRemoval: true)]
+    private Collection $AgendaUser1;
+
+    #[ORM\OneToMany(targetEntity: Agenda::class, mappedBy: 'fk_user_2', orphanRemoval: true)]
+    private Collection $AgendaUser2;
+
+    #[ORM\OneToMany(targetEntity: Rooms::class, mappedBy: 'fk_user1')]
+    private Collection $roomsUser1;
+
+    #[ORM\OneToMany(targetEntity: Rooms::class, mappedBy: 'fk_user2')]
+    private Collection $roomsUser2;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
         $this->commentaries = new ArrayCollection();
         $this->animals = new ArrayCollection();
+        $this->avisUsers = new ArrayCollection();
+        $this->avisUsersReceiver = new ArrayCollection();
+        $this->AgendaUser1 = new ArrayCollection();
+        $this->AgendaUser2 = new ArrayCollection();
+        $this->roomsUser1 = new ArrayCollection();
+        $this->roomsUser2 = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -358,6 +382,186 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($animal->getFkUser() === $this) {
                 $animal->setFkUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AvisUser>
+     */
+    public function getAvisUsers(): Collection
+    {
+        return $this->avisUsers;
+    }
+
+    public function addAvisUser(AvisUser $avisUser): static
+    {
+        if (!$this->avisUsers->contains($avisUser)) {
+            $this->avisUsers->add($avisUser);
+            $avisUser->setFkUserSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvisUser(AvisUser $avisUser): static
+    {
+        if ($this->avisUsers->removeElement($avisUser)) {
+            // set the owning side to null (unless already changed)
+            if ($avisUser->getFkUserSender() === $this) {
+                $avisUser->setFkUserSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AvisUser>
+     */
+    public function getAvisUsersReceiver(): Collection
+    {
+        return $this->avisUsersReceiver;
+    }
+
+    public function addAvisUsersReceiver(AvisUser $avisUsersReceiver): static
+    {
+        if (!$this->avisUsersReceiver->contains($avisUsersReceiver)) {
+            $this->avisUsersReceiver->add($avisUsersReceiver);
+            $avisUsersReceiver->setFkUserReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvisUsersReceiver(AvisUser $avisUsersReceiver): static
+    {
+        if ($this->avisUsersReceiver->removeElement($avisUsersReceiver)) {
+            // set the owning side to null (unless already changed)
+            if ($avisUsersReceiver->getFkUserReceiver() === $this) {
+                $avisUsersReceiver->setFkUserReceiver(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Agenda>
+     */
+    public function getAgendaUser1(): Collection
+    {
+        return $this->AgendaUser1;
+    }
+
+    public function addAgendaUser1(Agenda $agendaUser1): static
+    {
+        if (!$this->AgendaUser1->contains($agendaUser1)) {
+            $this->AgendaUser1->add($agendaUser1);
+            $agendaUser1->setFkUser1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgendaUser1(Agenda $agendaUser1): static
+    {
+        if ($this->AgendaUser1->removeElement($agendaUser1)) {
+            // set the owning side to null (unless already changed)
+            if ($agendaUser1->getFkUser1() === $this) {
+                $agendaUser1->setFkUser1(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Agenda>
+     */
+    public function getAgendaUser2(): Collection
+    {
+        return $this->AgendaUser2;
+    }
+
+    public function addAgendaUser2(Agenda $agendaUser2): static
+    {
+        if (!$this->AgendaUser2->contains($agendaUser2)) {
+            $this->AgendaUser2->add($agendaUser2);
+            $agendaUser2->setFkUser2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgendaUser2(Agenda $agendaUser2): static
+    {
+        if ($this->AgendaUser2->removeElement($agendaUser2)) {
+            // set the owning side to null (unless already changed)
+            if ($agendaUser2->getFkUser2() === $this) {
+                $agendaUser2->setFkUser2(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rooms>
+     */
+    public function getRoomsUser1(): Collection
+    {
+        return $this->roomsUser1;
+    }
+
+    public function addRoomsUser1(Rooms $roomsUser1): static
+    {
+        if (!$this->roomsUser1->contains($roomsUser1)) {
+            $this->roomsUser1->add($roomsUser1);
+            $roomsUser1->setFkUser1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoomsUser1(Rooms $roomsUser1): static
+    {
+        if ($this->roomsUser1->removeElement($roomsUser1)) {
+            // set the owning side to null (unless already changed)
+            if ($roomsUser1->getFkUser1() === $this) {
+                $roomsUser1->setFkUser1(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rooms>
+     */
+    public function getRoomsUser2(): Collection
+    {
+        return $this->roomsUser2;
+    }
+
+    public function addRoomsUser2(Rooms $roomsUser2): static
+    {
+        if (!$this->roomsUser2->contains($roomsUser2)) {
+            $this->roomsUser2->add($roomsUser2);
+            $roomsUser2->setFkUser2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoomsUser2(Rooms $roomsUser2): static
+    {
+        if ($this->roomsUser2->removeElement($roomsUser2)) {
+            // set the owning side to null (unless already changed)
+            if ($roomsUser2->getFkUser2() === $this) {
+                $roomsUser2->setFkUser2(null);
             }
         }
 

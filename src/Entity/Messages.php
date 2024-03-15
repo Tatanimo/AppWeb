@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ChatRepository;
+use App\Repository\MessagesRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ChatRepository::class)]
-class Chat
+#[ORM\Entity(repositoryClass: MessagesRepository::class)]
+class Messages
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,6 +19,13 @@ class Chat
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $publication_date = null;
+
+    #[ORM\Column]
+    private ?int $author = null;
+
+    #[ORM\ManyToOne(inversedBy: 'fk_message')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Rooms $rooms = null;
 
     public function getId(): ?int
     {
@@ -45,6 +52,30 @@ class Chat
     public function setPublicationDate(\DateTimeInterface $publication_date): static
     {
         $this->publication_date = $publication_date;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?int
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(int $author): static
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getRooms(): ?Rooms
+    {
+        return $this->rooms;
+    }
+
+    public function setRooms(?Rooms $rooms): static
+    {
+        $this->rooms = $rooms;
 
         return $this;
     }

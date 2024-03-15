@@ -20,6 +20,14 @@ class Agenda
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $end_date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'AgendaUser1')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $fk_user_1 = null;
+
+    #[ORM\ManyToOne(inversedBy: 'AgendaUser2')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $fk_user_2 = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +53,30 @@ class Agenda
     public function setEndDate(\DateTimeInterface $end_date): static
     {
         $this->end_date = $end_date;
+
+        return $this;
+    }
+
+    public function getFkUser1(): ?User
+    {
+        return $this->fk_user_1;
+    }
+
+    public function setFkUser1(?User $fk_user_1): static
+    {
+        $this->fk_user_1 = $fk_user_1;
+
+        return $this;
+    }
+
+    public function getFkUser2(): ?User
+    {
+        return $this->fk_user_2;
+    }
+
+    public function setFkUser2(?User $fk_user_2): static
+    {
+        $this->fk_user_2 = $fk_user_2;
 
         return $this;
     }

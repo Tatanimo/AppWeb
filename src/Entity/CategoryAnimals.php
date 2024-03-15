@@ -29,7 +29,7 @@ class CategoryAnimals
     private Collection $animals;
 
     #[ORM\ManyToOne(inversedBy: 'categoryAnimals')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?FamilyAnimals $fk_family = null;
 
     public function __construct()
