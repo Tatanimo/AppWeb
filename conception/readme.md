@@ -112,3 +112,7 @@
 ## Diagrammes MERISE
 ### MCD
 ![MCD](MCD.jpg)
+### MLD
+![MLD](MLD.jpg)
+### MPD
+![MPD](MPD.jpg)
