@@ -52,3 +52,61 @@
 | Décès | Logique | / | / | Non | / | Est-ce que l'animal est décédé ? |
 | Description | Alphanumérique | Text | / | Non | / | Description de l'animal |
 | Image | Alphanumérique | 50 | / | Non | animal_categorie.jpg | Image de l'animal |
+
+### Table ARTICLES
+| Données | Type | Taille | Contrainte | Obligatoire | Valeur par défaut | Détail |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Titre | Alphanumérique | 40 | UNIQUE | Oui | / | Titre de l'article |
+| Contenu | Alphanumérique | Text | / | Oui | / | Contenu de l'article |
+| Image | Alphanumérique | 50 | / | Non | / | Image de l'article |
+| Date de publication | Temporel | / | / | Oui | now() | Date de publication de l'article |
+| Visibilité | Logique | / | / | Non | false | L'article est-il visible ? |
+| Mots-clés | Alphanumérique | 50 | / | Non | / | Mots-clés de l'article |
+| Date de modification | Temporel | / | / | Non | / | Date de modification de l'article |
+| Slug | Alphanumérique | 50 | UNIQUE | Oui | / | Url de l'article |
+
+### Table POSTS
+| Données | Type | Taille | Contrainte | Obligatoire | Valeur par défaut | Détail |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Contenu | Alphanumérique | Text | / | Oui | / | Contenu du post |
+| Date de publication | Temporel | / | / | Oui | now() | Date de publication du post |
+| Mots-clés | Alphanumérique | 50 | / | Non | / | Mots-clés du post |
+| Date de modification | Temporel | / | / | Non | / | Date de modification du post |
+
+### Table COMMENTAIRES
+| Données | Type | Taille | Contrainte | Obligatoire | Valeur par défaut | Détail |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Contenu | Alphanumérique | Text | / | Oui | / | Contenu du post |
+| Date de publication | Temporel | / | / | Oui | now() | Date de publication du post |
+| Date de modification | Temporel | / | / | Non | / | Date de modification du post |
+
+### Table MESSAGES
+| Données | Type | Taille | Contrainte | Obligatoire | Valeur par défaut | Détail |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Contenu | Alphanumérique | Text | / | Oui | / | Contenu du message |
+| Date de publication | Temporel | / | / | Oui | now() | Date de publication du message |
+| Date de modification | Temporel | / | / | Non | / | Date de modification du message |
+
+### Table AGENDA
+| Données | Type | Taille | Contrainte | Obligatoire | Valeur par défaut | Détail |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Date de début | Temporel | / | / | Oui | / | Date de début de la prise de RDV |
+| Date de fin | Temporel | / | / | Oui | / | Date de fin de la prise de RDV |
+
+### Table TYPE SERVICES
+| Données | Type | Taille | Contrainte | Obligatoire | Valeur par défaut | Détail |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Nom | Alphanumérique | 30 | / | Oui | / | Nom du service Ex: Petsitter, Véto etc... |
+
+### Table RÉACTIONS
+| Données | Type | Taille | Contrainte | Obligatoire | Valeur par défaut | Détail |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Emoji | Alphanumérique | 50 | / | Oui | / | Type d'emoji de la réaction |
+
+### Table VILLES
+| Données | Type | Taille | Contrainte | Obligatoire | Valeur par défaut | Détail |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Code Postal | Alphanumérique | 10 | / | Oui | / | Code postal de la ville |
+| Nom | Alphanumérique | 50 | / | Oui | / | Nom de la ville |
+
+![MCD](MCD.jpg)
