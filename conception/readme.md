@@ -109,4 +109,6 @@
 | Code Postal | Alphanumérique | 10 | / | Oui | / | Code postal de la ville |
 | Nom | Alphanumérique | 50 | / | Oui | / | Nom de la ville |
 
+## Diagrammes MERISE
+### MCD
 ![MCD](MCD.jpg)
