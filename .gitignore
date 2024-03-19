@@ -29,3 +29,10 @@ compose.yaml
 compose.prod.yaml
 compose.override.yaml
 Dockerfile
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
