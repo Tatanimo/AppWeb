@@ -15,7 +15,7 @@ jobs:
           
       - name: SSHPASS and DEPLOY project
         run:  
-          sshpass -e ssh -o stricthostkeychecking=no -P 5022 ${{ secrets.APP_USER }}@185.221.182.104
+          sshpass -p ${{ secrets.APP_PASS }} ssh -o stricthostkeychecking=no -P 5022 ${{ secrets.APP_USER }}@185.221.182.104
           "cd tatanimo.mds-lille.yt/ &&
           git pull origin test &&
           /home/gxxgzxxc/composer.phar install &&
