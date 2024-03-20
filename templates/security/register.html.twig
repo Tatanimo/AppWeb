@@ -3,5 +3,7 @@
 {% block title %}Register !{% endblock %}
 
 {% block body %}
-    {{ form(formRegister) }}
+    {{ form_start(formRegister) }}
+        <div {{ react_component('forms/CitiesInput')}}></div>
+    {{ form_end(formRegister )}}
 {% endblock %}
