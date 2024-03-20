@@ -19,6 +19,7 @@ jobs:
           "cd tatanimo.mds-lille.yt/ &&
           git pull origin test &&
           /home/gxxgzxxc/composer.phar install &&
+          nvm use 16 &&
           npm install &&
           npm run build &&
           php bin/console d:m:m -n"
