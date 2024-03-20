@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AnimalsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -41,7 +43,15 @@ class Animals
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $fk_user = null;
+    private ?Users $fk_user = null;
+
+    #[ORM\OneToMany(targetEntity: Schedules::class, mappedBy: 'animals')]
+    private Collection $schedules;
+
+    public function __construct()
+    {
+        $this->schedules = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -144,14 +154,44 @@ class Animals
         return $this;
     }
 
-    public function getFkUser(): ?User
+    public function getFkUser(): ?Users
     {
         return $this->fk_user;
     }
 
-    public function setFkUser(?User $fk_user): static
+    public function setFkUser(?Users $fk_user): static
     {
         $this->fk_user = $fk_user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Schedules>
+     */
+    public function getSchedules(): Collection
+    {
+        return $this->schedules;
+    }
+
+    public function addSchedule(Schedules $schedule): static
+    {
+        if (!$this->schedules->contains($schedule)) {
+            $this->schedules->add($schedule);
+            $schedule->setAnimals($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSchedule(Schedules $schedule): static
+    {
+        if ($this->schedules->removeElement($schedule)) {
+            // set the owning side to null (unless already changed)
+            if ($schedule->getAnimals() === $this) {
+                $schedule->setAnimals(null);
+            }
+        }
 
         return $this;
     }

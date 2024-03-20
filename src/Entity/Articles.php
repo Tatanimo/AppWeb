@@ -38,6 +38,9 @@ class Articles
     #[ORM\Column(length: 50)]
     private ?string $slug = null;
 
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    private ?Users $users = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,6 +138,18 @@ class Articles
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getUsers(): ?Users
+    {
+        return $this->users;
+    }
+
+    public function setUsers(?Users $users): static
+    {
+        $this->users = $users;
 
         return $this;
     }

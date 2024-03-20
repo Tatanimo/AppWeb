@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\PublicationRepository;
+use App\Repository\PostsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PublicationRepository::class)]
-class Publication
+#[ORM\Entity(repositoryClass: PostsRepository::class)]
+class Posts
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,16 +31,23 @@ class Publication
     #[ORM\Column(nullable: true)]
     private ?bool $state = null;
 
-    #[ORM\ManyToOne(inversedBy: 'publications')]
+    #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $fk_user = null;
+    private ?Users $fk_user = null;
 
-    #[ORM\OneToMany(targetEntity: Commentary::class, mappedBy: 'fk_publication', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Commentaries::class, mappedBy: 'posts', orphanRemoval: true)]
     private Collection $commentaries;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $modification_date = null;
+
+    #[ORM\OneToMany(targetEntity: Reactions::class, mappedBy: 'posts')]
+    private Collection $reactions;
 
     public function __construct()
     {
         $this->commentaries = new ArrayCollection();
+        $this->reactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,12 +115,12 @@ class Publication
         return $this;
     }
 
-    public function getFkUser(): ?User
+    public function getFkUser(): ?Users
     {
         return $this->fk_user;
     }
 
-    public function setFkUser(?User $fk_user): static
+    public function setFkUser(?Users $fk_user): static
     {
         $this->fk_user = $fk_user;
 
@@ -121,29 +128,71 @@ class Publication
     }
 
     /**
-     * @return Collection<int, Commentary>
+     * @return Collection<int, Commentaries>
      */
     public function getCommentaries(): Collection
     {
         return $this->commentaries;
     }
 
-    public function addCommentary(Commentary $commentary): static
+    public function addCommentary(Commentaries $commentary): static
     {
         if (!$this->commentaries->contains($commentary)) {
             $this->commentaries->add($commentary);
-            $commentary->setFkPublication($this);
+            $commentary->setPosts($this);
         }
 
         return $this;
     }
 
-    public function removeCommentary(Commentary $commentary): static
+    public function removeCommentary(Commentaries $commentary): static
     {
         if ($this->commentaries->removeElement($commentary)) {
             // set the owning side to null (unless already changed)
-            if ($commentary->getFkPublication() === $this) {
-                $commentary->setFkPublication(null);
+            if ($commentary->getPosts() === $this) {
+                $commentary->setPosts(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getModificationDate(): ?\DateTimeInterface
+    {
+        return $this->modification_date;
+    }
+
+    public function setModificationDate(?\DateTimeInterface $modification_date): static
+    {
+        $this->modification_date = $modification_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reactions>
+     */
+    public function getReactions(): Collection
+    {
+        return $this->reactions;
+    }
+
+    public function addReaction(Reactions $reaction): static
+    {
+        if (!$this->reactions->contains($reaction)) {
+            $this->reactions->add($reaction);
+            $reaction->setPosts($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReaction(Reactions $reaction): static
+    {
+        if ($this->reactions->removeElement($reaction)) {
+            // set the owning side to null (unless already changed)
+            if ($reaction->getPosts() === $this) {
+                $reaction->setPosts(null);
             }
         }
 

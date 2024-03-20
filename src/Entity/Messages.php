@@ -20,12 +20,13 @@ class Messages
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $publication_date = null;
 
-    #[ORM\Column]
-    private ?int $author = null;
-
     #[ORM\ManyToOne(inversedBy: 'fk_message')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Rooms $rooms = null;
+
+    #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $author = null;
 
     public function getId(): ?int
     {
@@ -56,18 +57,6 @@ class Messages
         return $this;
     }
 
-    public function getAuthor(): ?int
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(int $author): static
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
     public function getRooms(): ?Rooms
     {
         return $this->rooms;
@@ -76,6 +65,18 @@ class Messages
     public function setRooms(?Rooms $rooms): static
     {
         $this->rooms = $rooms;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Users
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Users $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }

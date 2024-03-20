@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Agenda;
+use App\Entity\Schedules;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,11 +14,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Agenda[]    findAll()
  * @method Agenda[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AgendaRepository extends ServiceEntityRepository
+class SchedulesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Agenda::class);
+        parent::__construct($registry, Schedules::class);
     }
 
 //    /**

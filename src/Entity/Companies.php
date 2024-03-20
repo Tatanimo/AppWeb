@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Repository\CompaniesRepository;
 use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CompanyRepository::class)]
-class Company
+#[ORM\Entity(repositoryClass: CompaniesRepository::class)]
+class Companies
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -33,16 +34,20 @@ class Company
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'fk_company')]
+    #[ORM\OneToMany(targetEntity: Users::class, mappedBy: 'fk_company')]
     private Collection $users;
 
-    #[ORM\ManyToOne(inversedBy: 'companies')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?TypeCompany $fk_type = null;
+    #[ORM\ManyToMany(targetEntity: Cities::class, mappedBy: 'companies')]
+    private Collection $cities;
+
+    #[ORM\ManyToMany(targetEntity: ServicesType::class, mappedBy: 'Companies')]
+    private Collection $servicesTypes;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->cities = new ArrayCollection();
+        $this->servicesTypes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -123,14 +128,14 @@ class Company
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, Users>
      */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
-    public function addUser(User $user): static
+    public function addUser(Users $user): static
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
@@ -140,7 +145,7 @@ class Company
         return $this;
     }
 
-    public function removeUser(User $user): static
+    public function removeUser(Users $user): static
     {
         if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
@@ -152,14 +157,56 @@ class Company
         return $this;
     }
 
-    public function getFkType(): ?TypeCompany
+    /**
+     * @return Collection<int, Cities>
+     */
+    public function getCities(): Collection
     {
-        return $this->fk_type;
+        return $this->cities;
     }
 
-    public function setFkType(?TypeCompany $fk_type): static
+    public function addCity(Cities $city): static
     {
-        $this->fk_type = $fk_type;
+        if (!$this->cities->contains($city)) {
+            $this->cities->add($city);
+            $city->addCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCity(Cities $city): static
+    {
+        if ($this->cities->removeElement($city)) {
+            $city->removeCompany($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ServicesType>
+     */
+    public function getServicesTypes(): Collection
+    {
+        return $this->servicesTypes;
+    }
+
+    public function addServicesType(ServicesType $servicesType): static
+    {
+        if (!$this->servicesTypes->contains($servicesType)) {
+            $this->servicesTypes->add($servicesType);
+            $servicesType->addCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServicesType(ServicesType $servicesType): static
+    {
+        if ($this->servicesTypes->removeElement($servicesType)) {
+            $servicesType->removeCompany($this);
+        }
 
         return $this;
     }

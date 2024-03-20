@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\AvisUser;
+use App\Entity\Reviews;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,11 +15,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method AvisUser[]    findAll()
  * @method AvisUser[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AvisUserRepository extends ServiceEntityRepository
+class ReviewsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AvisUser::class);
+        parent::__construct($registry, Reviews::class);
     }
 
 //    /**

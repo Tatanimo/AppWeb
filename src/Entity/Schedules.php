@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\AgendaRepository;
+use App\Repository\SchedulesRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AgendaRepository::class)]
-class Agenda
+#[ORM\Entity(repositoryClass: SchedulesRepository::class)]
+class Schedules
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,13 +20,13 @@ class Agenda
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $end_date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'AgendaUser1')]
+    #[ORM\ManyToOne(inversedBy: 'schedules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $fk_user_1 = null;
+    private ?Users $users = null;
 
-    #[ORM\ManyToOne(inversedBy: 'AgendaUser2')]
+    #[ORM\ManyToOne(inversedBy: 'schedules')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $fk_user_2 = null;
+    private ?Animals $animals = null;
 
     public function getId(): ?int
     {
@@ -57,26 +57,26 @@ class Agenda
         return $this;
     }
 
-    public function getFkUser1(): ?User
+    public function getUsers(): ?Users
     {
-        return $this->fk_user_1;
+        return $this->users;
     }
 
-    public function setFkUser1(?User $fk_user_1): static
+    public function setUsers(?Users $users): static
     {
-        $this->fk_user_1 = $fk_user_1;
+        $this->users = $users;
 
         return $this;
     }
 
-    public function getFkUser2(): ?User
+    public function getAnimals(): ?Animals
     {
-        return $this->fk_user_2;
+        return $this->animals;
     }
 
-    public function setFkUser2(?User $fk_user_2): static
+    public function setAnimals(?Animals $animals): static
     {
-        $this->fk_user_2 = $fk_user_2;
+        $this->animals = $animals;
 
         return $this;
     }

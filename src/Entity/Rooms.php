@@ -17,11 +17,11 @@ class Rooms
 
     #[ORM\ManyToOne(inversedBy: 'roomsUser1')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $fk_user1 = null;
+    private ?Users $fk_user1 = null;
 
     #[ORM\ManyToOne(inversedBy: 'roomsUser2')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $fk_user2 = null;
+    private ?Users $fk_user2 = null;
 
     #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'rooms', orphanRemoval: true)]
     private Collection $fk_message;
@@ -36,24 +36,24 @@ class Rooms
         return $this->id;
     }
 
-    public function getFkUser1(): ?User
+    public function getFkUser1(): ?Users
     {
         return $this->fk_user1;
     }
 
-    public function setFkUser1(?User $fk_user1): static
+    public function setFkUser1(?Users $fk_user1): static
     {
         $this->fk_user1 = $fk_user1;
 
         return $this;
     }
 
-    public function getFkUser2(): ?User
+    public function getFkUser2(): ?Users
     {
         return $this->fk_user2;
     }
 
-    public function setFkUser2(?User $fk_user2): static
+    public function setFkUser2(?Users $fk_user2): static
     {
         $this->fk_user2 = $fk_user2;
 

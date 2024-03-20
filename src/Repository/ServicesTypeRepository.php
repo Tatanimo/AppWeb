@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\ServicesType;
 use App\Entity\TypeCompany;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,11 +15,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method TypeCompany[]    findAll()
  * @method TypeCompany[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TypeCompanyRepository extends ServiceEntityRepository
+class ServicesTypeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TypeCompany::class);
+        parent::__construct($registry, ServicesType::class);
     }
 
 //    /**

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Posts;
 use App\Entity\Publication;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,11 +15,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Publication[]    findAll()
  * @method Publication[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PublicationRepository extends ServiceEntityRepository
+class PostsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Publication::class);
+        parent::__construct($registry, Posts::class);
     }
 
 //    /**
