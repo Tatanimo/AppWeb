@@ -15,7 +15,7 @@ jobs:
           
       - name: SSHPASS and DEPLOY project
         run:  
-          sshpass -e ssh node192-eu.n0c.com
+          sshpass -e ssh node192-eu.n0c
           "cd tatanimo.mds-lille.yt/ &&
           git pull origin test &&
           /home/gxxgzxxc/composer.phar install &&
