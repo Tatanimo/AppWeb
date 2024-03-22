@@ -54,8 +54,8 @@ class SecurityController extends AbstractController
                 // Récupère la ville et l'intégre à l'utilisateur
                 $explodeCity = explode('(', $requestCity);
                 $cityName = trim($explodeCity[0]);
-                $postalCode = rtrim($explodeCity[1], ')');
-                $city = $citiesRepository->findOneBy(['name' => $cityName, 'postal_code' => $postalCode]);
+                $zipCode = rtrim($explodeCity[1], ')');
+                $city = $citiesRepository->findOneBy(['name' => $cityName, 'zip_code' => $zipCode]);
                 $user->setCities($city);
 
                 // Récupère le mot de passe, le hash et l'intégre à l'utilisateur
