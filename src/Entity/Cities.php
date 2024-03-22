@@ -15,17 +15,27 @@ class Cities
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 10)]
-    private ?string $postal_code = null;
+    #[ORM\Column(length: 5)]
+    private ?string $zip_code = null;
 
     #[ORM\ManyToMany(targetEntity: Companies::class, inversedBy: 'cities')]
     private Collection $companies;
 
     #[ORM\OneToMany(targetEntity: Users::class, mappedBy: 'cities')]
     private Collection $users;
+
+    #[ORM\ManyToOne(inversedBy: 'cities')]
+    #[ORM\JoinColumn(name:"department_code", referencedColumnName:"code")]
+    private ?Departments $department_code = null;
+
+    #[ORM\Column(length: 5, nullable: true)]
+    private ?string $insee_code = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -50,14 +60,14 @@ class Cities
         return $this;
     }
 
-    public function getPostalCode(): ?string
+    public function getZipCode(): ?string
     {
-        return $this->postal_code;
+        return $this->zip_code;
     }
 
-    public function setPostalCode(string $postal_code): static
+    public function setZipCode(string $zip_code): static
     {
-        $this->postal_code = $postal_code;
+        $this->zip_code = $zip_code;
 
         return $this;
     }
@@ -82,6 +92,42 @@ class Cities
     public function removeCompany(Companies $company): static
     {
         $this->companies->removeElement($company);
+
+        return $this;
+    }
+
+    public function getDepartmentCode(): ?Departments
+    {
+        return $this->department_code;
+    }
+
+    public function setDepartmentCode(?Departments $department_code): static
+    {
+        $this->department_code = $department_code;
+
+        return $this;
+    }
+
+    public function getInseeCode(): ?string
+    {
+        return $this->insee_code;
+    }
+
+    public function setInseeCode(?string $insee_code): static
+    {
+        $this->insee_code = $insee_code;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

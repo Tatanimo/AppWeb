@@ -25,8 +25,8 @@ class Companies
     #[ORM\Column(length: 100)]
     private ?string $adress = null;
 
-    #[ORM\Column(length: 10)]
-    private ?string $postal_code = null;
+    #[ORM\Column(length: 5)]
+    private ?string $zip_code = null;
 
     #[ORM\Column(length: 50)]
     private ?string $city = null;
@@ -87,30 +87,6 @@ class Companies
     public function setAdress(string $adress): static
     {
         $this->adress = $adress;
-
-        return $this;
-    }
-
-    public function getPostalCode(): ?string
-    {
-        return $this->postal_code;
-    }
-
-    public function setPostalCode(string $postal_code): static
-    {
-        $this->postal_code = $postal_code;
-
-        return $this;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): static
-    {
-        $this->city = $city;
 
         return $this;
     }
