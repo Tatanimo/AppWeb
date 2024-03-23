@@ -12,6 +12,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(Request $request): Response
     {
+        $this->addFlash('success', ['title' => 'Compte enregistré', 'message' => "Votre compte a bien été enregistré."]);
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
