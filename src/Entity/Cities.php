@@ -6,6 +6,7 @@ use App\Repository\CitiesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CitiesRepository::class)]
 class Cities
@@ -13,11 +14,14 @@ class Cities
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("main")]
     private ?int $id = null;
 
+    #[Groups("main")]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups("main")]
     #[ORM\Column(length: 5)]
     private ?string $zip_code = null;
 
@@ -31,9 +35,11 @@ class Cities
     #[ORM\JoinColumn(name:"department_code", referencedColumnName:"code")]
     private ?Departments $department_code = null;
 
+    #[Groups("main")]
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $insee_code = null;
 
+    #[Groups("main")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
