@@ -59,6 +59,15 @@ class CitiesRepository extends ServiceEntityRepository
             ;
         }
 
+        
+        public function findOneByRequest($request) : Cities
+        {
+            $explodeCity = explode('(', $request);
+            $cityName = trim($explodeCity[0]);
+            $zipCode = rtrim($explodeCity[1], ')');
+            return $this->findOneBy(['name' => $cityName, 'zip_code' => $zipCode]);
+        }   
+
     //    public function findOneBySomeField($value): ?Cities
     //    {
     //        return $this->createQueryBuilder('c')
