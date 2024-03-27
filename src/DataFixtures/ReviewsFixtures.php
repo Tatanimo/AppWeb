@@ -20,6 +20,7 @@ class ReviewsFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
         $users = $this->usersRepository->findHundredAtIndex(75);
+        $allUsers = $this->usersRepository->findAll();
 
         foreach ($users as $user) {
             $randReceiver = rand(1, 5);
@@ -28,11 +29,10 @@ class ReviewsFixtures extends Fixture implements DependentFixtureInterface
                 $review = new Reviews();
 
                 $randomComment = rand(0,1);
-                $id = rand(1, 750);
-                $userReceiver = $this->usersRepository->findOneBy(['id' => $id == $user->getId() ? intval($id)+1 : $id]);
-                
-                $review->setFkUserReceiver($userReceiver)->setFkUserSender($user)->setRating(rand(1,5))->setComment(boolval($randomComment) ? $faker->sentence() : null);
+                $randomIndex = rand(0, count($allUsers) - 1);
 
+                $review->setFkUserReceiver($allUsers[$randomIndex])->setFkUserSender($user)->setRating(rand(1,5))->setComment(boolval($randomComment) ? $faker->sentence() : null);
+                
                 $manager->persist($review);
             }
         }

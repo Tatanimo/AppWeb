@@ -29,9 +29,9 @@ class CompaniesFixtures extends Fixture implements DependentFixtureInterface
             $randServices = rand(1, 3);
 
             for ($i=1; $i <= $randServices; $i++) { 
-                $identity = rand(1, 3);
-                $service = $this->servicesTypeRepository->findOneBy(['id' => $identity]);
-                $companies->addServicesType($service);
+                $services = $this->servicesTypeRepository->findAll();
+                $randomIndex = rand(0, count($services) - 1);
+                $companies->addServicesType($services[$randomIndex]);
             }
 
             $randUsers = rand(1, 15);
