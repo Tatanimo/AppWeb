@@ -21,7 +21,7 @@ class UsersFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         //  Role_User
-        for ($i=0; $i < 0; $i++) { 
+        for ($i=0; $i < 1000; $i++) { 
             $user = new Users();
 
             $id = rand(1, 35853);
