@@ -20,16 +20,32 @@ class UsersFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
-        for ($i=0; $i < 1000; $i++) { 
+        //  Role_User
+        for ($i=0; $i < 0; $i++) { 
             $user = new Users();
 
             $id = rand(1, 35853);
             $cities = $this->citiesRepository->findOneBy(['id' => $id]);
 
-            $password = $faker->lexify('??????????????????');
+            $password = $faker->word();
             $hashedPassword = $this->hasher->hashPassword($user, $password);
 
             $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_USER'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
+            
+            $manager->persist($user);
+        }
+
+        // Role_Admin
+        for ($i=0; $i < 10; $i++) { 
+            $user = new Users();
+
+            $id = rand(1, 35853);
+            $cities = $this->citiesRepository->findOneBy(['id' => $id]);
+
+            $password = $faker->word();
+            $hashedPassword = $this->hasher->hashPassword($user, $password);
+
+            $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_ADMIN'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
             
             $manager->persist($user);
         }

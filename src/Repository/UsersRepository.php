@@ -39,28 +39,27 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
         $this->getEntityManager()->flush();
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Users[] Returns an array of User objects
+    */
+   public function findAllByRole($role): array
+   {
+       return $this->createQueryBuilder('u')
+           ->andWhere('u.roles LIKE :role')
+           ->setParameter('role', '%'.$role.'%')
+           ->orderBy('u.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+   public function findOneByRole($role): ?Users
+   {
+       return $this->createQueryBuilder('u')
+           ->andWhere('u.roles LIKE :role')
+           ->setParameter('role', '%'.$role.'%')
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
 }
