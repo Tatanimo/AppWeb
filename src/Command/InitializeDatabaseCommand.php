@@ -17,7 +17,7 @@ use Symfony\Component\Process\Process;
 
 #[AsCommand(
     name: 'init:db',
-    description: 'Génére la base de données avec les fichiers SQL nécessaires au bon fonctionnement.',
+    description: 'Génère la base de données avec les fichiers SQL nécessaires au bon fonctionnement',
 )]
 class InitializeDatabaseCommand extends Command
 {
@@ -28,15 +28,17 @@ class InitializeDatabaseCommand extends Command
 
     protected function configure(): void
     {
-        
+
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         
+        $noInteraction = $input->getOption('no-interaction');
+
         $io->warning("Attention ! Une base de données existante sera supprimée si vous souhaitez générer une nouvelle base de données ! Ne prenez pas en rigueur l'avertissement si aucune base de données est déjà existante pour l'application.");
-        $result = $io->confirm('Êtes-vous sûr de vouloir générer la base de données ?', false);
+        $result = $io->confirm('Êtes-vous sûr de vouloir générer la base de données ?', $noInteraction ? true : false);
 
         if (!$result) {
             $io->error('Annulation de la procédure de génération de la base de données');
