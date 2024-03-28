@@ -29,8 +29,11 @@ class Articles
     #[ORM\Column(nullable: true)]
     private ?bool $state = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $keyword = null;
+    /**
+     * @var list<string> The keywords
+     */
+    #[ORM\Column(nullable: true)]
+    private ?array $keyword = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $modification_date = null;
@@ -106,12 +109,14 @@ class Articles
         return $this;
     }
 
-    public function getKeyword(): ?string
+    public function getKeyword(): ?array
     {
-        return $this->keyword;
+        $keyword = $this->keyword;
+
+        return array_unique($keyword);
     }
 
-    public function setKeyword(?string $keyword): static
+    public function setKeyword(?array $keyword): static
     {
         $this->keyword = $keyword;
 

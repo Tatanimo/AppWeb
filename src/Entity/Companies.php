@@ -19,35 +19,23 @@ class Companies
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 30)]
-    private ?string $type = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $adress = null;
-
-    #[ORM\Column(length: 5)]
-    private ?string $zip_code = null;
-
-    #[ORM\Column(length: 50)]
-    private ?string $city = null;
-
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $image = null;
 
     #[ORM\OneToMany(targetEntity: Users::class, mappedBy: 'fk_company')]
     private Collection $users;
 
-    #[ORM\ManyToMany(targetEntity: Cities::class, mappedBy: 'companies')]
-    private Collection $cities;
-
     #[ORM\ManyToMany(targetEntity: ServicesType::class, mappedBy: 'Companies')]
     private Collection $servicesTypes;
+
+    #[ORM\OneToMany(targetEntity: CompaniesAddresses::class, mappedBy: 'companies', orphanRemoval: true)]
+    private Collection $companiesAddresses;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->cities = new ArrayCollection();
         $this->servicesTypes = new ArrayCollection();
+        $this->companiesAddresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -63,30 +51,6 @@ class Companies
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getAdress(): ?string
-    {
-        return $this->adress;
-    }
-
-    public function setAdress(string $adress): static
-    {
-        $this->adress = $adress;
 
         return $this;
     }
@@ -134,33 +98,6 @@ class Companies
     }
 
     /**
-     * @return Collection<int, Cities>
-     */
-    public function getCities(): Collection
-    {
-        return $this->cities;
-    }
-
-    public function addCity(Cities $city): static
-    {
-        if (!$this->cities->contains($city)) {
-            $this->cities->add($city);
-            $city->addCompany($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCity(Cities $city): static
-    {
-        if ($this->cities->removeElement($city)) {
-            $city->removeCompany($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, ServicesType>
      */
     public function getServicesTypes(): Collection
@@ -182,6 +119,36 @@ class Companies
     {
         if ($this->servicesTypes->removeElement($servicesType)) {
             $servicesType->removeCompany($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompaniesAddresses>
+     */
+    public function getCompaniesAddresses(): Collection
+    {
+        return $this->companiesAddresses;
+    }
+
+    public function addCompaniesAddress(CompaniesAddresses $companiesAddress): static
+    {
+        if (!$this->companiesAddresses->contains($companiesAddress)) {
+            $this->companiesAddresses->add($companiesAddress);
+            $companiesAddress->setCompanies($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompaniesAddress(CompaniesAddresses $companiesAddress): static
+    {
+        if ($this->companiesAddresses->removeElement($companiesAddress)) {
+            // set the owning side to null (unless already changed)
+            if ($companiesAddress->getCompanies() === $this) {
+                $companiesAddress->setCompanies(null);
+            }
         }
 
         return $this;

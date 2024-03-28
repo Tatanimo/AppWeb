@@ -36,25 +36,25 @@ class RegisterType extends AbstractType
                     'label' => 'Votre mot de passe',
                     'attr' => [
                         'placeholder' => 'Merci de saisir votre mot de passe',
-                    ]
                     ],
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => "Merci d'entrer un mot de passe"
+                        ]),
+                        new Length([
+                            'min' => 8,
+                            'minMessage' => 'Votre mot de passe doit faire au minimum 8 caractères',
+                            'max' => 255,
+                            'maxMessage' => 'Votre mot de passe doit faire moins de 255 caractères',
+                        ]),
+                    ]
+                ],
                 'second_options' => [
                     'label' => 'Confirmation de mot de passe',
                     'attr' => [
                         'placeholder' => 'Merci de saisir confirmer votre mot de passe',
                     ]
                 ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => "Merci d'entrer un mot de passe"
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => 'Votre mot de passe doit faire au minimum 8 caractères',
-                        'max' => 255,
-                        'maxMessage' => 'Votre mot de passe doit faire moins de 255 caractères',
-                    ]),
-                ]
             ])
             ->add('birthdate', BirthdayType::class)
             ->add('address', TextType::class)

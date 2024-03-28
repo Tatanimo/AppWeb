@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export default function Alerts({type, flash}) {
+export default function Alerts({type, flash, fix}) {
     const [color, setColor] = useState('');
     const [bounce, setBounce] = useState('animatecss-bounceInLeft');
     const [disable, setDisable] = useState(false);
@@ -18,9 +18,11 @@ export default function Alerts({type, flash}) {
                 break;
         }
 
-        setTimeout(() => {
-            setBounce('animatecss-bounceOutLeft');
-        }, 3000)
+        if (!fix) {
+            setTimeout(() => {
+                setBounce('animatecss-bounceOutLeft');
+            }, 3000)
+        }
     }, []);
 
     useEffect(() => {
@@ -34,7 +36,7 @@ export default function Alerts({type, flash}) {
   return (
     <>
         {disable ? null : (
-            <div className={`bg-${color}-100 border-l-4 border-${color}-500 text-${color}-700 p-4 w-fit m-4 animatecss ${bounce}`} role="alert">
+            <div className={`bg-${color}-100 border-l-4 border-${color}-500 text-${color}-700 p-4 w-fit m-4 ${fix ? null : 'animatecss ' + bounce}`} role="alert">
                 <p className="font-bold">{flash[0].title}</p>
                 <p>{ flash[0].message }</p>
             </div>

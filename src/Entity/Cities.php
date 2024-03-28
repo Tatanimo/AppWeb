@@ -6,6 +6,7 @@ use App\Repository\CitiesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CitiesRepository::class)]
 class Cities
@@ -13,16 +14,16 @@ class Cities
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("main")]
     private ?int $id = null;
 
+    #[Groups("main")]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups("main")]
     #[ORM\Column(length: 5)]
     private ?string $zip_code = null;
-
-    #[ORM\ManyToMany(targetEntity: Companies::class, inversedBy: 'cities')]
-    private Collection $companies;
 
     #[ORM\OneToMany(targetEntity: Users::class, mappedBy: 'cities')]
     private Collection $users;
@@ -31,16 +32,21 @@ class Cities
     #[ORM\JoinColumn(name:"department_code", referencedColumnName:"code")]
     private ?Departments $department_code = null;
 
+    #[Groups("main")]
     #[ORM\Column(length: 5, nullable: true)]
     private ?string $insee_code = null;
 
+    #[Groups("main")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
+    #[ORM\OneToMany(targetEntity: CompaniesAddresses::class, mappedBy: 'cities', orphanRemoval: true)]
+    private Collection $companiesAddresses;
+
     public function __construct()
     {
-        $this->companies = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->companiesAddresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,30 +74,6 @@ class Cities
     public function setZipCode(string $zip_code): static
     {
         $this->zip_code = $zip_code;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Company>
-     */
-    public function getCompanies(): Collection
-    {
-        return $this->companies;
-    }
-
-    public function addCompany(Companies $company): static
-    {
-        if (!$this->companies->contains($company)) {
-            $this->companies->add($company);
-        }
-
-        return $this;
-    }
-
-    public function removeCompany(Companies $company): static
-    {
-        $this->companies->removeElement($company);
 
         return $this;
     }
@@ -128,6 +110,36 @@ class Cities
     public function setSlug(?string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompaniesAddresses>
+     */
+    public function getCompaniesAddresses(): Collection
+    {
+        return $this->companiesAddresses;
+    }
+
+    public function addCompaniesAddress(CompaniesAddresses $companiesAddress): static
+    {
+        if (!$this->companiesAddresses->contains($companiesAddress)) {
+            $this->companiesAddresses->add($companiesAddress);
+            $companiesAddress->setCities($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompaniesAddress(CompaniesAddresses $companiesAddress): static
+    {
+        if ($this->companiesAddresses->removeElement($companiesAddress)) {
+            // set the owning side to null (unless already changed)
+            if ($companiesAddress->getCities() === $this) {
+                $companiesAddress->setCities(null);
+            }
+        }
 
         return $this;
     }

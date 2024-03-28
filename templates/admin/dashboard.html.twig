@@ -1,9 +1,14 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block page_title %}Dashboard - Tatanimo{% endblock %}
-{% block content_title %}The Title of the Page{% endblock %}
+{% block content_title %}Dashboard{% endblock %}
 {% block page_actions %}
     <a class="btn btn-primary" href="...">Some Action</a>
+{% endblock %}
+{% block head_stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
 {% block main %}

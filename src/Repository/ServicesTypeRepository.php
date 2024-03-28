@@ -8,12 +8,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<TypeCompany>
+ * @extends ServiceEntityRepository<ServicesType>
  *
- * @method TypeCompany|null find($id, $lockMode = null, $lockVersion = null)
- * @method TypeCompany|null findOneBy(array $criteria, array $orderBy = null)
- * @method TypeCompany[]    findAll()
- * @method TypeCompany[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ServicesType|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ServicesType|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ServicesType[]    findAll()
+ * @method ServicesType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ServicesTypeRepository extends ServiceEntityRepository
 {
