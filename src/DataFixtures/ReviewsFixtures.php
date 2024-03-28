@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Reviews;
+use App\Repository\ReviewsRepository;
 use App\Repository\UsersRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -11,7 +12,7 @@ use Faker\Factory;
 
 class ReviewsFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function __construct(private UsersRepository $usersRepository)
+    public function __construct(private UsersRepository $usersRepository, private ReviewsRepository $reviewsRepository)
     {
         
     }
@@ -19,8 +20,7 @@ class ReviewsFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-        $users = $this->usersRepository->findHundredAtIndex(75);
-        $allUsers = $this->usersRepository->findAll();
+        $users = $this->usersRepository->findAll();
 
         foreach ($users as $user) {
             $randReceiver = rand(1, 5);
@@ -29,15 +29,20 @@ class ReviewsFixtures extends Fixture implements DependentFixtureInterface
                 $review = new Reviews();
 
                 $randomComment = rand(0,1);
-                $randomIndex = rand(0, count($allUsers) - 1);
+                
+                do {
+                    $randomReceiver = $this->usersRepository->randomUser();
+                } while (
+                    $randomReceiver == $user || $this->reviewsRepository->findOneByReceiverAndSender($randomReceiver->getId(), $user->getId()) != null
+                );
 
-                $review->setFkUserReceiver($allUsers[$randomIndex])->setFkUserSender($user)->setRating(rand(1,5))->setComment(boolval($randomComment) ? $faker->sentence() : null);
+                $review->setFkUserReceiver($randomReceiver)->setFkUserSender($user)->setRating(rand(1,5))->setComment(boolval($randomComment) ? $faker->sentence() : null);
                 
                 $manager->persist($review);
+                $manager->flush();
             }
         }
 
-        $manager->flush();
     }
 
     public function getDependencies()

@@ -36,8 +36,7 @@ class CompaniesFixtures extends Fixture implements DependentFixtureInterface
 
             $randUsers = rand(1, 15);
             for ($ind=1; $ind <= $randUsers; $ind++) {
-                $id = rand(1, 1000);
-                $user = $this->usersRepository->findOneBy(['id' => $id]);
+                $user = $this->usersRepository->randomUser();
                 $companies->addUser($user);
             }
 

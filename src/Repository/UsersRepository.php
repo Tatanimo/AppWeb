@@ -63,13 +63,9 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
        ;
    }
 
-   public function findHundredAtIndex($startIndex): array
-   {
-        return $this->createQueryBuilder('u')
-            ->setMaxResults(100)
-            ->setFirstResult($startIndex)
-            ->getQuery()
-            ->getResult()
-        ;
-   }
+    public function randomUser(){
+        $allUsers = $this->findAll();
+        $randomIndex = rand(0, count($allUsers) - 1);
+        return $allUsers[$randomIndex];
+    }
 }
