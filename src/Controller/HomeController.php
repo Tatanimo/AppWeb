@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Reviews;
+use App\Repository\ReactionsRepository;
 use App\Repository\ReviewsRepository;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +18,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(Request $request): Response
     {
-
+        
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);

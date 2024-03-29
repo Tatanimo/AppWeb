@@ -23,4 +23,5 @@ jobs:
           nvm use 16 &&
           npm install &&
           npm run build &&
-          php bin/console init:db --no-interaction"
+          php bin/console init:db --no-interaction &&
+          php bin/console cache:clear"

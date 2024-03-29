@@ -22,9 +22,6 @@ class Commentaries
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $publication_date = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $number_like = null;
-
     #[ORM\ManyToOne(inversedBy: 'commentaries')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $fk_user = null;
@@ -69,18 +66,6 @@ class Commentaries
     public function setPublicationDate(\DateTimeInterface $publication_date): static
     {
         $this->publication_date = $publication_date;
-
-        return $this;
-    }
-
-    public function getNumberLike(): ?int
-    {
-        return $this->number_like;
-    }
-
-    public function setNumberLike(?int $number_like): static
-    {
-        $this->number_like = $number_like;
 
         return $this;
     }

@@ -21,6 +21,12 @@ class CategoryAnimalsRepository extends ServiceEntityRepository
         parent::__construct($registry, CategoryAnimals::class);
     }
 
+    public function randomCategory(){
+        $allCategories = $this->findAll();
+        $randomIndex = rand(0, count($allCategories) - 1);
+        return $allCategories[$randomIndex];
+    }
+
 //    /**
 //     * @return CategoryAnimals[] Returns an array of CategoryAnimals objects
 //     */

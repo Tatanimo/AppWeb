@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Reactions;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -36,13 +38,35 @@ class ReactionsRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Reactions
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+       public function findOneByUserAndPost($user, $post): ?Reactions
+       {
+           return $this->createQueryBuilder('r')
+               ->andWhere('r.users = :user')
+               ->andWhere('r.posts = :post')
+               ->setParameters(
+                    new ArrayCollection([
+                        new Parameter('user', $user),
+                        new Parameter('post', $post)
+                    ])
+               )
+               ->getQuery()
+               ->getOneOrNullResult()
+           ;
+       }
+
+       public function findOneByUserAndCommentary($user, $commentary): ?Reactions
+       {
+           return $this->createQueryBuilder('r')
+               ->andWhere('r.users = :user')
+               ->andWhere('r.commentaries = :commentary')
+               ->setParameters(
+                    new ArrayCollection([
+                        new Parameter('user', $user),
+                        new Parameter('commentary', $commentary)
+                    ])
+               )
+               ->getQuery()
+               ->getOneOrNullResult()
+           ;
+       }
 }

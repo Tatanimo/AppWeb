@@ -7,12 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Commentary>
+ * @extends ServiceEntityRepository<Commentaries>
  *
- * @method Commentary|null find($id, $lockMode = null, $lockVersion = null)
- * @method Commentary|null findOneBy(array $criteria, array $orderBy = null)
- * @method Commentary[]    findAll()
- * @method Commentary[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Commentaries|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Commentaries|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Commentaries[]    findAll()
+ * @method Commentaries[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CommentariesRepository extends ServiceEntityRepository
 {
@@ -21,22 +21,19 @@ class CommentariesRepository extends ServiceEntityRepository
         parent::__construct($registry, Commentaries::class);
     }
 
-//    /**
-//     * @return Commentary[] Returns an array of Commentary objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Commentaries[] Returns an array of Commentaries objects
+    */
+   public function findLimit50(): array
+   {
+       return $this->createQueryBuilder('c')
+           ->setMaxResults(50)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
-//    public function findOneBySomeField($value): ?Commentary
+//    public function findOneBySomeField($value): ?Commentaries
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')

@@ -22,11 +22,11 @@ class Posts
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $publication_date = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $keyword = null;
-
+    /**
+     * @var list<string> The keywords
+     */
     #[ORM\Column(nullable: true)]
-    private ?int $number_like = null;
+    private ?array $keyword = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $state = null;
@@ -79,26 +79,16 @@ class Posts
         return $this;
     }
 
-    public function getKeyword(): ?string
+    public function getKeyword(): ?array
     {
-        return $this->keyword;
+        $keyword = $this->keyword;
+
+        return array_unique($keyword);
     }
 
-    public function setKeyword(?string $keyword): static
+    public function setKeyword(?array $keyword): static
     {
         $this->keyword = $keyword;
-
-        return $this;
-    }
-
-    public function getNumberLike(): ?int
-    {
-        return $this->number_like;
-    }
-
-    public function setNumberLike(?int $number_like): static
-    {
-        $this->number_like = $number_like;
 
         return $this;
     }

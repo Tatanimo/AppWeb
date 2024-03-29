@@ -74,7 +74,7 @@ class InitializeDatabaseCommand extends Command
             '-u', $_ENV['DATABASE_USER'],
             '--default-character-set=utf8',
             $_ENV['DATABASE_NAME'],
-            '-e', 'SOURCE database/regions.sql; SOURCE database/departments.sql; SOURCE database/cities.sql; SOURCE database/triggers.sql;'
+            '-e', 'SOURCE database/regions.sql; SOURCE database/departments.sql; SOURCE database/cities.sql; SOURCE database/family_animals.sql; SOURCE database/category_animals.sql; SOURCE database/triggers.sql;'
         ]);
         $process->start(null, ['MYSQL_PWD' => $_ENV['DATABASE_PASSWORD']]);
         
