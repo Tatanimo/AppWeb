@@ -20,14 +20,16 @@ class RoomsFixtures extends Fixture implements DependentFixtureInterface
         for ($i=1; $i <= 5 ; $i++) { 
             $room = new Rooms();
 
-            $user_1 = $this->usersRepository->randomUser();
-            $user_2 = $this->usersRepository->randomUser();
+            $user_1 = $this->usersRepository->randomUser()->getId();
             
-            while ($user_1 == $user_2) {
-                $user_2 = $this->usersRepository->randomUser();
+            do {
+                $user_2 = $this->usersRepository->randomUser()->getId();
             }
+            while ($user_1 == $user_2);
 
-            $room->setFkUser1($user_1)->setFkUser2($user_2);
+            $reference = $user_1 < $user_2 ? $user_1.'-'.$user_2 : $user_2.'-'.$user_1;
+
+            $room->setReference($reference);
 
             $manager->persist($room);
         }
