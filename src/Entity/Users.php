@@ -207,6 +207,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPhoneNumber(?string $phone_number): static
     {
+        $phone_number = str_replace(' ', '', $phone_number);
         $this->phone_number = $phone_number;
 
         return $this;
