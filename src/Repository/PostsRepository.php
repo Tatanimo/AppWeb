@@ -3,17 +3,16 @@
 namespace App\Repository;
 
 use App\Entity\Posts;
-use App\Entity\Publication;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Publication>
+ * @extends ServiceEntityRepository<Posts>
  *
- * @method Publication|null find($id, $lockMode = null, $lockVersion = null)
- * @method Publication|null findOneBy(array $criteria, array $orderBy = null)
- * @method Publication[]    findAll()
- * @method Publication[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Posts|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Posts|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Posts[]    findAll()
+ * @method Posts[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PostsRepository extends ServiceEntityRepository
 {
@@ -22,22 +21,19 @@ class PostsRepository extends ServiceEntityRepository
         parent::__construct($registry, Posts::class);
     }
 
-//    /**
-//     * @return Publication[] Returns an array of Publication objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Posts[] Returns an array of Posts objects
+    */
+   public function findLimit50(): array
+   {
+       return $this->createQueryBuilder('p')
+           ->setMaxResults(50)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
-//    public function findOneBySomeField($value): ?Publication
+//    public function findOneBySomeField($value): ?Posts
 //    {
 //        return $this->createQueryBuilder('p')
 //            ->andWhere('p.exampleField = :val')

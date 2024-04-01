@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Reviews;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -36,13 +38,19 @@ class ReviewsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?AvisUser
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        public function findOneByReceiverAndSender($receiver, $sender): ?Reviews
+        {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.fk_user_sender = :sender')
+                ->andWhere('a.fk_user_receiver = :receiver')
+                ->setParameters(
+                    new ArrayCollection([
+                        new Parameter('receiver', $receiver),
+                        new Parameter('sender', $sender),
+                    ])
+                )
+                ->getQuery()
+                ->getOneOrNullResult()
+            ;
+        }
 }

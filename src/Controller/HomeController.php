@@ -2,7 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Reviews;
+use App\Repository\ReactionsRepository;
+use App\Repository\ReviewsRepository;
 use App\Repository\UsersRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,11 +16,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, UsersRepository $usersRepository): Response
+    public function index(Request $request): Response
     {
-        $faker = Factory::create('fr_FR');
-        $randWords = rand(1, 5);
-        dd($faker->words($randWords), ["ROLE_ADMIN"]);
+        
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);

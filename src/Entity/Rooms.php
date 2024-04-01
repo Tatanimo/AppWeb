@@ -10,53 +10,28 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: RoomsRepository::class)]
 class Rooms
 {
+
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\ManyToOne(inversedBy: 'roomsUser1')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Users $fk_user1 = null;
-
-    #[ORM\ManyToOne(inversedBy: 'roomsUser2')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Users $fk_user2 = null;
+    #[ORM\GeneratedValue('NONE')]
+    #[ORM\Column(length:255, nullable:false)]
+    private ?string $reference = null;
 
     #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'rooms', orphanRemoval: true)]
-    private Collection $fk_message;
+    private Collection $fk_messages;
 
     public function __construct()
     {
-        $this->fk_message = new ArrayCollection();
+        $this->fk_messages = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getReference(): ?string
     {
-        return $this->id;
+        return $this->reference;
     }
 
-    public function getFkUser1(): ?Users
+    public function setReference(?string $reference): static
     {
-        return $this->fk_user1;
-    }
-
-    public function setFkUser1(?Users $fk_user1): static
-    {
-        $this->fk_user1 = $fk_user1;
-
-        return $this;
-    }
-
-    public function getFkUser2(): ?Users
-    {
-        return $this->fk_user2;
-    }
-
-    public function setFkUser2(?Users $fk_user2): static
-    {
-        $this->fk_user2 = $fk_user2;
-
+        $this->reference = $reference;
         return $this;
     }
 
@@ -65,13 +40,13 @@ class Rooms
      */
     public function getFkMessage(): Collection
     {
-        return $this->fk_message;
+        return $this->fk_messages;
     }
 
     public function addFkMessage(Messages $fkMessage): static
     {
-        if (!$this->fk_message->contains($fkMessage)) {
-            $this->fk_message->add($fkMessage);
+        if (!$this->fk_messages->contains($fkMessage)) {
+            $this->fk_messages->add($fkMessage);
             $fkMessage->setRooms($this);
         }
 
@@ -80,7 +55,7 @@ class Rooms
 
     public function removeFkMessage(Messages $fkMessage): static
     {
-        if ($this->fk_message->removeElement($fkMessage)) {
+        if ($this->fk_messages->removeElement($fkMessage)) {
             // set the owning side to null (unless already changed)
             if ($fkMessage->getRooms() === $this) {
                 $fkMessage->setRooms(null);

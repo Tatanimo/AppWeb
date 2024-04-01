@@ -73,12 +73,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'fk_user_receiver', orphanRemoval: true)]
     private Collection $reviewsReceiver;
 
-    #[ORM\OneToMany(targetEntity: Rooms::class, mappedBy: 'fk_user1')]
-    private Collection $roomsUser1;
-
-    #[ORM\OneToMany(targetEntity: Rooms::class, mappedBy: 'fk_user2')]
-    private Collection $roomsUser2;
-
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Cities $cities = null;
@@ -102,8 +96,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->animals = new ArrayCollection();
         $this->reviewsSender = new ArrayCollection();
         $this->reviewsReceiver = new ArrayCollection();
-        $this->roomsUser1 = new ArrayCollection();
-        $this->roomsUser2 = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->schedules = new ArrayCollection();
         $this->articles = new ArrayCollection();
@@ -215,6 +207,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPhoneNumber(?string $phone_number): static
     {
+        $phone_number = str_replace(' ', '', $phone_number);
         $this->phone_number = $phone_number;
 
         return $this;
@@ -424,66 +417,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($reviews->getFkUserReceiver() === $this) {
                 $reviews->setFkUserReceiver(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Rooms>
-     */
-    public function getRoomsUser1(): Collection
-    {
-        return $this->roomsUser1;
-    }
-
-    public function addRoomsUser1(Rooms $roomsUser1): static
-    {
-        if (!$this->roomsUser1->contains($roomsUser1)) {
-            $this->roomsUser1->add($roomsUser1);
-            $roomsUser1->setFkUser1($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRoomsUser1(Rooms $roomsUser1): static
-    {
-        if ($this->roomsUser1->removeElement($roomsUser1)) {
-            // set the owning side to null (unless already changed)
-            if ($roomsUser1->getFkUser1() === $this) {
-                $roomsUser1->setFkUser1(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Rooms>
-     */
-    public function getRoomsUser2(): Collection
-    {
-        return $this->roomsUser2;
-    }
-
-    public function addRoomsUser2(Rooms $roomsUser2): static
-    {
-        if (!$this->roomsUser2->contains($roomsUser2)) {
-            $this->roomsUser2->add($roomsUser2);
-            $roomsUser2->setFkUser2($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRoomsUser2(Rooms $roomsUser2): static
-    {
-        if ($this->roomsUser2->removeElement($roomsUser2)) {
-            // set the owning side to null (unless already changed)
-            if ($roomsUser2->getFkUser2() === $this) {
-                $roomsUser2->setFkUser2(null);
             }
         }
 

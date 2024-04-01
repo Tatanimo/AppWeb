@@ -23,9 +23,5 @@ jobs:
           nvm use 16 &&
           npm install &&
           npm run build &&
-          php bin/console d:d:d --force &&
-          php bin/console d:d:c &&
-          php bin/console d:m:m --no-interaction &&
-          mysql -u '${{ secrets.DATABASE_USER }}' -p'${{ secrets.DATABASE_PASSWORD }}' --default-character-set=utf8 ${{ secrets.DATABASE_NAME }} < database/regions.sql &&
-          mysql -u '${{ secrets.DATABASE_USER }}' -p'${{ secrets.DATABASE_PASSWORD }}' --default-character-set=utf8 ${{ secrets.DATABASE_NAME }} < database/departments.sql &&
-          mysql -u '${{ secrets.DATABASE_USER }}' -p'${{ secrets.DATABASE_PASSWORD }}' --default-character-set=utf8 ${{ secrets.DATABASE_NAME }} < database/cities.sql"
+          php bin/console init:db --no-interaction &&
+          php bin/console cache:clear"

@@ -21,6 +21,13 @@ class AnimalsRepository extends ServiceEntityRepository
         parent::__construct($registry, Animals::class);
     }
 
+    public function randomAnimal(): Animals 
+    {   
+        $animals = $this->findAll();
+        $i = rand(0, count($animals) - 1);
+        return $animals[$i];
+    }
+
 //    /**
 //     * @return Animals[] Returns an array of Animals objects
 //     */

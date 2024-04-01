@@ -20,8 +20,8 @@ class Messages
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $publication_date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'fk_message')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'fk_messages')]
+    #[ORM\JoinColumn(nullable: true, referencedColumnName:"reference")]
     private ?Rooms $rooms = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
