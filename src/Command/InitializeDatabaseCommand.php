@@ -49,6 +49,7 @@ class InitializeDatabaseCommand extends Command
             'command' => 'd:d:d',
             '--force' => true
         ]);
+        $delete->setInteractive(false);
         $this->getApplication()->doRun($delete, $output);
 
         // Execute D:D:C
@@ -76,6 +77,7 @@ class InitializeDatabaseCommand extends Command
             $_ENV['DATABASE_NAME'],
             '-e', 'SOURCE database/regions.sql; SOURCE database/departments.sql; SOURCE database/cities.sql; SOURCE database/family_animals.sql; SOURCE database/category_animals.sql; SOURCE database/triggers.sql;'
         ]);
+        $io->success($process->getCommandLine());
         $process->start(null, ['MYSQL_PWD' => $_ENV['DATABASE_PASSWORD']]);
         
         $this->processProgress($process, $output);
