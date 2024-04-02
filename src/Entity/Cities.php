@@ -22,7 +22,7 @@ class Cities
     private ?string $name = null;
 
     #[Groups("main")]
-    #[ORM\Column(length: 5)]
+    #[ORM\Column(length: 5, nullable: true)]
     private ?string $zip_code = null;
 
     #[ORM\OneToMany(targetEntity: Users::class, mappedBy: 'cities')]

@@ -14,6 +14,7 @@
     </head>
     <body>
         {# Alerte #}
+        <header {{ react_component('navigation/NavigationBar') }}></header>
         <div class="fixed top-0 left-0 z-50">
             {% for type, flash in app.flashes %}
                 <div {{ react_component('alerts/Alerts', {'type': type, 'flash': flash }) }}></div>
