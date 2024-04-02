@@ -16,7 +16,7 @@ class GoogleAnalyticsController extends AbstractController
     #[Route('/admin/ajax/google/analytics', name: 'app_admin_ajax_google_analytics')]
     public function fetch(): JsonResponse
     {
-        putenv("GOOGLE_APPLICATION_CREDENTIALS=" . $this->getParameter('kernel.project_dir').'/vendor/google/credentials.json');
+        putenv("GOOGLE_APPLICATION_CREDENTIALS=" . $this->getParameter('kernel.project_dir').'google_credentials.json');
         $property_id = $_ENV['GOOGLE_PROPERTY_ID'];
 
         $client = new BetaAnalyticsDataClient();
