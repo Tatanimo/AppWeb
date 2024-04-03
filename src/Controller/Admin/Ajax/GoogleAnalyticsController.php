@@ -27,7 +27,7 @@ class GoogleAnalyticsController extends AbstractController
             ]);
         $response = $client->runRealtimeReport($request);
 
-        $var = null;
+        $var = 0;
         foreach ($response->getRows() as $row) {
             $var = $row->getMetricValues()[0]->getValue();
         }

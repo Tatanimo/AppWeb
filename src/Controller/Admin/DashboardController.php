@@ -11,9 +11,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
-    #[Route('/admin', name: 'admin')]
+    #[Route('/admin/{_locale}', name: 'admin')]
     public function index(): Response
     {
+
         return $this->render('admin/dashboard.html.twig');
     }
 
@@ -21,6 +22,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->disableDarkMode()
+            ->setLocales(['fr'])
             ->setTitle('Tatanimo');
     }
 
