@@ -1,6 +1,18 @@
-import React from "react";
+import React, {useEffect} from "react";
+import axios from "axios";
 
-export default function StatCard() {
+export default function StatCard({endpoint}) {
+  useEffect(() => {
+    axios.get(`/admin/ajax/google/analytics/${endpoint}`, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    }).then(response => {
+      console.log(response);
+    }).catch(error => console.error(error));
+  }, []);
+  
+
   return (
     <div class="border-2 border-gray-200 px-4 py-6 rounded-lg">
         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="text-indigo-500 w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">

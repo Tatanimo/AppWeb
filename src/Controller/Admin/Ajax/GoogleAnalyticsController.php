@@ -8,29 +8,54 @@ use Symfony\Component\Routing\Attribute\Route;
 use Google\Analytics\Data\V1beta\Client\BetaAnalyticsDataClient;
 use Google\Analytics\Data\V1beta\RunRealtimeReportRequest;
 use Google\Analytics\Data\V1beta\Metric;
+use Google\Analytics\Data\V1beta\RunReportRequest;
 
 class GoogleAnalyticsController extends AbstractController
 {
-    #[Route('/admin/ajax/google/analytics', name: 'app_admin_ajax_google_analytics')]
-    public function fetchActiveUsers(): JsonResponse
+    private BetaAnalyticsDataClient $client;
+    private string $property_id;
+
+    public function __construct()
     {
         putenv("GOOGLE_APPLICATION_CREDENTIALS=" . $this->getParameter('kernel.project_dir').'/google_credentials.json');
-        $property_id = $_ENV['GOOGLE_PROPERTY_ID'];
+        $this->property_id = $_ENV['GOOGLE_PROPERTY_ID'];
 
-        $client = new BetaAnalyticsDataClient();
+        $this->client = new BetaAnalyticsDataClient();
+    }
 
+    #[Route('/admin/ajax/google/analytics/activeusers', name: 'google_analytics_active_users')]
+    public function fetchActiveUsers(): JsonResponse
+    {
         $request = (new RunRealtimeReportRequest())
-            ->setProperty('properties/' . $property_id)
+            ->setProperty('properties/' . $this->property_id)
             ->setMetrics([new Metric([
                     'name' => 'activeUsers',
                 ])
             ]);
-        $response = $client->runRealtimeReport($request);
+        $response = $this->client->runRealtimeReport($request);
 
-        $var = 0;
+        $users = 0;
         foreach ($response->getRows() as $row) {
-            $var = $row->getMetricValues()[0]->getValue();
+            $users = $row->getMetricValues()[0]->getValue();
         }
-        return $this->json($var);
+        return $this->json($users);
+    }
+
+    #[Route('/admin/ajax/google/analytics/users', name: 'google_analytics_users')]
+    public function fetchUsers(): JsonResponse
+    {
+        $request = (new RunReportRequest())
+            ->setProperty('properties/' . $this->property_id)
+            ->setMetrics([new Metric([
+                    'name' => 'users',
+                ])
+            ]);
+        $response = $this->client->runReport($request);
+
+        $users = 0;
+        foreach ($response->getRows() as $row) {
+            $users = $row->getMetricValues()[0]->getValue();
+        }
+        return $this->json($users);
     }
 }
