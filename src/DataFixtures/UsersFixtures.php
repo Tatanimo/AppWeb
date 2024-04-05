@@ -13,7 +13,7 @@ class UsersFixtures extends Fixture
 {
     public function __construct(private CitiesRepository $citiesRepository, private UserPasswordHasherInterface $hasher)
     {
-        
+
     }
 
     public function load(ObjectManager $manager): void
@@ -21,7 +21,7 @@ class UsersFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         //  Role_User
-        for ($i=0; $i < 100; $i++) { 
+        for ($i = 0; $i < 100; $i++) {
             $user = new Users();
 
             $id = rand(1, 35853);
@@ -31,12 +31,12 @@ class UsersFixtures extends Fixture
             $hashedPassword = $this->hasher->hashPassword($user, $password);
 
             $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_USER'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
-            
+
             $manager->persist($user);
         }
 
         // Role_Admin
-        for ($i=0; $i < 10; $i++) { 
+        for ($i = 0; $i < 10; $i++) {
             $user = new Users();
 
             $id = rand(1, 35853);
@@ -46,9 +46,21 @@ class UsersFixtures extends Fixture
             $hashedPassword = $this->hasher->hashPassword($user, $password);
 
             $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_ADMIN'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
-            
+
             $manager->persist($user);
         }
+
+        $user = new Users();
+
+        $id = rand(1, 35853);
+        $cities = $this->citiesRepository->findOneBy(['id' => $id]);
+
+        $password = "admin";
+        $hashedPassword = $this->hasher->hashPassword($user, $password);
+
+        $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail("admin@admin.fr")->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_ADMIN'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
+
+        $manager->persist($user);
 
         $manager->flush();
     }
