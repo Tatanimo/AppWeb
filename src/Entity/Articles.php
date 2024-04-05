@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ArticlesRepository;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,7 +25,7 @@ class Articles
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $publication_date = null;
+    private ?DateTimeInterface $publication_date = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $state = null;
@@ -36,7 +37,7 @@ class Articles
     private ?array $keyword = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $modification_date = null;
+    private ?DateTimeInterface $modification_date = null;
 
     #[ORM\Column(length: 50)]
     private ?string $slug = null;
@@ -85,12 +86,12 @@ class Articles
         return $this;
     }
 
-    public function getPublicationDate(): ?\DateTimeInterface
+    public function getPublicationDate(): ?DateTimeInterface
     {
         return $this->publication_date;
     }
 
-    public function setPublicationDate(?\DateTimeInterface $publication_date): static
+    public function setPublicationDate(?DateTimeInterface $publication_date): static
     {
         $this->publication_date = $publication_date;
 
@@ -111,7 +112,11 @@ class Articles
 
     public function getKeyword(): ?array
     {
-        $keyword = $this->keyword;
+        if ($this->keyword === null) {
+            $keyword = [];
+        } else {
+            $keyword = $this->keyword;
+        }
 
         return array_unique($keyword);
     }
@@ -123,12 +128,12 @@ class Articles
         return $this;
     }
 
-    public function getModificationDate(): ?\DateTimeInterface
+    public function getModificationDate(): ?DateTimeInterface
     {
         return $this->modification_date;
     }
 
-    public function setModificationDate(?\DateTimeInterface $modification_date): static
+    public function setModificationDate(?DateTimeInterface $modification_date): static
     {
         $this->modification_date = $modification_date;
 
