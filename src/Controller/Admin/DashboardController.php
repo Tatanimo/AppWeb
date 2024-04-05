@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ServicesType;
+use App\Entity\Users;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -28,8 +29,17 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToRoute('Composants', 'fa-brands fa-react', 'app_admin_components');
-        yield MenuItem::linkToCrud('Services', 'fas fa-list', ServicesType::class);
+        return [
+            MenuItem::subMenu('Home', 'fa fa-home')->setSubItems([
+                MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
+                MenuItem::linkToRoute('Composants', 'fa-brands fa-react', 'app_admin_components'),
+            ]),
+
+            MenuItem::subMenu('C.R.U.D.', 'fa-solid fa-plus')->setSubItems([
+                MenuItem::linkToCrud('Services', 'fas fa-list', ServicesType::class),
+                MenuItem::linkToCrud('Utilisateurs', 'fas fa-solid fa-circle-user', Users::class),
+            ]),
+        ];
+
     }
 }
