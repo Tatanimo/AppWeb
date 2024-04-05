@@ -55,7 +55,7 @@ class UsersFixtures extends Fixture
         $id = rand(1, 35853);
         $cities = $this->citiesRepository->findOneBy(['id' => $id]);
 
-        $password = "admin";
+        $password = "Admin12345&!";
         $hashedPassword = $this->hasher->hashPassword($user, $password);
 
         $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail("admin@admin.fr")->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_ADMIN'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));

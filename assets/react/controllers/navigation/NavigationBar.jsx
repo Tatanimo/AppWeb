@@ -1,4 +1,5 @@
 import React from "react";
+
 export default function NavigationBar() {
     return (
         <nav>
@@ -7,18 +8,18 @@ export default function NavigationBar() {
             </div>
             <ul>
                 <li>
-                    <a href="https://click-n-party.mds-lille.yt/">Lien 1</a>
+                    <a href="#">Lien 1</a>
                 </li>
                 <li>
-                    <a href="https://click-n-party.mds-lille.yt/">Lien 1</a>
+                    <a href="#">Lien 1</a>
                 </li>
                 <li>
-                    <a href="https://click-n-party.mds-lille.yt/">Lien 1</a>
+                    <a href="#">Lien 1</a>
                 </li>
                 <li>
-                    <a href="https://click-n-party.mds-lille.yt/">Lien 1</a>
+                    <a href="#">Lien 1</a>
                 </li>
             </ul>
         </nav>
-    )
+    );
 }
