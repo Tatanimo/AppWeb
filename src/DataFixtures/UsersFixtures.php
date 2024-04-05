@@ -31,7 +31,7 @@ class UsersFixtures extends Fixture
             $hashedPassword = $this->hasher->hashPassword($user, $password);
 
             $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_USER'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
-            
+            $user->setCreatedDate($faker->dateTimeThisDecade());
             $manager->persist($user);
         }
 
@@ -46,7 +46,7 @@ class UsersFixtures extends Fixture
             $hashedPassword = $this->hasher->hashPassword($user, $password);
 
             $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_ADMIN'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
-            
+            $user->setCreatedDate($faker->dateTimeThisDecade());
             $manager->persist($user);
         }
 

@@ -89,6 +89,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Reactions::class, mappedBy: 'users', orphanRemoval: true)]
     private Collection $reactions;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $created_date = null;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -551,6 +554,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
                 $reaction->setUsers(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedDate(): ?\DateTimeInterface
+    {
+        return $this->created_date;
+    }
+
+    public function setCreatedDate(\DateTimeInterface $created_date): static
+    {
+        $this->created_date = $created_date;
 
         return $this;
     }
