@@ -17,7 +17,7 @@ export default function StatCard({controller, endpoint}) {
         'X-Requested-With': 'XMLHttpRequest'
       }
     }).then(response => {
-      console.log(response);
+      console.log(response.users);
     }).catch(error => console.error(error));
   }, []);
   
