@@ -8,18 +8,18 @@
     {% set flash = [{'title': 'Compte enregistré', 'message': 'Votre compte a bien été enregistré.'}] %}
     <section>
         <div class="grid grid-cols-1 items-center justify-center gap-4 sm:grid-cols-2 sm:gap-8 xl:grid-cols-3">
-            <a href="#" class="hover:bg-gray-100 hover:shadow-lg flex flex-col rounded-lg border border-gray-200 p-0 text-gray-500 shadow-none">
+            <div class="hover:bg-gray-100 hover:shadow-lg flex flex-col rounded-lg border border-gray-200 p-0 text-gray-500 shadow-none">
                 <div class="flex items-center justify-between rounded-t-md border-b border-gray-200 bg-gray-50 px-5 py-2.5">
                     <span class="text-base font-medium text-gray-900">Saisi de ville</span>
                 </div>
                 <div class="flex h-52 items-center justify-center">
                     <div class="relative">
-                        <div {{ react_component('forms/CitiesInput')}}></div>
+                        <div {{ react_component('forms/CitiesInput') }}></div>
                     </div>
                 </div>
-            </a>
+            </div>
 
-            <a href="#" class="flex flex-col rounded-lg border border-gray-200 p-0 text-gray-500 shadow-none hover:bg-gray-100 hover:shadow-lg">
+            <div class="flex flex-col rounded-lg border border-gray-200 p-0 text-gray-500 shadow-none hover:bg-gray-100 hover:shadow-lg">
                 <div class="flex items-center justify-between rounded-t-md border-b border-gray-200 bg-gray-50 px-5 py-2.5">
                     <span class="text-base font-medium text-gray-900">Alerte</span>
                 </div>
@@ -28,7 +28,29 @@
                         <div {{ react_component('alerts/Alerts', {'type': type, 'flash': flash, 'fix': true}) }}></div>
                     </div>
                 </div>
-            </a>
+            </div>
+
+            <div class="flex flex-col rounded-lg border border-gray-200 p-0 text-gray-500 shadow-none hover:bg-gray-100 hover:shadow-lg">
+                <div class="flex items-center justify-between rounded-t-md border-b border-gray-200 bg-gray-50 px-5 py-2.5">
+                    <span class="text-base font-medium text-gray-900">Alerte</span>
+                </div>
+                <div class="flex h-52 items-center justify-center">
+                    <div class="relative">
+                        <div {{ react_component('navigation/NavigationBar') }}></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col rounded-lg border border-gray-200 p-0 text-gray-500 shadow-none hover:bg-gray-100 hover:shadow-lg">
+                <div class="flex items-center justify-between rounded-t-md border-b border-gray-200 bg-gray-50 px-5 py-2.5">
+                    <span class="text-base font-medium text-gray-900">Alerte</span>
+                </div>
+                <div class="flex h-52 items-center justify-center">
+                    <div class="relative">
+                        <div {{ react_component('stats/StatCard') }}></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 {% endblock %}
