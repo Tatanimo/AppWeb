@@ -1,9 +1,18 @@
 import React, {useEffect} from "react";
 import axios from "axios";
 
-export default function StatCard({endpoint}) {
+export default function StatCard({controller, endpoint}) {
   useEffect(() => {
-    axios.get(`/admin/ajax/google/analytics/${endpoint}`, {
+    let url = "";
+    switch (controller) {
+      case "google_analytics":
+        url = "/admin/ajax/google/analytics/";
+        break;
+      case "users":
+        url = "/ajax/users";
+        break;
+    }
+    axios.get(`${url}${endpoint}`, {
       headers: {
         'X-Requested-With': 'XMLHttpRequest'
       }
