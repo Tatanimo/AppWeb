@@ -10,7 +10,7 @@ export default function StatCard({controller, endpoint, title}) {
         url = "/admin/ajax/google/analytics/";
         break;
       case "users":
-        url = "/ajax/users";
+        url = "/ajax/";
         break;
     }
     axios.get(`${url}${endpoint}`, {
