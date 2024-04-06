@@ -5,3 +5,11 @@
 * {
     outline: none;
 }
+
+@layer base {
+    @font-face {
+        font-family: 'Chunk Five';
+        src: url(../../public/font/ChunkFive/Chunkfive.ttf);
+    }
+}
+

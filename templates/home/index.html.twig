@@ -1,8 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Tatanimo - Home{% endblock %}
 
 {% block body %}
-    <div {{ react_component('layout/navigation/NavigationBar') }}></div>
-    <h1>Home</h1>
+    <header {{ react_component('layout/navigation/NavigationBar') }}></header>
+    <section class="px-28 h-[calc(100svh-96px)] bg-hero-img bg-no-repeat bg-cover">
+        <div class="w-1/2 h-full flex flex-col justify-center items-start">
+            <h1 class="font-ChunkFive uppercase text-white text-7xl pb-5">
+                Confiez vos animaux en toute
+                confiance
+            </h1>
+            <p class="text-white pb-12">Confiez-nous vos compagnons à quatre pattes et partez l'esprit tranquille !
+                Bienvenue
+                chez Tatanimo notre
+                site de garde d'animaux, où le bonheur et le bien-être de vos précieux compagnons sont notre priorité
+                absolue."</p>
+            <a href="#"
+               class="font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl">JE VEUX
+                FAIRE GARDER MON
+                ANIMAL</a>
+        </div>
+    </section>
 {% endblock %}
