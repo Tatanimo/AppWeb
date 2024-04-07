@@ -1,3 +1,5 @@
+const flowbite = require("flowbite-react/tailwind");
+
 /** @type {import("tailwindcss").Config} */
 module.exports = {
     content: [
@@ -6,6 +8,7 @@ module.exports = {
         "./templates/**/*.html.twig",
         "./assets/react/controllers/*.jsx",
         "./assets/react/controllers/**/*.jsx",
+        flowbite.content(),
     ],
     safelist: [
         {
@@ -31,6 +34,6 @@ module.exports = {
     },
     plugins: [
         require("tailwind-animatecss"),
+        flowbite.plugin(),
     ],
 };
-
