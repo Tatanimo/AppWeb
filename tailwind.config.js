@@ -21,11 +21,13 @@ module.exports = withMT({
             fontFamily: {
                 "serif": ["'Playfair Display'", "Arial", "serif"],
                 "ChunkFive": ["'Chunk Five'", "Arial", "serif"],
+                "Roboto": ["'Roboto'", "Arial", "serif"],
             },
             colors: {
                 "beige": "rgba(227, 209, 189)",
                 "turquoise": "rgba(49, 163, 157)",
                 "blue-purple": "rgba(152, 165, 212)",
+                "blue-purple-hover": "#8995bf",
                 "light-gray": "rgba(217, 217, 217)",
             },
             backgroundImage: {
