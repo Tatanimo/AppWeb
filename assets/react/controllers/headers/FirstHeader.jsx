@@ -1,8 +1,11 @@
-export default function FirstHeader() {
+import React from "react";
+
+export default function FirstHeader({content, color, fontSize, className}) {
     return (
-        <h1 className="font-ChunkFive uppercase text-white text-7xl pb-5">
-            Confiez vos animaux en toute
-            confiance
+        <h1 className={`font-ChunkFive uppercase pb-5 ${fontSize} ${className}
+        ${color === "white" ? "text-white" : ""} 
+        ${color === "black" ? "text-black" : ""}`}>
+            {content}
         </h1>
     );
 }
