@@ -28,8 +28,6 @@ class SecurityController extends AbstractController
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        $this->addFlash('success', ['title' => 'Compte enregistré', 'message' => "Votre compte a bien été enregistré."]);
-        
         return $this->json([
             'user' => $user->getUserIdentifier()
         ]);
