@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Google\Analytics\Data\V1beta\Client\BetaAnalyticsDataClient;
+use Google\Analytics\Data\V1beta\DateRange;
 use Google\Analytics\Data\V1beta\RunRealtimeReportRequest;
 use Google\Analytics\Data\V1beta\Metric;
 use Google\Analytics\Data\V1beta\RunReportRequest;
@@ -15,7 +16,7 @@ class GoogleAnalyticsController extends AbstractController
     private BetaAnalyticsDataClient $client;
     private string $property_id;
 
-    public function __construct()
+    public function init()
     {
         putenv("GOOGLE_APPLICATION_CREDENTIALS=" . $this->getParameter('kernel.project_dir').'/google_credentials.json');
         $this->property_id = $_ENV['GOOGLE_PROPERTY_ID'];
@@ -26,6 +27,7 @@ class GoogleAnalyticsController extends AbstractController
     #[Route('/admin/ajax/google/analytics/activeusers', name: 'google_analytics_active_users')]
     public function fetchActiveUsers(): JsonResponse
     {
+        $this->init();
         $request = (new RunRealtimeReportRequest())
             ->setProperty('properties/' . $this->property_id)
             ->setMetrics([new Metric([
@@ -44,10 +46,15 @@ class GoogleAnalyticsController extends AbstractController
     #[Route('/admin/ajax/google/analytics/users', name: 'google_analytics_users')]
     public function fetchUsers(): JsonResponse
     {
+        $this->init();
         $request = (new RunReportRequest())
             ->setProperty('properties/' . $this->property_id)
+            ->setDateRanges([new DateRange([
+                'start_date' => '2020-01-01',
+                'end_date' => 'today',
+            ])])
             ->setMetrics([new Metric([
-                    'name' => 'users',
+                    'name' => 'totalUsers',
                 ])
             ]);
         $response = $this->client->runReport($request);
