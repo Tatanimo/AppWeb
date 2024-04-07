@@ -60,3 +60,14 @@ DELIMITER //
     END IF;
  END; //
 DELIMITER ;
+
+DELIMITER //
+ CREATE TRIGGER before_insert_users
+ BEFORE INSERT ON users
+ FOR EACH ROW
+ BEGIN
+ 	IF new.created_date IS NULL THEN
+    	SET new.created_date = NOW();
+    END IF;
+ END; //
+DELIMITER ;
