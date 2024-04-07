@@ -31,6 +31,7 @@ module.exports = {
             },
             backgroundImage: {
                 "hero-img": "url('./../../public/img/background/hero_cat_bg.png')",
+                "cat-legs-bg": "url('./../../public/img/background/cat-legs-bg.png')",
             },
         },
     },

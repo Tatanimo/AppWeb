@@ -15,10 +15,11 @@
             garder mon animal'}) }}></div>
         </div>
     </section>
-    <section class="px-28 pt-16 pb-40 flex gap-28	">
+    <section class="px-28 py-16 flex gap-28	">
         <div class="w-1/2">
             <img src="{{ asset('img/background/dog-on-beach.png') }}"
-                 class="object-cover w-full">
+                 class="object-cover w-full"
+                 alt="dog on a summer beach">
         </div>
         <div class="w-1/2 flex flex-col items-center justify-center">
             <div {{ react_component('headers/FirstHeader', {'content': 'Comment ça marche ?', 'color': 'black', 'fontSize': 'text-6xl'}) }}></div>
@@ -29,9 +30,26 @@
                 des animaux et offrir à nos compagnons une attention digne de leur amour inconditionnel.', 'color': 'black'}) }}></div>
         </div>
     </section>
-    <section class="px-28 flex flex-col items-center">
-        <div {{ react_component('headers/FirstHeader', {'content': 'Je souhaite garder des animaux', 'color': 'black', 'fontSize': ' text-6xl', 'className': 'pb-10'}) }}></div>
+    <section class="px-28 py-16 flex flex-col items-center">
+        <div {{ react_component('headers/FirstHeader', {'content': 'Je souhaite garder des animaux', 'color': 'black', 'fontSize': 'text-6xl', 'className': 'pb-10'}) }}></div>
         <div {{ react_component('paragraph/Paragraph', {'content': "En tant que petsitter, vous aurez l'opportunité de prendre soin des animaux de compagnie de personnes occupées ou en déplacement. Que ce soit pour des visites régulières à domicile, des promenades énergisantes ou des séjours de garde prolongés, vous serez là pour assurer le bien-être et le bonheur des animaux.", 'color': 'black', 'fontSize': 'text-6xl'}) }}></div>
         <div {{ react_component('button/Button', {'content': 'JE SOUHAITE DEVENIR PETSITTER', 'className': 'inline-block mt-4'}) }}></div>
+    </section>
+    <section class="px-28 pt-32 flex flex-col items-center bg-cat-legs-bg h-[850px]">
+        <div class="pb-12" {{ react_component('headers/FirstHeader', {'content': 'Lorem Ipsum', 'color': 'black', 'fontSize': 'text-6xl'}) }}></div>
+        <img src="{{ asset('videos/temp-square.svg') }}"
+             alt="videos"
+             class="pb-16">
+        <div class="w-1/4 pb-16" {{ react_component('button/Button', {'content': 'Nous découvrir', 'className': 'inline-block mt-4 w-full flex items-center justify-center'}) }}></div>
+    </section>
+    <section class="px-28 py-16 pt-[600px] flex flex-col items-center">
+        <div class="pb-12" {{ react_component('headers/FirstHeader', {'content': 'Vos avis', 'color': 'black', 'fontSize': 'text-6xl'}) }}></div>
+        <div class="flex gap-3">
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
+        </div>
     </section>
 {% endblock %}
