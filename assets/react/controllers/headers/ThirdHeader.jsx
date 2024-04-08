@@ -1,11 +1,11 @@
 import React from "react";
 
-export default function FirstHeader({content, color, className}) {
+export default function ThirdHeader({content, color, className}) {
     return (
-        <h1 className={`font-ChunkFive uppercase pb-5 text-7xl ${className}
+        <h3 className={`font-ChunkFive uppercase pb-5 text-4xl ${className}
         ${color === "white" ? "text-white" : ""} 
         ${color === "black" ? "text-black" : ""}`}>
             {content}
-        </h1>
+        </h3>
     );
 }
