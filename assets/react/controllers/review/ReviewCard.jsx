@@ -1,10 +1,14 @@
 import React from "react";
 
 export default function ReviewCard({img, intStar, name}) {
-    const arrReview = new Array(intStar);
+    const arrReview = new Array(5);
 
-    for (let i = 0; i < arrReview.length; i++) {
-        arrReview[i] = "img/icons/star.svg";
+    for (let i = 0; i < 5; i++) {
+        if (i <= intStar - 1) {
+            arrReview[i] = "img/icons/star-fill.svg";
+        } else {
+            arrReview[i] = "img/icons/star-outline.svg";
+        }
     }
 
     return (

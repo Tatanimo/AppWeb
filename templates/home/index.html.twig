@@ -45,11 +45,24 @@
     <section class="px-28 py-16 pt-[600px] flex flex-col items-center">
         <div class="pb-12" {{ react_component('headers/FirstHeader', {'content': 'Vos avis', 'color': 'black', 'fontSize': 'text-6xl'}) }}></div>
         <div class="flex gap-3">
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 1, "name": "Garde de Rockett"}) }}></div>
             <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
-            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
-            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
-            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
-            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 3, "name": "Garde de Rockett"}) }}></div>
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 2, "name": "Garde de Rockett"}) }}></div>
         </div>
     </section>
+    <section class="px-28 py-16 pb-32 flex flex-col items-center">
+        <div class="pb-12" {{ react_component('headers/FirstHeader', {'content': 'Retrouvez nous sur Instagram', 'color': 'black', 'fontSize': 'text-6xl'}) }}></div>
+        <div class="grid grid-cols-4 grid-rows-2 gap-2">
+            <img src="{{ asset('img/instagram-post/Rectangle 52.png') }}">
+            <img src="{{ asset('img/instagram-post/Rectangle 53.png') }}">
+            <img src="{{ asset('img/instagram-post/Rectangle 54.png') }}">
+            <img src="{{ asset('img/instagram-post/Rectangle 55.png') }}">
+            <img src="{{ asset('img/instagram-post/Rectangle 56.png') }}">
+            <img src="{{ asset('img/instagram-post/Rectangle 57.png') }}">
+            <img src="{{ asset('img/instagram-post/Rectangle 58.png') }}">
+            <img src="{{ asset('img/instagram-post/Rectangle 59.png') }}">
+        </div>
+    </section>
+    <footer class="bg-turquoise w-full" {{ react_component('footer/Footer') }}></footer>
 {% endblock %}
