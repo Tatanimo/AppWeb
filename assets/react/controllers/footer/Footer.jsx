@@ -13,26 +13,29 @@ export default function Footer() {
             <div className="w-1/2 flex">
                 <div className="w-1/2">
                     <ul className="flex flex-col gap-6">
-                        <li>
+                        <li href="#">
                             <ThirdHeader content="Social"
                                          color="white"
                                          className=""/>
                         </li>
-                        <li>
+                        <a href="#"
+                           className="hover:underline text-white">
                             <Paragraph content="Instagram"
                                        color="white"
                                        className=""/>
-                        </li>
-                        <li>
+                        </a>
+                        <a href="#"
+                           className="hover:underline text-white">
                             <Paragraph content="Linkedin"
                                        color="white"
                                        className=""/>
-                        </li>
-                        <li>
+                        </a>
+                        <a href="#"
+                           className="hover:underline text-white">
                             <Paragraph content="Facebook"
                                        color="white"
                                        className=""/>
-                        </li>
+                        </a>
                     </ul>
                 </div>
                 <div className="w-1/2">
@@ -42,26 +45,30 @@ export default function Footer() {
                                          color="white"
                                          className=""/>
                         </li>
-                        <li>
+                        <a href="#"
+                           className="hover:underline text-white">
                             <Paragraph content="Mentions légales"
                                        color="white"
                                        className=""/>
-                        </li>
-                        <li>
+                        </a>
+                        <a href="#"
+                           className="hover:underline text-white">
                             <Paragraph content="Qui sommes-nous ?"
                                        color="white"
                                        className=""/>
-                        </li>
-                        <li>
+                        </a>
+                        <a href="#"
+                           className="hover:underline text-white">
                             <Paragraph content="Services"
                                        color="white"
                                        className=""/>
-                        </li>
-                        <li>
+                        </a>
+                        <a href="#"
+                           className="hover:underline text-white">
                             <Paragraph content="Contact"
                                        color="white"
                                        className=""/>
-                        </li>
+                        </a>
                     </ul>
                 </div>
             </div>
