@@ -6,9 +6,12 @@ export default function Footer() {
     return (
         <>
             <div className="w-1/2 flex items-start justify-center">
-                <img src="img/icons/logo_tatanimo.svg"
-                     className="w-1/2"
-                     alt="logo"/>
+                <a href="/"
+                   className="w-1/2">
+                    <img src="img/icons/logo_tatanimo.svg"
+                         alt="logo"
+                         className="w-full"/>
+                </a>
             </div>
             <div className="w-1/2 flex">
                 <div className="w-1/2">
@@ -63,7 +66,7 @@ export default function Footer() {
                                        color="white"
                                        className=""/>
                         </a>
-                        <a href="#"
+                        <a href="/contact"
                            className="hover:underline text-white">
                             <Paragraph content="Contact"
                                        color="white"

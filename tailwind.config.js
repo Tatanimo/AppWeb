@@ -25,6 +25,7 @@ module.exports = withMT({
             },
             colors: {
                 "beige": "rgba(227, 209, 189)",
+                "beige-hover": "#ccbcaa",
                 "turquoise": "rgba(49, 163, 157)",
                 "blue-purple": "rgba(152, 165, 212)",
                 "blue-purple-hover": "#8995bf",

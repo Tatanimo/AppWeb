@@ -13,16 +13,20 @@ export default function NavigationBar() {
                 </a>
                 <ul className="flex items-center gap-12 text-xl font-ChunkFive">
                     <li>
-                        <a href="#">QUI SOMMES-NOUS</a>
+                        <a href="#"
+                           className="hover:underline">QUI SOMMES-NOUS</a>
                     </li>
                     <li>
-                        <a href="#">SERVICES</a>
+                        <a href="#"
+                           className="hover:underline">SERVICES</a>
                     </li>
                     <li>
-                        <a href="#">BLOG</a>
+                        <a href="#"
+                           className="hover:underline">BLOG</a>
                     </li>
                     <li>
-                        <a href="#">CONTACT</a>
+                        <a href="/contact"
+                           className="hover:underline">CONTACT</a>
                     </li>
                 </ul>
                 <ul className="flex items-center gap-6">
