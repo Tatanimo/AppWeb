@@ -38,3 +38,4 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 google_credentials.json
+jwt.txt

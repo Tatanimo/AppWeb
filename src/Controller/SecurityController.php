@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\Users;
+use App\Services\UuidSession;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -40,8 +43,10 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/register', name: 'app_register', methods: ['POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    public function register(HubInterface $hub, Request $request, UserPasswordHasherInterface $passwordHasher, UuidSession $uuidSession): Response
     {
+        $uuid = $uuidSession->sessionUuid();
+        
         $user = new Users();
         $data = json_decode($request->getContent(), true);
         
@@ -64,7 +69,13 @@ class SecurityController extends AbstractController
                 // Sauvegarde l'utilisateur
                 $this->em->persist($user);
                 $this->em->flush();
-                $this->addFlash('success', ['title' => 'Compte enregistré', 'message' => "Votre compte a bien été enregistré."]);
+
+                $update = new Update(
+                    'alerts/'.$uuid,
+                    json_encode(['type' => 'success', 'flash' => array(['title' => 'Compte enregistré', 'message' => "Votre compte $email a bien été enregistré."])])
+                );
+                $hub->publish($update);
+
                 return $this->json('success', 200);
             } catch (\Throwable $th) {
                 // Blabla erreur
