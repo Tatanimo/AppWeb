@@ -39,44 +39,40 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route(path: '/register', name: 'app_register')]
-    public function register(Request $request, CitiesRepository $citiesRepository, UserPasswordHasherInterface $passwordHasher): Response
+    #[Route(path: '/register', name: 'app_register', methods: ['POST'])]
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new Users();
-        $form = $this->createForm(RegisterType::class, $user);
-        $form->handleRequest($request);
+        $data = json_decode($request->getContent(), true);
         
-        if ($form->isSubmitted()) {
-            $requestCity = $request->request->get('city');
-            if ($form->isValid() && $requestCity != null) {
-                // Récupère la ville et l'intégre à l'utilisateur
-                $city = $citiesRepository->findOneByRequest($requestCity);
-                $user->setCities($city);
+        $email = $data["email"] ?? null;
+        $password = $data['password'] ?? null;
+        $firstname = $data['firstname'] ?? null;
+        $lastname = $data['lastname'] ?? null;
 
-                // Récupère le mot de passe, le hash et l'intégre à l'utilisateur
-                $password = $form->get('password')->getData();
-                $hashedPassword = $passwordHasher->hashPassword($user, $password);
-                $user->setPassword($hashedPassword);
-                
-                // Génére le rôle utilisateur
-                $user->setRoles(["ROLE_USER"]);
+        if (isset($email) && isset($password) && isset($firstname) && isset($lastname)) {
+            // Récupère le mot de passe, le hash et l'intégre à l'utilisateur
+            $hashedPassword = $passwordHasher->hashPassword($user, $password);
+            $user->setPassword($hashedPassword);
 
-                try {
-                    // Sauvegarde l'utilisateur
-                    $this->em->persist($user);
-                    $this->em->flush();
-                    $this->addFlash('success', ['title' => 'Compte enregistré', 'message' => "Votre compte a bien été enregistré."]);
-                    return $this->redirectToRoute('app_login');
-                } catch (\Throwable $th) {
-                    // Blabla erreur
-                    $this->addFlash('fail', ['title' => 'Erreur de sauvegarde', 'message' => "Une erreur s'est produite, votre compte n'a pas été enregistré. Veuillez réessayer."]);
-                }
+            $user->setLastName($lastname)->setFirstName($firstname)->setEmail($email);
+            
+            // Génére le rôle utilisateur
+            $user->setRoles(["ROLE_USER"]);
 
+            try {
+                // Sauvegarde l'utilisateur
+                $this->em->persist($user);
+                $this->em->flush();
+                $this->addFlash('success', ['title' => 'Compte enregistré', 'message' => "Votre compte a bien été enregistré."]);
+                return $this->json('success', 200);
+            } catch (\Throwable $th) {
+                // Blabla erreur
+                $this->addFlash('fail', ['title' => 'Erreur de sauvegarde', 'message' => "Une erreur s'est produite, votre compte n'a pas été enregistré. Veuillez réessayer."]);
+                return $this->json('Fail to save the user in database. The error is: '.$th, 400);
             }
+        } else {
+            return $this->json("Fail to fetch data, there's one or multiple missing.", 400);
         }
-        
-        return $this->render('security/register.html.twig', [
-            'formRegister' => $form,
-        ]);
     }
 }

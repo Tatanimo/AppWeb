@@ -12,8 +12,8 @@ export default function Login({setShowRegister, setOpenModal}) {
         if (email != "" && password != "") {
           setLoading(true);
           await Axios.post('/login', {
-              "email" : email,
-              "password" : password
+              "email": email,
+              "password": password
             }, 
             {
               headers: {
