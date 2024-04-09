@@ -54,7 +54,7 @@ export default function Footer() {
                                        color="white"
                                        className=""/>
                         </a>
-                        <a href="#"
+                        <a href="/about"
                            className="hover:underline text-white">
                             <Paragraph content="Qui sommes-nous ?"
                                        color="white"
