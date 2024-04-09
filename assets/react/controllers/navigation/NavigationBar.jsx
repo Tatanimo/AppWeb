@@ -13,7 +13,7 @@ export default function NavigationBar() {
                 </a>
                 <ul className="flex items-center gap-12 text-xl font-ChunkFive">
                     <li>
-                        <a href="#"
+                        <a href="/about"
                            className="hover:underline">QUI SOMMES-NOUS</a>
                     </li>
                     <li>
@@ -30,13 +30,13 @@ export default function NavigationBar() {
                     </li>
                 </ul>
                 <ul className="flex items-center gap-6">
-                    <li>
+                    <li className="hover:bg-light-gray p-2 rounded-xl transition">
                         <a href="#">
                             <img src="/img/icons/mail.svg"
                                  className="h-8"/>
                         </a>
                     </li>
-                    <li>
+                    <li className="hover:bg-light-gray p-2 rounded-xl transition">
                         <a className="cursor-pointer"
                            onClick={() => setOpenModal(true)}>
                             <img src="/img/icons/user_profile.svg"
