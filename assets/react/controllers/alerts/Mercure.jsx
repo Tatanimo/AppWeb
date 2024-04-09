@@ -6,7 +6,8 @@ export default function Mercure() {
     
     useEffect(() => {
         const url = JSON.parse(document.getElementById("mercure-notification").textContent);
-        const eventSource = new EventSource(url);
+        const eventSource = new EventSource(url, { withCredentials: true });
+        
         eventSource.onmessage = event => {
             console.log(event.data);
             setAlerts(prevAlerts => [...prevAlerts, JSON.parse(event.data)]);

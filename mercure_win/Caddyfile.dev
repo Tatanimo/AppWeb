@@ -7,7 +7,7 @@
 
 {$CADDY_EXTRA_CONFIG}
 
-{$SERVER_NAME} {
+{$SERVER_NAME:localhost} {
 	log {
 		format filter {
 			# Defaults to console while waiting for https://github.com/caddyserver/caddy/pull/5980

@@ -71,8 +71,9 @@ class SecurityController extends AbstractController
                 $this->em->flush();
 
                 $update = new Update(
-                    'alerts/'.$uuid,
-                    json_encode(['type' => 'success', 'flash' => array(['title' => 'Compte enregistré', 'message' => "Votre compte $email a bien été enregistré."])])
+                    "http://localhost:3000/alerts/$uuid",
+                    json_encode(['type' => 'success', 'flash' => array(['title' => 'Compte enregistré', 'message' => "Votre compte $email a bien été enregistré."])]),
+                    true
                 );
                 $hub->publish($update);
 

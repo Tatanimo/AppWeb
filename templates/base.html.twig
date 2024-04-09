@@ -16,7 +16,7 @@
               rel="stylesheet">
         <!-- Mercure Notification -->
         <script type="application/json" id="mercure-notification">
-            {{ mercure('alerts/' ~ sessionUuid() )|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+            {{ mercure('http://localhost:3000/alerts/' ~ sessionUuid())|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
         </script>
         <!-- Google tag (gtag.js) -->
         <script async
@@ -41,6 +41,9 @@
         {% endblock %}
     </head>
     <body class="font-serif mt-[96px]">
+    <pre>
+        {{ dump(sessionUuid()) }}
+    </pre>
         {# Alerte #}
         <header class="fixed top-0 w-full bg-white" {{ react_component('navigation/NavigationBar') }}></header>
         <div class="fixed top-0 left-0 z-50">
