@@ -16,9 +16,11 @@ export default function Register({setShowRegister}) {
     const onSubmit = async () => {
         if (handleForm() == true) {
             setLoading(true);
-            await Axios.post('/login', {
-                "email" : email,
-                "password" : password
+            await Axios.post('/register', {
+                "email": email,
+                "password": password,
+                "firstname": firstname,
+                "lastname": lastname
             }, 
             {
                 headers: {
@@ -26,7 +28,7 @@ export default function Register({setShowRegister}) {
                 }  
             }).then(() => {
                 setLoading(false);
-                setOpenModal(false);
+                setShowRegister(false);
             }).catch((err) => {
                 setLoading(false);
                 throw err;
@@ -72,8 +74,8 @@ export default function Register({setShowRegister}) {
         <h3 className="text-4xl font-medium text-gray-900 dark:text-white text-center font-ChunkFive">Inscription</h3>
         {requirements.length > 0 ? (<Requirement requirements={requirements} />) : null}
         <div className="flex">
-            <TextInput className="[&>div>input]:bg-light-gray mr-3" id="email" placeholder="Nom" autoFocus required onChange={(e) => {setLastname(e.target.value)}} />
-            <TextInput className="[&>div>input]:bg-light-gray ml-3" id="email" placeholder="Prénom" autoFocus required onChange={(e) => {setFirstname(e.target.value)}} />
+            <TextInput className="[&>div>input]:bg-light-gray mr-3" id="lastname" placeholder="Nom" autoFocus required onChange={(e) => {setLastname(e.target.value)}} />
+            <TextInput className="[&>div>input]:bg-light-gray ml-3" id="firstname" placeholder="Prénom" autoFocus required onChange={(e) => {setFirstname(e.target.value)}} />
         </div>
         <div>
             <TextInput className="[&>div>input]:bg-light-gray" id="email" placeholder="E-mail" autoFocus required onChange={(e) => {setEmail(e.target.value)}} />

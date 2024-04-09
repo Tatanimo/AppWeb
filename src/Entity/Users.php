@@ -34,7 +34,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(length: 100, nullable: true)]
@@ -74,7 +74,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $reviewsReceiver;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Cities $cities = null;
 
     #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'author')]
