@@ -36,7 +36,33 @@
                 </div>
             </div>
             <div class="w-7/12">
-                <div {{ react_component('forms/Contact') }}></div>
+                {{ form_start(form_controller) }}
+                <div class="w-full flex flex-col gap-6 items-center">
+                    <div class="flex gap-8 w-full">
+                        <div class="flex flex-col w-full">
+                            {{ form_label(form_controller.lastname) }}
+                            {{ form_widget(form_controller.lastname) }}
+                            {{ form_errors(form_controller.lastname) }}
+                        </div>
+                        <div class="flex flex-col w-full">
+                            {{ form_label(form_controller.firstname) }}
+                            {{ form_widget(form_controller.firstname) }}
+                            {{ form_errors(form_controller.firstname) }}
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full">
+                        {{ form_label(form_controller.email) }}
+                        {{ form_widget(form_controller.email) }}
+                        {{ form_errors(form_controller.email) }}
+                    </div>
+                    <div class="flex flex-col w-full">
+                        {{ form_label(form_controller.message) }}
+                        {{ form_widget(form_controller.message) }}
+                        {{ form_errors(form_controller.message) }}
+                    </div>
+                    <div {{ react_component('button/ButtonSubmit', {'content': 'Envoyer', 'className': 'my-4'}) }}></div>
+                </div>
+                {{ form_end(form_controller) }}
                 <div class="flex flex-col gap-6">
                     <div {{ react_component('paragraph/Paragraph', {'content': 'Vous pouvez aussi nous contacter directement avec notre mail : .....@.....com', 'color': 'black'}) }}></div>
                     <div class="flex items-center gap-8">

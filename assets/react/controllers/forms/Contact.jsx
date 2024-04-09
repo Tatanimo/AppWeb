@@ -24,7 +24,7 @@ export default function Contact() {
             </div>
             <div className="flex flex-col w-full">
                 <label htmlFor="email">E-mail</label>
-                <input type="text"
+                <input type="email"
                        id="email"
                        name="email"
                        placeholder="Votre e-mail"
