@@ -16,7 +16,7 @@
               rel="stylesheet">
         <!-- JWT -->
         <script type="text/javascript" id="jwt-notification">
-            {{ generateJWT() }}
+            {{ generateJWT() | json_encode | raw }}
         </script>
         <!-- Mercure Notification -->
         <script type="application/json" id="mercure-notification">
