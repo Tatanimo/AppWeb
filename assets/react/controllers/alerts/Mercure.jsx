@@ -14,7 +14,6 @@ export default function Mercure() {
                 'Authorization': `Bearer ${jwt}`
             }
         });
-        console.log(eventSource);
         
         eventSource.onmessage = event => {
             setAlerts(prevAlerts => [...prevAlerts, JSON.parse(event.data)]);
