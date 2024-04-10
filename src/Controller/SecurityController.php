@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Form\RegisterType;
-use App\Repository\CitiesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,7 +69,7 @@ class SecurityController extends AbstractController
                 $this->em->flush();
 
                 $update = new Update(
-                    "http://localhost:3000/alerts/$uuid",
+                    "alerts/$uuid",
                     json_encode(['type' => 'success', 'flash' => array(['title' => 'Compte enregistré', 'message' => "Votre compte $email a bien été enregistré."])]),
                     true
                 );

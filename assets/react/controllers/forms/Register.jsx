@@ -84,7 +84,7 @@ export default function Register({setShowRegister}) {
             <TextInput className="[&>div>input]:bg-light-gray" id="password" placeholder="Créer un mot de passe" type="password" required onChange={(e) => {setPassword(e.target.value)}} />
         </div>
         <div>
-            <TextInput className="[&>div>input]:bg-light-gray" id="password" placeholder="Confirmer le mot de passe" type="password" required onChange={(e) => {setConfirmPassword(e.target.value)}} />
+            <TextInput className="[&>div>input]:bg-light-gray" id="passwordVerify" placeholder="Confirmer le mot de passe" type="password" required onChange={(e) => {setConfirmPassword(e.target.value)}} />
         </div>
         <div className="w-full">
             {loading ? (

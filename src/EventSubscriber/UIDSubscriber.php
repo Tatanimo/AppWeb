@@ -11,11 +11,11 @@ class UIDSubscriber implements EventSubscriberInterface
 {
     public function onKernelRequest(RequestEvent $event): void
     {
-        $uuid = Uuid::v1();
         $request = $event->getRequest();
         $session = $request->getSession();
-
+        
         if ($session->get('uuid') == null ) {
+            $uuid = Uuid::v1();
             $session->set('uuid', $uuid);
         }
     }

@@ -14,9 +14,13 @@
               rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
               rel="stylesheet">
+        <!-- JWT -->
+        <script type="text/javascript" id="jwt-notification">
+            {{ generateJWT() }}
+        </script>
         <!-- Mercure Notification -->
         <script type="application/json" id="mercure-notification">
-            {{ mercure('http://localhost:3000/alerts/' ~ sessionUuid())|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+            {{ mercure('alerts/' ~ sessionUuid())|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
         </script>
         <!-- Google tag (gtag.js) -->
         <script async
@@ -41,9 +45,6 @@
         {% endblock %}
     </head>
     <body class="font-serif mt-[96px]">
-    <pre>
-        {{ dump(sessionUuid()) }}
-    </pre>
         {# Alerte #}
         <header class="fixed top-0 w-full bg-white" {{ react_component('navigation/NavigationBar') }}></header>
         <div class="fixed top-0 left-0 z-50">
