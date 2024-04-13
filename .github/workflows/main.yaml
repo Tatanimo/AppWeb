@@ -20,7 +20,7 @@ jobs:
           git stash &&
           git pull origin master &&
           /home/gxxgzxxc/composer.phar install &&
-          nvm use 16.16 &&
+          nvm use 17 &&
           npm install &&
           npm run build &&
           php bin/console init:db --no-interaction &&
