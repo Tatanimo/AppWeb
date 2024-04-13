@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ContactController!{% endblock %}
+
+{% block body %}
+    <section class="h-full bg-beige px-28 py-16 flex flex-col items-center">
+        <div {{ react_component('headers/FirstHeader', {'content': 'Nous contacter', 'color': 'black'}) }}></div>
+        <div {{ react_component('paragraph/Paragraph', {'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum iaculis lacus a dignissim. Donec convallis iaculis neque, et elementum magna elementum in. Nunc dignissim nunc nunc, viverra fermentum tellus bibendum non.', 'color': 'black', 'className': 'pb-24'}) }}></div>
+        <div class="w-full flex justify-between">
+            <div id="grid-img-contact"
+                 class="w-fit grid grid-cols-2 grid-rows-5">
+                <div class="overflow-hidden h-fit w-fit rounded-full">
+                    <img src="{{ asset('img/img-rounded/cat-on-snow.png') }}"
+                         alt="Chat dans la neige"
+                         class="hover:scale-110 transition"/>
+                </div>
+                <div class="col-start-2 row-start-2 overflow-hidden h-fit w-fit rounded-full">
+                    <img src="{{ asset('img/img-rounded/guinea-pig-eating-carrot.png') }}"
+                         alt="Chat dans la neige"
+                         class="hover:scale-110 transition"/>
+                </div>
+                <div class="col-start-1 row-start-3 overflow-hidden h-fit w-fit rounded-full">
+                    <img src="{{ asset('img/img-rounded/cat-and-dog.png') }}"
+                         alt="Chat dans la neige"
+                         class="hover:scale-110 transition"/>
+                </div>
+                <div class="col-start-2 row-start-4 overflow-hidden h-fit w-fit rounded-full">
+                    <img src="{{ asset('img/img-rounded/cat-on-cat-tree.png') }}"
+                         alt="Chat dans la neige"
+                         class="hover:scale-110 transition"/>
+                </div>
+                <div class="col-start-1 row-start-5 overflow-hidden h-fit w-fit rounded-full">
+                    <img src="{{ asset('img/img-rounded/child-with-dog.png') }}"
+                         alt="Chat dans la neige"
+                         class="hover:scale-110 transition"/>
+                </div>
+            </div>
+            <div class="w-7/12">
+                {{ form_start(form_controller) }}
+                <div class="w-full flex flex-col gap-6 items-center">
+                    <div class="flex gap-8 w-full">
+                        <div class="flex flex-col w-full">
+                            {{ form_label(form_controller.lastname) }}
+                            {{ form_widget(form_controller.lastname) }}
+                            {{ form_errors(form_controller.lastname) }}
+                        </div>
+                        <div class="flex flex-col w-full">
+                            {{ form_label(form_controller.firstname) }}
+                            {{ form_widget(form_controller.firstname) }}
+                            {{ form_errors(form_controller.firstname) }}
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-full">
+                        {{ form_label(form_controller.email) }}
+                        {{ form_widget(form_controller.email) }}
+                        {{ form_errors(form_controller.email) }}
+                    </div>
+                    <div class="flex flex-col w-full">
+                        {{ form_label(form_controller.message) }}
+                        {{ form_widget(form_controller.message) }}
+                        {{ form_errors(form_controller.message) }}
+                    </div>
+                    <div {{ react_component('button/ButtonSubmit', {'content': 'Envoyer', 'className': 'my-4'}) }}></div>
+                </div>
+                {{ form_end(form_controller) }}
+                <div class="flex flex-col gap-6">
+                    <div {{ react_component('paragraph/Paragraph', {'content': 'Vous pouvez aussi nous contacter directement avec notre mail : contact@tatanimo.fr', 'color': 'black'}) }}></div>
+                    <div class="flex items-center gap-4">
+                        <img src="{{ asset('img/icons/phone.svg') }}"
+                             alt="Téléphone"
+                             class="w-8 h-8">
+                        <a href="tel:06.00.00.00.00"
+                           class="hover:underline" {{ react_component('paragraph/Paragraph', {'content': '06.00.00.00.00'}) }}></a>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <img src="{{ asset('img/icons/map-pin.svg') }}"
+                             alt="Téléphone"
+                             class="w-9 h-9">
+                        <div {{ react_component('paragraph/Paragraph', {'content': 'adresse du siège'}) }}></div>
+                    </div>
+                    <div class="flex gap-4 items-center">
+                        <a href="#"
+                           class="w-16 h-16 rounded-2xl p-2 hover:scale-110 hover:bg-beige-hover transition">
+                            <img src="{{ asset('img/icons/instagram.svg') }}"
+                                 alt="Instagram"/>
+                        </a>
+                        <a href="#"
+                           class="w-16 h-16 rounded-2xl p-2 hover:scale-110 hover:bg-beige-hover transition">
+                            <img src="{{ asset('img/icons/tiktok.svg') }}"
+                                 alt="Instagram"/>
+                        </a>
+                        <a href="#"
+                           class="w-16 h-16 rounded-2xl p-2 hover:scale-110 hover:bg-beige-hover transition">
+                            <img src="{{ asset('img/icons/facebook.svg') }}"
+                                 alt="Instagram"/>
+                        </a>
+                        <a href="#"
+                           class="w-16 h-16 rounded-2xl p-2 hover:scale-110 hover:bg-beige-hover transition">
+                            <img src="{{ asset('img/icons/linkedin.svg') }}"
+                                 alt="Instagram"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+{% endblock %}

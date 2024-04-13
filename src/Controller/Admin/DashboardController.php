@@ -2,6 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Articles;
+use App\Entity\CategoryAnimals;
+use App\Entity\FamilyAnimals;
 use App\Entity\ServicesType;
 use App\Entity\Users;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -38,6 +41,9 @@ class DashboardController extends AbstractDashboardController
             MenuItem::subMenu('C.R.U.D.', 'fa-solid fa-plus')->setSubItems([
                 MenuItem::linkToCrud('Services', 'fas fa-list', ServicesType::class),
                 MenuItem::linkToCrud('Utilisateurs', 'fas fa-solid fa-circle-user', Users::class),
+                MenuItem::linkToCrud('Articles', 'fa-solid fa-newspaper', Articles::class),
+                MenuItem::linkToCrud("Catégorie d'animaux", 'fa-solid fa-otter', CategoryAnimals::class),
+                MenuItem::linkToCrud("Familles d'animaux", 'fa-solid fa-cat', FamilyAnimals::class)
             ]),
         ];
 

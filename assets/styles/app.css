@@ -5,3 +5,14 @@
 * {
     outline: none;
 }
+
+#grid-img-contact {
+    grid: none;
+}
+
+@layer base {
+    @font-face {
+        font-family: 'Chunk Five';
+        src: url(../../public/font/ChunkFive/Chunkfive.ttf);
+    }
+}
