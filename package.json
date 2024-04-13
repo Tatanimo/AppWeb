@@ -43,6 +43,7 @@
         "event-source-polyfill": "^1.0.31",
         "flowbite-react": "^0.8.0",
         "swiper": "^11.1.0",
-        "tailwind-animatecss": "^1.0.0"
+        "tailwind-animatecss": "^1.0.0",
+        "terser-webpack-plugin": "^2.3.8"
     }
 }
