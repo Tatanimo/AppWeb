@@ -24,6 +24,4 @@ jobs:
           npm install &&
           npm run build &&
           php bin/console init:db --no-interaction &&
-          php bin/console cache:clear &&
-          cd mercure_lin/ &&
-          MERCURE_PUBLISHER_JWT_KEY='!ChangeThisMercureHubJWTSecretKey!' \ MERCURE_SUBSCRIBER_JWT_KEY='!ChangeThisMercureHubJWTSecretKey!' \ MERCURE_EXTRA_DIRECTIVES='cors_origins https://tatanimo.mds-lille.yt/' \ SERVER_NAME=':3000' \ ./mercure run"
+          php bin/console cache:clear &&"
