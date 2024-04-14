@@ -12,6 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: php-actions/composer@v6
 
       - name: Install dependencies  # Étape pour installer les dépendances npm
         run: npm install
