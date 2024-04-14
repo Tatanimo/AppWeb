@@ -23,7 +23,7 @@ jobs:
           host: ${{ secrets.APP_IP }}
           username: ${{ secrets.APP_USER }}
           password: ${{ secrets.APP_PASS }}
-          port: 21
+          port: "21"
           source: "./node_modules"
           target: tatanimo.mds-lille.yt/node_modules
 
