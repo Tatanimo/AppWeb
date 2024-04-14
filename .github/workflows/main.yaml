@@ -15,7 +15,7 @@ jobs:
       - uses: php-actions/composer@v6 # Étape pour installer les dépendances composer
 
       - name: Install dependencies  # Étape pour installer les dépendances npm
-        run: npm install
+        run: sudo npm install
 
       - name: Build  # Étape pour exécuter npm run build
         run: npm run build
