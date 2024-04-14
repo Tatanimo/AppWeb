@@ -17,17 +17,17 @@ jobs:
       - name: Install dependencies  # Étape pour installer les dépendances npm
         run: sudo npm install
 
+      - name: Build  # Étape pour exécuter npm run build
+        run: npm run build
+        
       - name: copy node modules files via FTP
         uses: airvzxf/ftp-deployment-action@latest
         with:
           server: ${{ secrets.APP_IP }}
           user: ${{ secrets.APP_USER }}
           password: ${{ secrets.APP_PASS }}
-          local_dir: "./node_modules"
-          remote_dir: "/tatanimo.mds-lille.yt/node_modules"
-
-      - name: Build  # Étape pour exécuter npm run build
-        run: npm run build
+          local_dir: "./public"
+          remote_dir: "/tatanimo.mds-lille.yt/public"
           
       - name: SSHPASS and DEPLOY project
         run:  
@@ -35,5 +35,8 @@ jobs:
           "cd tatanimo.mds-lille.yt/ &&
           git stash &&
           git pull origin master &&
+          /home/gxxgzxxc/composer.phar install &&
+          nvm use 16.16 &&
+          npm install &&
           php bin/console init:db --no-interaction &&
           php bin/console cache:clear"
