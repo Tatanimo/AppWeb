@@ -12,31 +12,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: php-actions/composer@v6 # Étape pour installer les dépendances composer
-
-      - name: Install dependencies  # Étape pour installer les dépendances npm
-        run: sudo npm install
-
-      - name: copy file via ssh password
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.APP_IP }}
-          username: ${{ secrets.APP_USER }}
-          password: ${{ secrets.APP_PASS }}
-          port: "21"
-          source: "./node_modules"
-          target: tatanimo.mds-lille.yt/node_modules
-
-      - name: Build  # Étape pour exécuter npm run build
-        run: npm run build
-
           
       - name: SSHPASS and DEPLOY project
-        run:  |
-          sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }} \
-          "cd tatanimo.mds-lille.yt/ && \
-          git stash && \
-          git pull origin master && \
-          
-          php bin/console init:db --no-interaction && \
+        run:  
+          sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
+          "cd tatanimo.mds-lille.yt/ &&
+          git stash &&
+          git pull origin master &&
+          /home/gxxgzxxc/composer.phar install &&
+          nvm use 17 &&
+          export "NODE_OPTIONS=--max_old_space_size=2000" &&
+          npm install &&
+          npm run build &&
+          php bin/console init:db --no-interaction &&
           php bin/console cache:clear"
