@@ -46,7 +46,7 @@
     </head>
     <body class="font-serif mt-[96px]">
         {# Alerte #}
-        <header class="fixed top-0 w-full bg-white" {{ react_component('navigation/NavigationBar') }}></header>
+        <header class="fixed top-0 w-full bg-white z-10" {{ react_component('navigation/NavigationBar', {'user': app.user}) }}></header>
         <div class="fixed top-0 left-0 z-50">
             {# Flash #}
             {% for type, flash in app.flashes %}

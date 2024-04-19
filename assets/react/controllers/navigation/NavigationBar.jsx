@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import LoginRegisterModal from "../modals/LoginRegisterModal";
 
-export default function NavigationBar() {
+export default function NavigationBar({user}) {
     const [openModal, setOpenModal] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(user ? true : false);
 
     return (
         <>
@@ -37,16 +38,24 @@ export default function NavigationBar() {
                         </a>
                     </li>
                     <li className="hover:bg-light-gray p-2 rounded-xl transition">
-                        <a className="cursor-pointer"
-                           onClick={() => setOpenModal(true)}>
-                            <img src="/img/icons/user_profile.svg"
-                                 className="h-8"/>
-                        </a>
+                        {isLoggedIn ? (
+                            <a className="cursor-pointer"
+                            href="/profil">
+                                <img src="/img/icons/user_profile.svg"
+                                    className="h-8"/>
+                            </a>
+                        ) : (
+                            <a className="cursor-pointer"
+                            onClick={() => setOpenModal(true)}>
+                                <img src="/img/icons/login.svg"
+                                    className="h-8"/>
+                            </a>
+                        )}
                     </li>
                 </ul>
             </nav>
             <LoginRegisterModal openModal={openModal}
-                                setOpenModal={setOpenModal}/>
+                                setOpenModal={setOpenModal} setIsLoggedIn={setIsLoggedIn}/>
         </>
     );
 }

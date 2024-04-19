@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+    <div class="m-12">
+        <section class="grid grid-cols-2 grid-rows-1 gap-20" id="section-profile">
+            <div class="grid grid-cols-3 grid-rows-2 gap-2" id="profile-img">
+                <div class="col-span-3 bg-light-gray w-full h-96 cursor-pointer relative group"
+                    {{react_component('images/Profile', {"srcPath": fileExist(usersimagespath ~ app.user.image) ? usersimagespath ~ app.user.image : null})}}>
+                </div>
+                <div class="row-start-2">7</div>
+                <div class="row-start-2">8</div>
+                <div class="row-start-2">9</div>
+            </div>
+            <div id="profile-field">
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'value': app.user.lastname, "size": 1}) }}></div>
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'value': app.user.firstname, "size": 1}) }}></div>
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'value': app.user.birthdate ?? "Entrer une date de naissance", "size": 2 }) }}></div>
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'value': app.user.email, "size": 3 }) }}></div>
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'value': app.user.phonenumber ?? "Entrer un numéro de téléphone" , "size": 3 }) }}></div>
+            </div>
+        </section>
+
+        <section id="section-description">
+        </section>
+
+        <section id="section-animals">
+        </section>
+    </div>
+{% endblock %}
