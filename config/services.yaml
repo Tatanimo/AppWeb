@@ -6,12 +6,15 @@
 parameters:
     app.requested_ajax : 'XMLHttpRequest'
     app.signing_key: '%env(MERCURE_JWT_SECRET)%'
-    
+    app.public_folder: '%kernel.project_dir%/public/'
 services:
     App\Services\UuidSession:
         tags: 
             - { name: twig.extension }
-    App\Services\MercureJWTGenerator:
+    App\Services\Mercure\MercureJWTGenerator:
+        tags:
+            - { name: twig.extension }
+    App\Services\Twig\FileExist:
         tags:
             - { name: twig.extension }
 

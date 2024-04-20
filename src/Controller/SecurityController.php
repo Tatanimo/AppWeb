@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\Users;
+use App\Services\Mercure\AlertService;
 use App\Services\UuidSession;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SecurityController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $em)
+    public function __construct(private EntityManagerInterface $em, private AlertService $alert)
     {
         
     }
@@ -41,10 +42,8 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/register', name: 'app_register', methods: ['POST'])]
-    public function register(HubInterface $hub, Request $request, UserPasswordHasherInterface $passwordHasher, UuidSession $uuidSession): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
-        $uuid = $uuidSession->sessionUuid();
-        
         $user = new Users();
         $data = json_decode($request->getContent(), true);
         
@@ -68,20 +67,17 @@ class SecurityController extends AbstractController
                 $this->em->persist($user);
                 $this->em->flush();
 
-                $update = new Update(
-                    "alerts/$uuid",
-                    json_encode(['type' => 'success', 'flash' => array(['title' => 'Compte enregistré', 'message' => "Votre compte $email a bien été enregistré."])]),
-                    true
-                );
-                $hub->publish($update);
+                $this->alert->generate("success", "Compte enregistré", "Votre compte $email a bien été enregistré.");
 
                 return $this->json('success', 200);
             } catch (\Throwable $th) {
                 // Blabla erreur
-                $this->addFlash('fail', ['title' => 'Erreur de sauvegarde', 'message' => "Une erreur s'est produite, votre compte n'a pas été enregistré. Veuillez réessayer."]);
+                $this->alert->generate("fail", "Erreur de sauvegarde", "Une erreur s'est produite, votre compte n'a pas été enregistré. Veuillez réessayer.");
+                
                 return $this->json('Fail to save the user in database. The error is: '.$th, 400);
             }
         } else {
+            $this->alert->generate("fail", "Erreur de sauvegarde", "Une erreur s'est produite, une ou plusieurs données sont manquantes.");
             return $this->json("Fail to fetch data, there's one or multiple missing.", 400);
         }
     }

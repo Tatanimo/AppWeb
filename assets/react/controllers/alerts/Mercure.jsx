@@ -7,7 +7,9 @@ export default function Mercure() {
     
     useEffect(() => {
         const url = JSON.parse(document.getElementById("mercure-notification").textContent);
-        const jwt = JSON.parse(document.getElementById("jwt-notification").textContent.replace(/\s/g, ''));
+        const jwtInput = document.getElementById("jwt-notification");
+        const jwt = JSON.parse(jwtInput.value.replace(/\s/g, ''));
+        jwtInput.remove();
         
         const eventSource = new EventSourcePolyfill(url, { withCredentials: true, 
             headers: {
