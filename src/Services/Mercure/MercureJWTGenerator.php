@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Mercure;
 
 use App\Services\UuidSession;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

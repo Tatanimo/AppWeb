@@ -11,7 +11,7 @@ services:
     App\Services\UuidSession:
         tags: 
             - { name: twig.extension }
-    App\Services\MercureJWTGenerator:
+    App\Services\Mercure\MercureJWTGenerator:
         tags:
             - { name: twig.extension }
     App\Services\Twig\FileExist:

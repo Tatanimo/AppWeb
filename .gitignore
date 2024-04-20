@@ -39,3 +39,6 @@ yarn-error.log
 
 google_credentials.json
 jwt.txt
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
