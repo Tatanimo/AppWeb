@@ -33,6 +33,7 @@ jobs:
         run:  
           sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd tatanimo.mds-lille.yt/ &&
+          sed -i 's/^APP_ENV=.*/APP_ENV=dev/' .env.local &&
           git clean -f &&
           git stash &&
           git pull origin master &&
@@ -40,4 +41,5 @@ jobs:
           nvm use 16.16 &&
           npm install &&
           php bin/console init:db --no-interaction &&
-          php bin/console cache:clear"
+          php bin/console cache:clear &&
+          sed -i 's/^APP_ENV=.*/APP_ENV=prod/' .env.local"
