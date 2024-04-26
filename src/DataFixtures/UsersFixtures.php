@@ -47,7 +47,7 @@ class UsersFixtures extends Fixture
 
             $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_ADMIN'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
             $user->setCreatedDate($faker->dateTimeThisDecade());
-
+            
             $manager->persist($user);
         }
 

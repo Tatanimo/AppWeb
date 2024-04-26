@@ -8,6 +8,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\DBAL\Types\Type;
+use DateTime;
 
 /**
  * @extends ServiceEntityRepository<Users>
@@ -78,4 +81,24 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
             ->getOneOrNullResult()
         ;
     }
+
+    public function countUsersByDay(): array
+    {
+        $d = new DateTime();
+        $date = date_time_set($d, 0, 0, 0, 0);
+        return $this->createQueryBuilder('u')
+        ->where('u.created_date = :now')
+        ->setParameter('now', $date)
+        ->getQuery()
+        ->getResult();
+    }
+
+    public function countTotalUsers(): int
+    {
+        return $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+    
 }
