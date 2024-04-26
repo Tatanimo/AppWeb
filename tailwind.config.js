@@ -30,10 +30,13 @@ module.exports = withMT({
                 "blue-purple": "rgba(152, 165, 212)",
                 "blue-purple-hover": "#8995bf",
                 "light-gray": "rgba(217, 217, 217)",
+                "orange": "rgba(245, 156, 35, 1)",
             },
             backgroundImage: {
                 "hero-img": "url('./../../public/img/background/hero_cat_bg.png')",
                 "cat-legs-bg": "url('./../../public/img/background/cat-legs-bg.png')",
+                "petsitter-search": "url('./../../public/img/background/girl-wearing-dog.png')",
+                "veterinarian-search": "url('./../../public/img/background/veterinarian-with-cat.png')",
             }
         },
     },

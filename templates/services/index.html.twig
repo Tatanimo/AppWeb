@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SearchController!{% endblock %}
+
+{% block body %}
+    <div class="bg-beige p-24">
+        <div class="flex items-center justify-center" {{ react_component('headers/FirstHeader', {"content": "Nos services", "color": "black", "className": "mb-24"}) }}></div>
+        <div class="flex items-center justify-center gap-14">
+            <a href="{{ path('app_services_petsitting') }}" class="relative border-8 border-orange rounded-[60px] group">
+                <div class="overflow-hidden rounded-[50px]">
+                    <img src="{{ asset('img/background/girl-wearing-dog.png') }}" alt="Fille portant un labrador dans une forêt." class="hover:scale-110 transition group-hover:scale-110">
+                </div>
+                <div {{ react_component('headers/SecondHeader', {"content": "Petsitting", "color": "white", "className": "capitalize pe-8"}) }} class="absolute bottom-0 right-0"></div>
+            </a>
+            <a href="{{ path('app_services_veterinarian') }}" class="relative border-8 border-orange rounded-[60px] group">
+                <div class="overflow-hidden rounded-[50px]">
+                    <img src="{{ asset('img/background/veterinarian-with-cat.png') }}" alt="Vétérinaire qui s'occupe d'un chat roux." class="transition group-hover:scale-110">
+                </div>
+                <div {{ react_component('headers/SecondHeader', {"content": "Vétérinaire", "color": "white", "className": "capitalize pe-8"}) }} class="absolute bottom-0 right-0"></div>
+            </a>
+        </div>
+    </div>
+{% endblock %}

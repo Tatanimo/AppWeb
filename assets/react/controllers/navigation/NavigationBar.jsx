@@ -18,7 +18,7 @@ export default function NavigationBar({user}) {
                            className="hover:underline">QUI SOMMES-NOUS</a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="/services"
                            className="hover:underline">SERVICES</a>
                     </li>
                     <li>

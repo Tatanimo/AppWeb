@@ -2,4 +2,5 @@ const HostnameAndPort = location.port != "80" || location.port != "443" ? `${loc
 export const endpoint = {
     'assets' : `${location.protocol}//${HostnameAndPort}/assets`,
     'profil' : `${location.protocol}//${HostnameAndPort}/profil`,
+    'img' : `${location.protocol}//${HostnameAndPort}/img`,
 }
