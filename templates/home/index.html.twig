@@ -1,8 +1,91 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <div {{ react_component('layout/navigation/NavigationBar') }}></div>
-    <h1>Home</h1>
+    <section class="px-28 h-[calc(100svh-96px)] bg-hero-img bg-no-repeat bg-cover">
+        <div class="w-1/2 h-full flex flex-col justify-center items-start">
+            <div {{ react_component('headers/FirstHeader', {'content': 'Confiez vos animaux en toute confiance', 'color': 'white'}) }}></div>
+            <div class="text-white pb-12" {{ react_component('paragraph/Paragraph', {'content': "Confiez-nous vos compagnons à quatre pattes et partez l'esprit tranquille !
+                Bienvenue
+                chez Tatanimo notre
+                site de garde d'animaux, où le bonheur et le bien-être de vos précieux compagnons sont notre priorité
+                absolue.", 'color': 'white'}) }}></div>
+            <div {{ react_component('button/ButtonLink', {'content': 'Je veux faire
+            garder mon animal'}) }}></div>
+        </div>
+    </section>
+    <section class="px-28 py-16 flex gap-28	">
+        <div class="w-1/2">
+            <img src="{{ asset('img/background/dog-on-beach.png') }}"
+                 class="object-cover w-full"
+                 alt="dog on a summer beach with sea">
+        </div>
+        <div class="w-1/2 flex flex-col items-center justify-center">
+            <div {{ react_component('headers/SecondHeader', {'content': 'Comment ça marche ?', 'color': 'black'}) }}></div>
+            <div {{ react_component('paragraph/Paragraph', {'content': 'Vous cherchez à faire garder votre animal pendant vos vacances ? Grâce à Tatanimo, trouvez une garde avec
+                une personne de confiance, près de chez vous.
+                Explorez les profils détaillés, planifiez les gardes, échangez en toute sécurité, et assurez le
+                bien-être de vos compagnons à quatre pattes. Rejoignez-nous pour créer des liens durables entre amoureux
+                des animaux et offrir à nos compagnons une attention digne de leur amour inconditionnel.', 'color': 'black'}) }}></div>
+        </div>
+    </section>
+    <section class="px-28 py-16 flex flex-col items-center">
+        <div {{ react_component('headers/SecondHeader', {'content': 'Je souhaite garder des animaux', 'color': 'black', 'className': 'pb-10'}) }}></div>
+        <div {{ react_component('paragraph/Paragraph', {'content': "En tant que petsitter, vous aurez l'opportunité de prendre soin des animaux de compagnie de personnes occupées ou en déplacement. Que ce soit pour des visites régulières à domicile, des promenades énergisantes ou des séjours de garde prolongés, vous serez là pour assurer le bien-être et le bonheur des animaux.", 'color': 'black', 'fontSize': 'text-6xl'}) }}></div>
+        <div {{ react_component('button/ButtonLink', {'content': 'JE SOUHAITE DEVENIR PETSITTER', 'className': 'inline-block mt-4'}) }}></div>
+    </section>
+    <section class="px-28 pt-32 flex flex-col items-center bg-cat-legs-bg h-[850px]">
+        <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Lorem Ipsum', 'color': 'black'}) }}></div>
+        <img src="{{ asset('videos/temp-square.svg') }}"
+             alt="videos"
+             class="pb-16">
+        <div class="w-1/4 pb-16" {{ react_component('button/ButtonLink', {'content': 'Nous découvrir', 'className': 'inline-block mt-4 w-full flex items-center justify-center'}) }}></div>
+    </section>
+    <section class="px-28 py-16 pt-[600px] flex flex-col items-center">
+        <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Vos avis', 'color': 'black'}) }}></div>
+        <div class="flex gap-3">
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 1, "name": "Garde de Rockett"}) }}></div>
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 5, "name": "Garde de Rockett"}) }}></div>
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 3, "name": "Garde de Rockett"}) }}></div>
+            <div {{ react_component('review/ReviewCard', {"img": asset('img/background/dog-with-toy.png'), "intStar": 2, "name": "Garde de Rockett"}) }}></div>
+        </div>
+    </section>
+    <section class="px-28 py-16 pb-32 flex flex-col items-center">
+        <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Retrouvez nous sur Instagram', 'color': 'black'}) }}></div>
+        <div class="grid grid-cols-4 grid-rows-2 gap-2">
+            <div class="hover:opacity-75 transition">
+                <img alt="Photo instagram"
+                     src="{{ asset('img/instagram-post/Rectangle 52.png') }}">
+            </div>
+            <div class="hover:opacity-75 transition">
+                <img alt="Photo instagram"
+                     src="{{ asset('img/instagram-post/Rectangle 53.png') }}">
+            </div>
+            <div class="hover:opacity-75 transition">
+                <img alt="Photo instagram"
+                     src="{{ asset('img/instagram-post/Rectangle 54.png') }}">
+            </div>
+            <div class="hover:opacity-75 transition">
+                <img alt="Photo instagram"
+                     src="{{ asset('img/instagram-post/Rectangle 55.png') }}">
+            </div>
+            <div class="hover:opacity-75 transition">
+                <img alt="Photo instagram"
+                     src="{{ asset('img/instagram-post/Rectangle 56.png') }}">
+            </div>
+            <div class="hover:opacity-75 transition">
+                <img alt="Photo instagram"
+                     src="{{ asset('img/instagram-post/Rectangle 57.png') }}">
+            </div>
+            <div class="hover:opacity-75 transition">
+                <img alt="Photo instagram"
+                     src="{{ asset('img/instagram-post/Rectangle 58.png') }}">
+            </div>
+            <div class="hover:opacity-75 transition">
+                <img alt="Photo instagram"
+                     src="{{ asset('img/instagram-post/Rectangle 59.png') }}">
+            </div>
+        </div>
+    </section>
 {% endblock %}

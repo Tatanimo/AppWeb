@@ -1,7 +1,7 @@
 name: CD
 on: 
   push:
-    branches: [test]
+    branches: [master]
 
 jobs:
   deploy:
@@ -12,16 +12,34 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: php-actions/composer@v6
+
+      - name: Install dependencies  # Étape pour installer les dépendances npm
+        run: sudo npm install
+
+      - name: Build  # Étape pour exécuter npm run build
+        run: npm run build
+        
+      - name: copy node modules files via FTP
+        uses: airvzxf/ftp-deployment-action@latest
+        with:
+          server: ${{ secrets.APP_IP }}
+          user: ${{ secrets.APP_USER }}
+          password: ${{ secrets.APP_PASS }}
+          local_dir: "./public"
+          remote_dir: "/tatanimo.mds-lille.yt/public"
           
       - name: SSHPASS and DEPLOY project
         run:  
           sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd tatanimo.mds-lille.yt/ &&
+          sed -i 's/^APP_ENV=.*/APP_ENV=dev/' .env.local &&
+          git clean -f &&
           git stash &&
-          git pull origin test &&
+          git pull origin master &&
           /home/gxxgzxxc/composer.phar install &&
-          nvm use 16 &&
+          nvm use 16.16 &&
           npm install &&
-          npm run build &&
           php bin/console init:db --no-interaction &&
-          php bin/console cache:clear"
+          php bin/console cache:clear &&
+          sed -i 's/^APP_ENV=.*/APP_ENV=prod/' .env.local"

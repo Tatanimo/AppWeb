@@ -64,6 +64,19 @@ class UsersFixtures extends Fixture
 
         $manager->persist($user);
 
+        $user = new Users();
+
+        $id = rand(1, 35853);
+        $cities = $this->citiesRepository->findOneBy(['id' => $id]);
+
+        $password = "Azerty123..";
+        $hashedPassword = $this->hasher->hashPassword($user, $password);
+
+        $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail("az@gmail.com")->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_USER'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
+        $user->setCreatedDate($faker->dateTimeThisDecade());
+
+        $manager->persist($user);
+
         $manager->flush();
     }
 }

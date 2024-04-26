@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+<div class="m-12">
+    <section class="grid grid-cols-2 grid-rows-1 gap-20" id="section-profile">
+        <div class="grid grid-cols-3 grid-rows-2 gap-2" id="profile-img">
+            <div class="col-span-3 bg-light-gray w-full h-96 cursor-pointer relative group"
+                {{react_component('images/Profile', {"srcPath": fileExist(usersimagespath ~ app.user.image) ?
+                usersimagespath ~ app.user.image : null})}}>
+            </div>
+            <div class="bg-light-gray h-24"></div>
+            <div class="bg-light-gray h-24"></div>
+            <div class="bg-light-gray h-24 cursor-pointer relative group" {{react_component('images/Profile',
+                {"srcPath": fileExist(usersimagespath ~ app.user.image) ? usersimagespath ~ app.user.image : null})}}>>
+            </div>
+
+        </div>
+        <div id="profile-field">
+            <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{
+                react_component('forms/EditableField', {'value': app.user.lastname, "size" : 1}) }}></div>
+            <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{
+                react_component('forms/EditableField', {'value': app.user.firstname, "size" : 1}) }}></div>
+            <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{
+                react_component('forms/EditableField', {'value': app.user.birthdate ?? "Entrer une date de naissance"
+                , "size" : 2 }) }}></div>
+            <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{
+                react_component('forms/EditableField', {'value': app.user.email, "size" : 3 }) }}></div>
+            <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{
+                react_component('forms/EditableField', {'value': app.user.phonenumber ?? "Entrer un numéro de téléphone"
+                , "size" : 3 }) }}></div>
+            <div class="flex flex-col justify-center m-4">
+                <button class="bg-[#98A5D4]  text-white px-4 py-2 rounded-md mb-2">Voir mon agenda</button>
+                <button class="bg-[#98A5D4]  text-white px-4 py-2 rounded-md">voir mon contact de garde</button>
+            </div>
+        </div>
+</div>
+</section>
+
+<section id="section-description" class="mt-[-5rem]">
+    <div>
+        <h2 class="text-2xl font-bold mb-4">Description</h2>
+        <p class="text-gray-700">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum iaculis lacus a dignissim. Donec
+            convallis iaculis neque, et elementum magna elementum in. Nunc dignissim nunc nunc, viverra fermentum
+            tellus bibendum non. Etiam faucibus molestie diam. Donec lobortis mi sed ante tempus, et imperdiet elit
+            malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum iaculis lacus a
+            dignissim. Donec convallis iaculis neque, et elementum magna elementum in. Nunc dignissim nunc nunc,
+            viverra fermentum tellus bibendum non. Etiam faucibus molestie diam. Donec lobortis mi sed ante tempus,
+            et imperdiet elit malesuada.
+        </p>
+    </div>
+</section>
+
+<section id="section-animals">
+    <div class="m-12 border border-gray-500 rounded-md">
+        <section class="grid grid-cols-2 grid-rows-1 gap-20" id="section-animals">
+            <div class="grid grid-cols-3 grid-rows-2 gap-2" id="profile-img">
+                <div class="col-span-3 bg-light-gray w-full h-96 cursor-pointer relative group"
+                    {{react_component('images/Profile', {"srcPath": fileExist(usersimagespath ~ app.user.image) ?
+                    usersimagespath ~ app.user.image : null})}}>
+                </div>
+                <div class="bg-light-gray h-24"></div>
+                <div class="bg-light-gray h-24"></div>
+                <div class="bg-light-gray h-24 cursor-pointer relative group"{{react_component('images/Profile', {"srcPath": fileExist(usersimagespath ~ app.user.image) ?
+                usersimagespath ~ app.user.image : null})}}>></div>
+            </div>
+            <div class="relative">
+                <h2 class="text-2xl font-bold mb-4">Pacha</h2>
+                <h2 class="text-2xl font-bold mb-4">8 ans</h2>
+    
+                <img src="{{asset('img/icons/log.svg')}}" alt="logo" class="absolute top-0 right-0 w-10 h-10">
+
+                <p class="text-gray-700">
+                    Pacha est un chat ayant été abandonné et blessé dans le passé. Depuis, il a repris confiance aux
+                    humains, il est devenu très câlin, joueur et gourmand.
+                    Pacha s’entend très bien avec les humains, ainsi que les autres animaux.
+                </p>
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="m-12 border border-gray-500 rounded-md">
+        <section class="grid grid-cols-2 grid-rows-1 gap-20" id="section-animals">
+            <div class="grid grid-cols-3 grid-rows-2 gap-2" id="profile-img">
+                <div class="col-span-3 bg-light-gray w-full h-96 cursor-pointer relative group"
+                    {{react_component('images/Profile', {"srcPath": fileExist(usersimagespath ~ app.user.image) ?
+                    usersimagespath ~ app.user.image : null})}}>
+                </div>
+                <div class="bg-light-gray h-24"></div>
+                <div class="bg-light-gray h-24"></div>
+                <div class="bg-light-gray h-24 cursor-pointer relative group" {{react_component('images/Profile', {"srcPath": fileExist(usersimagespath ~ app.user.image) ?
+                usersimagespath ~ app.user.image : null})}}>></div>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold mb-4">Ninou</h2>
+                <h2 class="text-2xl font-bold mb-4">8 ans</h2>
+    
+                <p class="text-gray-700">
+                    Pacha est un chat ayant été abandonné et blessé dans le passé. Depuis, il a repris confiance aux
+                    humains, il est devenu très câlin, joueur et gourmand.
+                    Pacha s’entend très bien avec les humains, ainsi que les autres animaux.
+                </p>
+            </div>
+
+        </section>
+
+    </div>
+</section>
+    {% endblock %}

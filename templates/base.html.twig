@@ -2,35 +2,59 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="{{asset('svg/logo.svg')}}">
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNNQSVC804"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-PNNQSVC804');
-        </script>
+        <title>{% block title %}{% endblock %} - Tatanimo</title>
+        <link rel="icon"
+              href="{{ asset('img/icons/logo_tatanimo.svg') }}">
+        <link rel="preconnect"
+              href="https://fonts.googleapis.com">
+        <link rel="preconnect"
+              href="https://fonts.gstatic.com"
+              crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+              rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+              rel="stylesheet">
+        
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
+            <!-- Mercure Notification -->
+            <script type="application/json" id="mercure-notification">
+                {{ mercure('alerts/' ~ sessionUuid())|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+            </script>
+            <!-- Google tag (gtag.js) -->
+            <script async
+                    src="https://www.googletagmanager.com/gtag/js?id=G-PNNQSVC804"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+
+                gtag("js", new Date());
+
+                gtag("config", "G-PNNQSVC804");
+            </script>
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
+    <body class="font-serif">
+        <input type="hidden" id="jwt-notification" value='{{ generateJWT()|json_encode|raw }}'>
         {# Alerte #}
-        <header {{ react_component('navigation/NavigationBar') }}></header>
+        <header class="sticky top-0 w-full bg-white z-10" data-turbo-temporary {{ react_component('navigation/NavigationBar', {'user': app.user}) }}></header>
         <div class="fixed top-0 left-0 z-50">
+            {# Flash #}
             {% for type, flash in app.flashes %}
-                <div {{ react_component('alerts/Alerts', {'type': type, 'flash': flash }) }}></div>
+                <div data-turbo-temporary {{ react_component('alerts/Alerts', {'type': type, 'flash': flash }) }}></div>
             {% endfor %}
+            {# Mercure #}
+            <div data-turbo-temporary {{ react_component('alerts/Mercure') }}></div>
         </div>
 
         {% block body %}{% endblock %}
+        <footer class="bg-turquoise w-full flex py-20" data-turbo-temporary {{ react_component('footer/Footer') }}></footer>
     </body>
 </html>
-

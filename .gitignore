@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -38,3 +37,4 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 google_credentials.json
+jwt.txt
