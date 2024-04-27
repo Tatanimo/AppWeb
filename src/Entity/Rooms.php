@@ -16,6 +16,9 @@ class Rooms
     #[ORM\Column(length:255, nullable:false)]
     private ?string $reference = null;
 
+    #[ORM\Column(length: 255, nullable: false)]
+    private ?string $uuid = null;
+
     #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'rooms', orphanRemoval: true)]
     private Collection $fk_messages;
 
@@ -28,10 +31,21 @@ class Rooms
     {
         return $this->reference;
     }
-
+    
     public function setReference(?string $reference): static
     {
         $this->reference = $reference;
+        return $this;
+    }
+
+    public function getUuid(): ?string
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(?string $uuid): static
+    {
+        $this->uuid = $uuid;
         return $this;
     }
 

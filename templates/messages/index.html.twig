@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messages{% endblock %}
+
+{% block body %}
+    <section>
+        <img src="{{ asset('img/background/messages-bg.jpg') }}"
+             alt="Des chiots ensemble"
+             class="w-full object-cover h-96">
+    </section>
+    <section class="px-28 flex flex-col items-center">
+        <div {{ react_component('headers/FirstHeader', {'content': 'Messages', 'color': 'dark-blue', 'className': 'pt-32 mb-16'}) }}></div>
+    </section>
+    <section id="section-messages" class="mb-24">
+        <div {{ react_component('chat/Message')}}></div>
+    </section>
+{% endblock %}

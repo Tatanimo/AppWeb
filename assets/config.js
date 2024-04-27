@@ -3,4 +3,5 @@ export const endpoint = {
     'assets' : `${location.protocol}//${HostnameAndPort}/assets`,
     'profil' : `${location.protocol}//${HostnameAndPort}/profil`,
     'img' : `${location.protocol}//${HostnameAndPort}/img`,
+    'base': `${location.protocol}//${HostnameAndPort}`
 }
