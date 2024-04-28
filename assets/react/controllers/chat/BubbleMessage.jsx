@@ -24,11 +24,16 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
   return (
     <div id={`message-bubble-${authorId}`} className={`m-2 flex ${classNameDiv}`}>
         {shape && authorId != userId ? (
-            <img src={`${endpoint.img}/users/test.jpg`} class="w-[144px] h-[144px] object-cover rounded-full" alt="image d'utilisateur" />
+            <img src={`${endpoint.img}/users/test.jpg`} className="w-[144px] h-[144px] object-cover rounded-full" alt="image d'utilisateur" />
         ) : authorId != userId ? (
             <div className="w-[144px]"></div>
         ) : null}
-        <p className={`${classNameP} relative min-h-[150px] max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8 ${classNameShape}`}>{content}</p>
+        {shape ? (
+            <p className={`${classNameP} relative min-h-[150px] max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8 ${classNameShape}`}>{content}</p>) 
+        : (
+            <p className={`${classNameP} relative min-h-[150px] max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8`}>{content}</p>
+        )}
+        
         {authorId == userId ? (
             <div className="w-[144px]"></div>
         ) : null}

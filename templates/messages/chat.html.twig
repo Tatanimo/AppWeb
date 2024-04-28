@@ -2,7 +2,16 @@
 
 {% block title %}Chat{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <!-- Mercure Message -->
+    <script type="application/json" id="mercure-messages">
+        {{ mercure('messages/' ~ uuid)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
+    </script>
+{% endblock %}
+
 {% block body %}
+    <input type="hidden" id="jwt-messages" value='{{ generateJWT()|json_encode|raw }}'>
     <section id="section-contact-info" class="py-12 px-24 bg-blue-dark-purple">
         <div class="flex justify-between">
             <h1 class="font-ChunkFive text-dark-blue text-5xl mx-4 min-w-fit">{{contact.lastname|upper}} {{contact.firstname|capitalize }}</h1>
@@ -13,13 +22,7 @@
     <section id="section-chat" class="bg-beige p-10">
         <div {{react_component('chat/LoadingChatRoom', {user: app.user.id, contact: contact.id, room: uuid})}}></div>
     </section>
-    <section id="section-input-chat" class="bg-blue-dark-purple p-10 flex justify-between">
-        <button>
-            <img src="{{asset('img/icons/paper-clip.svg')}}" alt="" srcset="">
-        </button>
-        <input type="text" class="w-3/4 rounded-full opacity-70 border-0 pl-10">
-        <button>
-            <img src="{{asset('img/icons/send-fill.svg')}}" alt="" srcset="">
-        </button>
+    <section id="section-input-chat" class="bg-blue-dark-purple p-10">
+        <div class="flex justify-between" {{react_component('chat/InputChat', {room: uuid, user: app.user.id})}}></div>
     </section>
 {% endblock %}
