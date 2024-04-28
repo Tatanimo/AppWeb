@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MessagesController!{% endblock %}
+
+{% block body %}
+    {% for petsitter in users %}
+        <hr>
+        <p>{{petsitter.firstName}} {{petsitter.lastName}}</p>
+        <div {{react_component('chat/AccessChat', {'petsitter':petsitter.id})}}></div>
+        <hr>
+    {% endfor %}
+{% endblock %}

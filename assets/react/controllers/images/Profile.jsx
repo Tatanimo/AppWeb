@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default function Profile({srcPath}) {
-  console.log(srcPath);
 
     return (
       <>  

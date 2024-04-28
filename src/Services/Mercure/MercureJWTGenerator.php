@@ -3,12 +3,13 @@
 namespace App\Services\Mercure;
 
 use App\Services\UuidSession;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class MercureJWTGenerator extends AbstractExtension {
-    public function __construct(private UuidSession $uuidSession, private ParameterBagInterface $params)
+    public function __construct(private UuidSession $uuidSession, private ParameterBagInterface $params, private Security $security)
     {
         
     }
@@ -28,15 +29,19 @@ class MercureJWTGenerator extends AbstractExtension {
             "typ" => "JWT" 
         ];
         $header = $this->base64_url_encode(json_encode($header));
+
+        $topic = array("alerts/{$this->uuidSession->sessionUuid()}");
+
+        $user = $this->security->getUser();
+        if (isset($user)) {
+            array_push($topic, "messages/{id}");
+        }
+
         $payload =  [
             "exp" => $time,
             "mercure" => [
-                "publish" => array(
-                    "alerts/{$this->uuidSession->sessionUuid()}"
-                ),
-                "subscribe" => array(
-                    "alerts/{$this->uuidSession->sessionUuid()}"
-                )
+                "publish" => $topic,
+                "subscribe" => $topic
             ]
         ];
         $payload = $this->base64_url_encode(json_encode($payload));

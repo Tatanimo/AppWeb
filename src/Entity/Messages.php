@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MessagesRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MessagesRepository::class)]
 class Messages
@@ -12,12 +13,15 @@ class Messages
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("message")]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups("message")]
     private ?string $content = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups("message")]
     private ?\DateTimeInterface $publication_date = null;
 
     #[ORM\ManyToOne(inversedBy: 'fk_messages')]
@@ -27,6 +31,9 @@ class Messages
     #[ORM\ManyToOne(inversedBy: 'messages')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $author = null;
+
+    #[Groups("message")]
+    private ?int $authorId = null;
 
     public function getId(): ?int
     {
@@ -67,6 +74,11 @@ class Messages
         $this->rooms = $rooms;
 
         return $this;
+    }
+
+    public function getAuthorId(): ?int
+    {
+        return $this->author->getId();
     }
 
     public function getAuthor(): ?Users

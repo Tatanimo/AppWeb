@@ -7,6 +7,7 @@ use App\Repository\UsersRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Uid\Uuid;
 
 class RoomsFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -29,7 +30,7 @@ class RoomsFixtures extends Fixture implements DependentFixtureInterface
 
             $reference = $user_1 < $user_2 ? $user_1.'-'.$user_2 : $user_2.'-'.$user_1;
 
-            $room->setReference($reference);
+            $room->setReference($reference)->setUuid(Uuid::v3(Uuid::fromString(Uuid::NAMESPACE_OID), $reference));
 
             $manager->persist($room);
         }

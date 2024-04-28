@@ -53,6 +53,22 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
        ;
    }
 
+    /**
+    * @return Users[] Returns an array of User objects
+    */
+    public function findAllByCompaniesType(string $type): array
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('u.fk_company', 'c')
+            ->innerJoin('c.servicesTypes', 'd')
+            ->where('d.type = :type')
+            ->orderBy('u.id', 'ASC')
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
    public function findOneByRole($role): ?Users
    {
        return $this->createQueryBuilder('u')

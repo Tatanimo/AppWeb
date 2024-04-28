@@ -1,6 +1,8 @@
 import React from "react";
+
 import ThirdHeader from "../headers/ThirdHeader";
 import Paragraph from "../paragraph/Paragraph";
+import {endpoint} from "../../../config";
 
 export default function Footer() {
     return (
@@ -8,7 +10,7 @@ export default function Footer() {
             <div className="w-1/2 flex items-start justify-center">
                 <a href="/"
                    className="w-1/2">
-                    <img src="img/icons/logo_tatanimo.svg"
+                    <img src={`${endpoint.img}/icons/logo_tatanimo.svg`}
                          alt="logo"
                          className="w-full"/>
                 </a>
