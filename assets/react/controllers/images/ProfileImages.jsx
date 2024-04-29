@@ -11,7 +11,7 @@ export default function ProfileImages({userId, images}) {
   return (
     <>
         <SquareImage srcPath={findImage(1)} main={true} number={1} userId={userId} />
-        <div className="flex justify-between mt-3 gap-3 max-w-[30rem]">
+        <div className="flex justify-between mt-3 gap-3 w-full">
             {[2,3,4].map((e) => {
                 return (
                     <SquareImage key={e} srcPath={findImage(e)} number={e} userId={userId} />
