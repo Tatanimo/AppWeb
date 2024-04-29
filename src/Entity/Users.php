@@ -35,6 +35,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?string $description = null;
+
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $birthdate = null;
 
@@ -47,8 +50,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 34, nullable: true)]
     private ?string $iban = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $image = null;
 
     #[ORM\Column(length: 50, nullable: false)]
     private ?string $first_name = null;
@@ -171,6 +172,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
@@ -225,18 +238,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIban(?string $iban): static
     {
         $this->iban = $iban;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
 
         return $this;
     }

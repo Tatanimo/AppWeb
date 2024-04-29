@@ -16,8 +16,8 @@ export default function LoginRegisterModal({openModal, setOpenModal, setIsLogged
             ) : (
               <Register setShowRegister={setShowRegister} />
             )}
-      </Modal.Body>
-    </Modal>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
