@@ -37,7 +37,7 @@ export default function SquareImage({srcPath, main, number, userId}) {
 
     return (
       <>
-        <div onClick={() => setOpenModal(true)} className={`bg-light-gray cursor-pointer relative group ${main ? ' w-96 h-96' : 'w-1/3 h-1/3 aspect-square' }`}>  
+        <div onClick={() => setOpenModal(true)} className={`transition-opacity bg-light-gray cursor-pointer relative group hover:opacity-85 aspect-square ${main ? 'w-[30rem]' : 'w-1/3' }`}>  
           {newImage ? <img src={newImage} className="w-full h-full object-cover" alt="user image" /> : srcPath ? <img src={srcPath} className="w-full h-full object-cover" alt="user image" /> : null}
           <span className="transition-opacity duration-300 absolute left-1/2 top-1/2 font-ChunkFive font-bolder text-5xl -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100">+</span>
         </div>

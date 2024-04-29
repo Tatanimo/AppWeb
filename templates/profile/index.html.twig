@@ -5,9 +5,9 @@
 {% block body %}
     <div class="m-12">
         <section class="justify-center flex" id="section-profile">
-            <div class="mx-3" id="profile-img" {{react_component('images/ProfileImages', {userId: app.user.id, images: findUserImages(app.user.id)})}}>
+            <div class="mx-6" id="profile-img" {{react_component('images/ProfileImages', {userId: app.user.id, images: findUserImages(app.user.id)})}}>
             </div>
-            <div id="profile-field" class="w-1/2 mx-3">
+            <div id="profile-field" class="w-1/2 mx-6">
                 <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'value': app.user.lastname, "size": 1}) }}></div>
                 <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'value': app.user.firstname, "size": 1}) }}></div>
                 <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'value': app.user.birthdate ?? "Entrer une date de naissance", "size": 2 }) }}></div>
