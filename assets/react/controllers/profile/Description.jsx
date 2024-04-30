@@ -8,7 +8,7 @@ export default function Description({description, userId}) {
 
     const handleFocusLost = async () => {
         if (desc != "" && desc && desc != currentDesc) {
-            await axios.post(`/ajax/profile/${userId}`, {
+            await axios.post(`/ajax/profile/desc/${userId}`, {
                 description: desc
             }, 
             {
