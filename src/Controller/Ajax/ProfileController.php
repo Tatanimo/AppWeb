@@ -16,6 +16,36 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class ProfileController extends AbstractController 
 {
+    #[Route('/ajax/profile/desc/{id}', name: 'app_ajax_add_description_profile', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function addDescription(#[CurrentUser()] ?Users $user, Request $request, EntityManagerInterface $em, AlertService $alertService, $id): JsonResponse
+    {
+        if (!isset($user)) {
+            return $this->json("Non authentifiée", 401);
+        }
+        
+        if ($id != $user->getId()) {
+            return $this->json("Non autorisé", 401);
+        }
+        
+        $description = json_decode($request->getContent(), true)["description"];
+        
+        if (!isset($description)) {
+            return $this->json("Description non reconnu", 401);
+        }
+        
+        try {
+            $user->setDescription($description);
+            $em->persist($user);
+            $em->flush();
+            $alertService->generate("success", "Félicitation", "La description a bien été sauvegardé");
+        } catch (\Throwable $th) {
+            $alertService->generate("fail", "Erreur de sauvegarde", "Une erreur s'est produite, votre profil n'a pas été modifié. Veuillez réessayer");
+            return $this->json("Erreur lors de la sauvegarde des données : $th", 401);
+        }
+        
+        return $this->json("Sauvegarde de la description", 200);
+    }
+
     #[Route('/ajax/profile/{id}/{number}', name: 'app_ajax_add_image_profile', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
     public function addImage(#[CurrentUser()] ?Users $user, Request $request, $id, $number): JsonResponse
     {
@@ -44,37 +74,7 @@ class ProfileController extends AbstractController
         
         return $this->json($ext, 200);
     }
-
-    #[Route('/ajax/profile/desc/{id}', name: 'app_ajax_add_description_profile', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function addDescription(#[CurrentUser()] ?Users $user, Request $request, EntityManagerInterface $em, AlertService $alertService, $id): JsonResponse
-    {
-        if (!isset($user)) {
-            return $this->json("Non authentifiée", 401);
-        }
-        
-        if ($id != $user->getId()) {
-            return $this->json("Non autorisé", 401);
-        }
-
-        $description = json_decode($request->getContent(), true)["description"];
-
-        if (!isset($description)) {
-            return $this->json("Description non reconnu", 401);
-        }
-        
-        try {
-            $user->setDescription($description);
-            $em->persist($user);
-            $em->flush();
-            $alertService->generate("success", "Félicitation", "La description a bien été sauvegardé");
-        } catch (\Throwable $th) {
-            $alertService->generate("fail", "Erreur de sauvegarde", "Une erreur s'est produite, votre profil n'a pas été modifié. Veuillez réessayer");
-            return $this->json("Erreur lors de la sauvegarde des données : $th", 401);
-        }
-
-        return $this->json("Sauvegarde de la description", 200);
-    }
-
+    
     #[Route('/ajax/profile/{id}', name: 'app_ajax_update_profile', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
     public function updateProfile(#[CurrentUser()] ?Users $user, Request $request, EntityManagerInterface $em, AlertService $alertService, $id): JsonResponse
     {

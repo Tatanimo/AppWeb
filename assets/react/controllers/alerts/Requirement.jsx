@@ -13,7 +13,7 @@ export default function Requirement({requirements}) {
           <ul className="mt-1.5 list-disc list-inside">
             {requirements.map((e) => {
               return(
-                <li id={e}>{e}</li>
+                <li key={e} id={e}>{e}</li>
               )
             })}
         </ul>

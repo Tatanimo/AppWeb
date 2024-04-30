@@ -23,7 +23,7 @@ class Animals
     private ?string $race = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $weight = null;
+    private ?float $weight = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $birthdate = null;
@@ -33,9 +33,6 @@ class Animals
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
@@ -82,12 +79,12 @@ class Animals
         return $this;
     }
 
-    public function getWeight(): ?int
+    public function getWeight(): ?float
     {
         return $this->weight;
     }
 
-    public function setWeight(?int $weight): static
+    public function setWeight(?float $weight): static
     {
         $this->weight = $weight;
 
@@ -126,18 +123,6 @@ class Animals
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
 
         return $this;
     }

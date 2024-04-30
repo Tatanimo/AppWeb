@@ -43,14 +43,14 @@ export default function SquareImage({srcPath, main, number, userId}) {
         </div>
 
         <Modal className="" dismissible show={openModal} size="md" popup onClose={() => setOpenModal(false)}>
-        <Modal.Header />
-          <Modal.Body>
-            <input type="file" accept="image/png, image/jpeg, image/jpg" name="" id="" onChange={(e) => setFile(e.target.files[0])} />
-            {typeof file == "object" ? (
-              <button type="button" className="mt-4 inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-base bg-blue-purple px-3 py-2 rounded-xl uppercase float-right" onClick={saveImage}>Envoyer</button>
-            ) : null}
-        </Modal.Body>
-      </Modal>
+          <Modal.Header />
+            <Modal.Body>
+              <input type="file" accept="image/png, image/jpeg, image/jpg" name="" id="" onChange={(e) => setFile(e.target.files[0])} />
+              {typeof file == "object" ? (
+                <button type="button" className="mt-4 inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-base bg-blue-purple px-3 py-2 rounded-xl uppercase float-right" onClick={saveImage}>Envoyer</button>
+              ) : null}
+          </Modal.Body>
+        </Modal>
       </>
     )
 }
