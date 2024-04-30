@@ -2,7 +2,6 @@
 
 namespace App\Services\Mercure;
 
-use App\Services\UuidSession;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 
