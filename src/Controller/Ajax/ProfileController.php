@@ -8,7 +8,6 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -53,7 +52,10 @@ class ProfileController extends AbstractController
             return $this->json("Non authentifiée", 401);
         }
         
-        if ($id != $user->getId()) {
+        $to = $request->request->get("to");
+        $toSingular = substr_replace($to, '', -1);
+
+        if ($id != $user->getId() && $to == "user" || !isset($to)) {
             return $this->json("Non autorisé", 401);
         }
 
@@ -63,9 +65,10 @@ class ProfileController extends AbstractController
         }
         
         $ext = $uploadedFile->guessExtension();
-        $newFilename = "user-".$user->getId().'-'.$number.'.'.$ext;
         
-        $destination = $this->getParameter('kernel.project_dir') . '/public/img/users/';
+        $newFilename = "$toSingular-".$id.'-'.$number.'.'.$ext;
+        
+        $destination = $this->getParameter('kernel.project_dir') . "/public/img/$to/";
         try {
             $uploadedFile->move($destination, $newFilename);
         } catch (FileException $e) {

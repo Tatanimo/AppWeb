@@ -2,7 +2,7 @@ import axios from "axios";
 import { Modal } from "flowbite-react";
 import React, {useEffect, useState} from 'react'
 
-export default function SquareImage({srcPath, main, number, userId}) {
+export default function SquareImage({srcPath, main, number, userId, animalId}) {
   const [openModal, setOpenModal] = useState(false);
   const [file, setFile] = useState();
   const [newImage, setNewImage] = useState('');
@@ -16,11 +16,12 @@ export default function SquareImage({srcPath, main, number, userId}) {
   const saveImage = async () => {
     if (typeof file == "object") {
 
-      if (number && userId) {
+      if (number && userId || number && animalId) {
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("to", userId ? "users" : "animals")
         
-        await axios.post(`/ajax/profile/${userId}/${number}`, formData, {
+        await axios.post(`/ajax/profile/${userId ?? animalId}/${number}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             'X-Requested-With': 'XMLHttpRequest',
@@ -28,7 +29,12 @@ export default function SquareImage({srcPath, main, number, userId}) {
         })
         .then(response => {
           const randomParam = Math.random();
-          setNewImage(`/img/users/user-${userId}-${number}.${response.data}?${randomParam}`);
+          if (userId) {
+            setNewImage(`/img/users/user-${userId}-${number}.${response.data}?${randomParam}`);
+          }
+          if (animalId) {
+            setNewImage(`/img/animals/animal-${animalId}-${number}.${response.data}?${randomParam}`);
+          }
         })
         .catch(error => console.error(error));
       }

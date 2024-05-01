@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class FindUserImages extends AbstractExtension 
+class FindImages extends AbstractExtension 
 {
     public function __construct(private ParameterBagInterface $params)
     {
@@ -17,6 +17,7 @@ class FindUserImages extends AbstractExtension
     {
         return [
             new TwigFunction('findUserImages', [$this, 'findUserImages']),
+            new TwigFunction('findAnimalsImages', [$this, 'findAnimalsImages']),
         ];
     }
 
@@ -25,5 +26,12 @@ class FindUserImages extends AbstractExtension
         $userImagesFolder = $this->params->get("app.user_images_folder");
         $file = "user-$id-*";
         return glob($userImagesFolder.$file);
+    }
+
+    public function findAnimalsImages(int $id) : array 
+    {
+        $animalsImagesFolder = $this->params->get("app.animals_images_folder");
+        $file = "animal-$id-*";
+        return glob($animalsImagesFolder.$file);
     }
 }
