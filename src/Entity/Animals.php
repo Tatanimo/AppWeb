@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AnimalsRepository::class)]
 class Animals
@@ -14,29 +15,39 @@ class Animals
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("main")]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups("main")]
     private ?string $name = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups("main")]
     private ?string $race = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("main")]
     private ?float $weight = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups("main")]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("main")]
     private ?bool $death = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups("main")]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CategoryAnimals $fk_category = null;
+
+    #[Groups("main")]
+    private ?int $fk_categoryId = null;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
@@ -48,6 +59,11 @@ class Animals
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
+    }
+
+    public function getFkCategoryId(): ?int
+    {
+        return $this->fk_category->getId();
     }
 
     public function getId(): ?int

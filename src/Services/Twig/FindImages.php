@@ -17,7 +17,7 @@ class FindImages extends AbstractExtension
     {
         return [
             new TwigFunction('findUserImages', [$this, 'findUserImages']),
-            new TwigFunction('findAnimalsImages', [$this, 'findAnimalsImages']),
+            new TwigFunction('findAnimalImages', [$this, 'findAnimalImages']),
         ];
     }
 
@@ -28,7 +28,7 @@ class FindImages extends AbstractExtension
         return glob($userImagesFolder.$file);
     }
 
-    public function findAnimalsImages(int $id) : array 
+    public function findAnimalImages(int $id) : array 
     {
         $animalsImagesFolder = $this->params->get("app.animals_images_folder");
         $file = "animal-$id-*";

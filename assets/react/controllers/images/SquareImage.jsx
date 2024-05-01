@@ -1,17 +1,38 @@
 import axios from "axios";
 import { Modal } from "flowbite-react";
 import React, {useEffect, useState} from 'react'
+import ReactCrop from 'react-image-crop'
+import 'react-image-crop/dist/ReactCrop.css'
 
 export default function SquareImage({srcPath, main, number, userId, animalId}) {
+  const [crop, setCrop] = useState();
   const [openModal, setOpenModal] = useState(false);
   const [file, setFile] = useState();
   const [newImage, setNewImage] = useState('');
+  const [beforeCropImage, setBeforeCropImage] = useState();
+  const [cropImage, setCropImage] = useState();
 
   useEffect(() => {
     if (!openModal) {
       setFile();
     }
   }, [openModal])
+
+  useEffect(() => {
+    if (file) {
+      setBeforeCropImage(URL.createObjectURL(file));
+    }
+  }, [file])
+
+  // const handleCrop = async () => {
+  //   const response = await fetch(beforeCropImage);
+  //   const imageBitmap = await createImageBitmap(await response.blob());
+  //   console.log(crop);
+  //   const image = createImageBitmap(imageBitmap, crop.x, crop.y, crop.width, crop.height)
+
+
+  //   setNewImage(image); 
+  // }
 
   const saveImage = async () => {
     if (typeof file == "object") {
@@ -53,7 +74,14 @@ export default function SquareImage({srcPath, main, number, userId, animalId}) {
             <Modal.Body>
               <input type="file" accept="image/png, image/jpeg, image/jpg" name="" id="" onChange={(e) => setFile(e.target.files[0])} />
               {typeof file == "object" ? (
-                <button type="button" className="mt-4 inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-base bg-blue-purple px-3 py-2 rounded-xl uppercase float-right" onClick={saveImage}>Envoyer</button>
+                <>
+                  <ReactCrop minHeight={100} minWidth={100} keepSelection={true} aspect={1} crop={crop} onChange={c => setCrop(c)} onComplete={handleCrop}>
+                    {beforeCropImage ? (<img src={beforeCropImage} />) : null}
+                  </ReactCrop>
+                  {crop ? (
+                    <button type="button" className="mt-4 inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-base bg-blue-purple px-3 py-2 rounded-xl uppercase float-right" onClick={saveImage}>Envoyer</button>
+                  ) : null}
+                </>
               ) : null}
           </Modal.Body>
         </Modal>
