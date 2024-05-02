@@ -20,9 +20,8 @@ function generateDateRegex() {
 export default function EditableField({originalValue, size, type, input, id}) {
     const [classSize, setClassSize] = useState("");
     const [isUpdating, setIsUpdating] = useState(false);
-    const [value, setValue] = useState(input == "date" ? originalValue.date : originalValue);
+    const [value, setValue] = useState(input == "date" ? originalValue?.date : originalValue);
     const [newValue, setNewValue] = useState({});
-
     useEffect(() => {
         switch (size) {
             case 1:
