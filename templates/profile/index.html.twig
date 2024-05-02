@@ -9,7 +9,7 @@
             <div id="profile-field" class="w-1/2 mx-6">
                 <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.lastname, "size": 1, input: "text", type:"lastname", id: app.user.id}) }}></div>
                 <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.firstname, "size": 1, input: "text", type:"firstname", id: app.user.id}) }}></div>
-                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.birthdate ?? "Entrer une date de naissance", "size": 2, input: "date", id: app.user.id}) }}></div>
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.birthdate, "size": 2, input: "date", id: app.user.id}) }}></div>
                 <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.email, "size": 3, input: "email", id: app.user.id}) }}></div>
                 <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.phonenumber ?? "Entrer un numéro de téléphone" , "size": 3, input: "phone", id: app.user.id}) }}></div>
                 <button class='inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase w-full my-2 p-4'>VOIR MON AGENDA</button>

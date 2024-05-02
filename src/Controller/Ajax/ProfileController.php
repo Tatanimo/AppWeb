@@ -64,9 +64,7 @@ class ProfileController extends AbstractController
             return $this->json("Fichier non trouvé", 401);
         }
         
-        $ext = $uploadedFile->guessExtension();
-        
-        $newFilename = "$toSingular-".$id.'-'.$number.'.'.$ext;
+        $newFilename = "$toSingular-".$id.'-'.$number.'.jpg';
         
         $destination = $this->getParameter('kernel.project_dir') . "/public/img/$to/";
         try {
@@ -75,7 +73,7 @@ class ProfileController extends AbstractController
             return $this->json($e, 400);
         }
         
-        return $this->json($ext, 200);
+        return $this->json("Image sauvegardée", 200);
     }
     
     #[Route('/ajax/profile/{id}', name: 'app_ajax_update_profile', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]

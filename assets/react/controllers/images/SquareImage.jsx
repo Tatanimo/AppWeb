@@ -1,20 +1,35 @@
 import axios from "axios";
-import { Modal } from "flowbite-react";
-import React, {useEffect, useState} from 'react'
-import ReactCrop from 'react-image-crop'
-import 'react-image-crop/dist/ReactCrop.css'
+import { Modal, Spinner } from "flowbite-react";
+import React, {useEffect, useState, useRef} from 'react'
+import Cropper, { ReactCropperElement } from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 export default function SquareImage({srcPath, main, number, userId, animalId}) {
-  const [crop, setCrop] = useState();
   const [openModal, setOpenModal] = useState(false);
   const [file, setFile] = useState();
   const [newImage, setNewImage] = useState('');
   const [beforeCropImage, setBeforeCropImage] = useState();
-  const [cropImage, setCropImage] = useState();
+  const [uploadingImage,  setUploadingImage] = useState(false);
+  
+  const timerRef = useRef(null);
+  const cropperRef = useRef(null);
+  const cropperImage = useRef(null);
+
+  const onCrop = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    
+    timerRef.current = setTimeout(() => {
+      const cropper = cropperRef.current?.cropper;
+      cropperImage.current = cropper.getCroppedCanvas();
+    }, 500);
+  };
 
   useEffect(() => {
     if (!openModal) {
       setFile();
+      cropperImage.current = null;
     }
   }, [openModal])
 
@@ -24,40 +39,33 @@ export default function SquareImage({srcPath, main, number, userId, animalId}) {
     }
   }, [file])
 
-  // const handleCrop = async () => {
-  //   const response = await fetch(beforeCropImage);
-  //   const imageBitmap = await createImageBitmap(await response.blob());
-  //   console.log(crop);
-  //   const image = createImageBitmap(imageBitmap, crop.x, crop.y, crop.width, crop.height)
-
-
-  //   setNewImage(image); 
-  // }
-
-  const saveImage = async () => {
-    if (typeof file == "object") {
-
+  const saveImage = () => {
+    if (typeof cropperImage.current == "object") {
       if (number && userId || number && animalId) {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("to", userId ? "users" : "animals")
-        
-        await axios.post(`/ajax/profile/${userId ?? animalId}/${number}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'X-Requested-With': 'XMLHttpRequest',
-          }
-        })
-        .then(response => {
-          const randomParam = Math.random();
-          if (userId) {
-            setNewImage(`/img/users/user-${userId}-${number}.${response.data}?${randomParam}`);
-          }
-          if (animalId) {
-            setNewImage(`/img/animals/animal-${animalId}-${number}.${response.data}?${randomParam}`);
-          }
-        })
-        .catch(error => console.error(error));
+        cropperImage.current.toBlob(async (blob) => {
+          const formData = new FormData();
+          formData.append("file", blob);
+          formData.append("to", userId ? "users" : "animals")
+          
+          setUploadingImage(true);
+          await axios.post(`/ajax/profile/${userId ?? animalId}/${number}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'X-Requested-With': 'XMLHttpRequest',
+            }
+          })
+          .then(response => {
+            const randomParam = Math.random();
+            if (userId) {
+              setNewImage(`/img/users/user-${userId}-${number}.jpg?${randomParam}`);
+            }
+            if (animalId) {
+              setNewImage(`/img/animals/animal-${animalId}-${number}.jpg?${randomParam}`);
+            }
+            setUploadingImage(false);
+          })
+          .catch(error => setUploadingImage(false));
+        });
       }
     }
   }
@@ -75,12 +83,20 @@ export default function SquareImage({srcPath, main, number, userId, animalId}) {
               <input type="file" accept="image/png, image/jpeg, image/jpg" name="" id="" onChange={(e) => setFile(e.target.files[0])} />
               {typeof file == "object" ? (
                 <>
-                  <ReactCrop minHeight={100} minWidth={100} keepSelection={true} aspect={1} crop={crop} onChange={c => setCrop(c)} onComplete={handleCrop}>
-                    {beforeCropImage ? (<img src={beforeCropImage} />) : null}
-                  </ReactCrop>
-                  {crop ? (
-                    <button type="button" className="mt-4 inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-base bg-blue-purple px-3 py-2 rounded-xl uppercase float-right" onClick={saveImage}>Envoyer</button>
+                  {beforeCropImage ? (
+                      <Cropper
+                        aspectRatio={1/1}
+                        src={beforeCropImage}
+                        minCropBoxWidth={100} minCropBoxHeight={100}
+                        guides={false}
+                        crop={onCrop}
+                        ref={cropperRef}
+                      />
                   ) : null}
+
+                  {typeof cropperImage.current == "object" && uploadingImage == false ? (
+                    <button type="button" className="mt-4 inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-base bg-blue-purple px-3 py-2 rounded-xl uppercase float-right" onClick={saveImage}>Envoyer</button>
+                  ) : <Spinner className="mt-4 inline-block justify-center float-right h-10 w-10 text-blue-purple"/>}
                 </>
               ) : null}
           </Modal.Body>
