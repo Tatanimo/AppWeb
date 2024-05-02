@@ -1,11 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CitiesInput from './CitiesInput'
 import ButtonSubmit from '../button/ButtonSubmit'
 import { DateRangePicker, Datepicker } from 'flowbite-datepicker';
 import fr from 'flowbite-datepicker/locales/fr';
+import Select from 'react-select';
+import axios from 'axios';
 
+async function fetchAnimals(){
+    let response;
+    await axios.get('/ajax/animal/user', {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(res => response = res.data)
+    return response;
+}
 
 export default function SearchPetsitter() {
+    const [selectedAnimals, setSelectedAnimals] = useState([]);
+    const [options, setOptions] = useState([]);
+
     useEffect(() => {
         const dateRangePickerEl = document.getElementById('dateRangePickerId');
         Object.assign(Datepicker.locales, fr);
@@ -14,7 +29,20 @@ export default function SearchPetsitter() {
             language: 'fr',
             minDate : new Date(Date.now() + 86400000),
         }); 
+
+        fetchAnimals().then(res => {
+            let selectables = [];
+            res.forEach(animal => {
+                const select = {
+                    "value": animal.id,
+                    "label": animal.name
+                };
+                selectables.push(select);
+            });
+            setOptions(selectables);
+        });
     }, [])
+    
   return (
     <form className="">
         <span className="font-ChunkFive text-4xl">Je recherche quelqu'un du :</span>
@@ -54,13 +82,9 @@ export default function SearchPetsitter() {
             </div>
         </div>
         <br />
-        <div>
+        <div className='flex items-center'>
             <span className="font-ChunkFive text-4xl pr-4">pour garder :</span>
-            <select id="select-animals" name="select-animals">
-                <option>Animal 1</option>
-                <option>Animal 2</option>
-                <option>Animal 3</option>
-            </select>
+            <Select value={selectedAnimals} onChange={setSelectedAnimals} isMulti options={options} className='basic-multi-select w-1/2' classNamePrefix="select" id="select-animals" name="select-animals" />
         </div>
         <ButtonSubmit className={"float-right"} content={"Rechercher"} />
     </form>

@@ -77,7 +77,7 @@ export default function CitiesInput() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+            <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
               {filteredCities.length === 0 && query !== '' || filteredCities.length === undefined ? (
                 <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
                   Nothing found.
