@@ -80,7 +80,7 @@ export default function SquareImage({srcPath, main, number, userId, animalId}) {
         <Modal className="" dismissible show={openModal} size="md" popup onClose={() => setOpenModal(false)}>
           <Modal.Header />
             <Modal.Body>
-              <input type="file" accept="image/png, image/jpeg, image/jpg" name="" id="" onChange={(e) => setFile(e.target.files[0])} />
+              <input type="file" accept="image/*" name="" id="" onChange={(e) => setFile(e.target.files[0])} />
               {typeof file == "object" ? (
                 <>
                   {beforeCropImage ? (

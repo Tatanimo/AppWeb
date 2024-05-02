@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { endpoint } from '../../../config'
 import AddUpdateAnimalModal from '../modals/AddUpdateAnimalModal';
 
-export default function AddAnimal() {
+export default function AddAnimal({setFetchById}) {
     const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -12,7 +12,7 @@ export default function AddAnimal() {
         </div>
 
         {openModal ? (
-            <AddUpdateAnimalModal openModal={openModal} setOpenModal={setOpenModal} type={"add"}/>
+            <AddUpdateAnimalModal openModal={openModal} setOpenModal={setOpenModal} type={"add"} setFetchById={setFetchById}/>
         ) : null}
 
     </>

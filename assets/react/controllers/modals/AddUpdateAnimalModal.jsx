@@ -23,16 +23,21 @@ async function fetchAnimal(id) {
     return response;
 }
 
-function AddUpdateAnimalModal({openModal, setOpenModal, animalId}) {
+function AddUpdateAnimalModal({openModal, setOpenModal, animalId, setFetchById}) {
     const [loading, setLoading] = useState(false);
     const [categoriesAnimals, setCategoriesAnimals] = useState([]);
-    const [value, setValue] = useState({animalId: animalId});
+    const [value, setValue] = useState({});
     const [requirements, setRequirements] = useState([]);
 
     useEffect(() => {
         fetchCategoriesAnimals().then(res => setCategoriesAnimals(res));
         if (animalId) {
-            fetchAnimal(animalId).then(res => setValue(res));
+            fetchAnimal(animalId).then(res => {
+                res.birthdate = new Date(res.birthdate).toLocaleDateString();
+                res.category = res.fk_categoryId;
+                res.animalId = res.id;
+                setValue(res);
+            });
         }
     }, []);
     
@@ -67,12 +72,14 @@ function AddUpdateAnimalModal({openModal, setOpenModal, animalId}) {
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
-        .then(response => setLoading(false))
-        .catch(error => setLoading(false));
+        .then(response => {
+            setFetchById(response.data);
+            setLoading(false);
+        })
+        .catch(error => {
+            console.error(error)
+            setLoading(false)});
     }
-
-
-    console.log(value)
 
   return (
     <Modal className="" dismissible show={openModal} size="md" popup onClose={() => setOpenModal(false)}>
@@ -86,7 +93,7 @@ function AddUpdateAnimalModal({openModal, setOpenModal, animalId}) {
                     <TextInput className="[&>div>input]:bg-light-gray" id="name" placeholder="Nom de l'animal*" onChange={e => setValue({...value, name: e.target.value})} value={value.name ?? ""} autoFocus required />
                 </div>
                 <div>
-                    <Select className='w-full [&>div>select]:bg-light-gray [&>div>select]:text-gray-500' value={value.fk_categoryId ?? ""} onChange={e => setValue({...value, category: parseInt(e.target.value)})}>
+                    <Select className='w-full [&>div>select]:bg-light-gray [&>div>select]:text-gray-500' value={value.category ?? ""} onChange={e => setValue({...value, category: parseInt(e.target.value)})}>
                         <option>Selectionner la catégorie de l'animal*</option>
                         {categoriesAnimals.map((e) => {
                             return(
@@ -102,7 +109,7 @@ function AddUpdateAnimalModal({openModal, setOpenModal, animalId}) {
                     setValue({...value, weight: parseFloat(e.target.value)}): setValue({...value, weight: null})}} />
                 </div>
                 <div>
-                    <Datepicker language='FR' placeholder='Date de naissance*' maxDate={new Date()} className="[&>div>div>input]:bg-light-gray" required value={value.birthdate ? new Date(value.birthdate).toLocaleDateString() : ""} onSelectedDateChanged={e => setValue({...value, birthdate: new Date(e).toLocaleDateString()})} />
+                    <Datepicker language='FR' placeholder='Date de naissance*' maxDate={new Date()} className="[&>div>div>input]:bg-light-gray" required value={value.birthdate ?? ""} onSelectedDateChanged={e => setValue({...value, birthdate: new Date(e).toLocaleDateString()})} />
                 </div>
                 <div>
                     <Textarea className="bg-light-gray" id="password" placeholder="Insérer une description de l'animal" value={value.description ?? ""} onChange={e => setValue({...value, description: e.target.value})} />
@@ -111,7 +118,7 @@ function AddUpdateAnimalModal({openModal, setOpenModal, animalId}) {
                     {loading ? (
                     <Spinner className="m-auto h-10 w-10 text-blue-purple"/>
                     ) : (
-                    <Button className="m-auto bg-blue-purple w-64 hover:opacity-75 hover:!bg-blue-purple" onClick={() => handleSubmit()}>Ajouter l'animal</Button>
+                    <Button className="m-auto bg-blue-purple w-64 hover:opacity-75 hover:!bg-blue-purple" onClick={() => handleSubmit()}>{animalId ? "Modifier" : "Ajouter"} l'animal</Button>
                     )}
                 </div>
             </div>

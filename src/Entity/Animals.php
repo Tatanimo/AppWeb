@@ -56,9 +56,23 @@ class Animals
     #[ORM\OneToMany(targetEntity: Schedules::class, mappedBy: 'animals')]
     private Collection $schedules;
 
+    #[Groups("main")]
+    private array $images = [];
+
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
+    }
+
+    public function getImages(): array 
+    {
+        return $this->images;
+    }
+
+    public function setImages($value): static 
+    {
+        $this->images = $value;
+        return $this;
     }
 
     public function getFkCategoryId(): ?int

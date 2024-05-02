@@ -41,6 +41,7 @@
         "air-datepicker": "^3.5.0",
         "animate.css": "^4.1.1",
         "axios": "^1.6.8",
+        "datetime-difference": "^1.0.2",
         "event-source-polyfill": "^1.0.31",
         "flowbite-datepicker": "^1.2.6",
         "flowbite-react": "^0.8.0",

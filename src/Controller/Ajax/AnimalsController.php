@@ -7,6 +7,7 @@ use App\Entity\Users;
 use App\Repository\AnimalsRepository;
 use App\Repository\CategoryAnimalsRepository;
 use App\Services\Mercure\AlertService;
+use App\Services\Twig\FindImages;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,12 +44,13 @@ class AnimalsController extends AbstractController
                 return $this->json("L'animal n'appartient pas à l'utilisateur", 401);
             }
         }
-
+        
         try {
+            $birthdate = str_replace('/', '-', $data["birthdate"]);
             $animal = isset($data["animalId"]) ? $animalsRepository->findOneBy(["id" => $data["animalId"], "fk_user" => $user]) : new Animals();
             $category = $categoryAnimalsRepository->findOneBy(["id" => $data["category"]]);
 
-            $animal->setBirthdate(new DateTime($data["birthdate"]))->setName($data["name"])->setFkCategory($category)->setDescription($data["description"])->setRace($data["race"])->setWeight($data["weight"])->setFkUser($user);
+            $animal->setBirthdate(new DateTime($birthdate))->setName($data["name"])->setFkCategory($category)->setDescription($data["description"] ?? null)->setRace($data["race"] ?? null)->setWeight($data["weight"] ?? null)->setFkUser($user);
 
             $em->persist($animal);
             $em->flush();
@@ -58,11 +60,32 @@ class AnimalsController extends AbstractController
             return $this->json("Erreur lors de la sauvegarde des données : $th", 401);
         }
 
-        return $this->json("Animal sauvegardé", 200);
+        return $this->json($animal->getId(), 200);
+    }
+    
+    #[Route('/ajax/animal/user', name: 'app_ajax_getAnimalsByUser', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function getAnimalsByUser(#[CurrentUser] ?Users $user, AnimalsRepository $animalsRepository, FindImages $findImages): JsonResponse
+    {
+        if (!isset($user)) {
+            return $this->json("Non authentifiée", 401);
+        }
+
+        $animals = $animalsRepository->findBy(["fk_user" => $user]);
+
+        if (!isset($animals)) {
+            return $this->json("Animaux introuvables", 401);
+        }
+
+        foreach ($animals as $animal) {
+            $images = $findImages->findAnimalImages($animal->getId());
+            $animal->setImages($images);
+        }
+
+        return $this->json($animals, 200, context: ['groups'=>'main']);
     }
 
     #[Route('/ajax/animal/{id}', name: 'app_ajax_getAnimal', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function getAnimal(#[CurrentUser] ?Users $user, Request $request, AnimalsRepository $animalsRepository, $id): JsonResponse
+    public function getAnimal(#[CurrentUser] ?Users $user, AnimalsRepository $animalsRepository, FindImages $findImages, $id): JsonResponse
     {
         if (!isset($user)) {
             return $this->json("Non authentifiée", 401);
@@ -78,6 +101,10 @@ class AnimalsController extends AbstractController
             return $this->json("Animal introuvable", 401);
         }
 
+        $images = $findImages->findAnimalImages($animal->getId());
+        $animal->setImages($images);
+
         return $this->json($animal, 200, context: ['groups'=>'main']);
     }
+
 }

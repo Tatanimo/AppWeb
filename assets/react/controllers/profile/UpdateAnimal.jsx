@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { endpoint } from '../../../config'
 import AddUpdateAnimalModal from '../modals/AddUpdateAnimalModal';
 
-function UpdateAnimal({animalId}) {
+function UpdateAnimal({animalId, setFetchById}) {
     const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -12,7 +12,7 @@ function UpdateAnimal({animalId}) {
         </button>
 
         {openModal ? (
-            <AddUpdateAnimalModal openModal={openModal} setOpenModal={setOpenModal} animalId={animalId}/>
+            <AddUpdateAnimalModal openModal={openModal} setOpenModal={setOpenModal} animalId={animalId} setFetchById={setFetchById}/>
         ) : null}
     </>
   )

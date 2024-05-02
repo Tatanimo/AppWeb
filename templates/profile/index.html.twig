@@ -19,21 +19,8 @@
 
         <section id="section-description" class="flex justify-center flex-col my-12" {{react_component('profile/Description', {description: app.user.description, userId: app.user.id})}}></section>
 
-        <section id="section-animals">
-            {% for animal in getAnimalsUser() %}
-            {% set difference = date("now"|date("m/d/Y")).diff(date(animal.birthdate)) %}
-                <div id="animal-card" class="border border-black rounded-lg h-96 flex p-4 m-4">
-                    <div class="mx-6 min-w-64 max-w-64 content-center" id="animal-img" {{react_component('images/ProfileImages', {animalId: animal.id, images: findAnimalImages(animal.id)})}}></div>
-                    <div id="animal-content" class="w-full">
-                        <h2 class="font-ChunkFive text-4xl">{{animal.name|capitalize}}</h2>
-                        <h2 class="font-ChunkFive text-4xl">{{difference.y}} ans</h2>
-                        <br/>
-                        <p class="text-lg">{{animal.description}}</p>
-                    </div>
-                    <div id="animal-setting" class="min-w-20 max-w-20 flex flex-col justify-end ml-4" {{react_component('profile/UpdateAnimal', {animalId: animal.id})}}></div>
-                </div>
-            {% endfor %}
-            <div class="flex justify-end mt-4" id="add-animal" {{react_component('profile/AddAnimal')}}></div>
+        <section id="section-animals" >
+            <div {{react_component('profile/Animals')}}></div>
         </section>
     </div>
 {% endblock %}
