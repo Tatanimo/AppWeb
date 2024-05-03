@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\Table(name: '`users`')]
@@ -17,9 +18,11 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("main")]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups("main")]
     private ?string $email = null;
 
     /**
@@ -35,6 +38,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("main")]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -51,9 +55,11 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     #[ORM\Column(length: 50, nullable: false)]
+    #[Groups("main")]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 100, nullable: false)]
+    #[Groups("main")]
     private ?string $last_name = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
@@ -76,6 +82,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups("main")]
     private ?Cities $cities = null;
 
     #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'author')]

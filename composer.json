@@ -46,6 +46,7 @@
         "symfony/ux-react": "^2.16",
         "symfony/ux-turbo": "^2.16",
         "symfony/validator": "6.4.*",
+        "symfony/var-exporter": "7.0.4",
         "symfony/web-link": "6.4.*",
         "symfony/webpack-encore-bundle": "^2.1",
         "symfony/yaml": "6.4.*",

@@ -4,7 +4,7 @@ import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 
-export default function CitiesInput() {
+export default function CitiesInput({onCitySelect}) {
   const [cities, setCities] = useState([]);
   const [selected, setSelected] = useState({})
   const [query, setQuery] = useState('')
@@ -29,6 +29,10 @@ export default function CitiesInput() {
       setSelected({});
     }
   }, [cities])
+
+  useEffect(() => {
+    onCitySelect(selected);
+  }, [selected]);
 
   const filteredCities =
     query === '' || cities.length === 0

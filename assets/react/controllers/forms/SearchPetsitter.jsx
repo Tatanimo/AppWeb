@@ -5,6 +5,7 @@ import { DateRangePicker, Datepicker } from 'flowbite-datepicker';
 import fr from 'flowbite-datepicker/locales/fr';
 import Select from 'react-select';
 import axios from 'axios';
+import { Spinner } from 'flowbite-react';
 
 async function fetchAnimals(){
     let response;
@@ -13,13 +14,27 @@ async function fetchAnimals(){
             'X-Requested-With': 'XMLHttpRequest'
         }
     })
+    .then(res => response = res.data);
+    return response;
+}
+
+async function fetchUsersInAreaAndService(service, idCity, area){
+    let response;
+    await axios.get(`/ajax/users/${service}/${idCity}/${area}`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
     .then(res => response = res.data)
     return response;
 }
 
-export default function SearchPetsitter() {
+export default function SearchPetsitter({onPetsitters}) {
     const [selectedAnimals, setSelectedAnimals] = useState([]);
     const [options, setOptions] = useState([]);
+    const [city, setCity] = useState({});
+    const [radius, setRadius] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const dateRangePickerEl = document.getElementById('dateRangePickerId');
@@ -44,11 +59,15 @@ export default function SearchPetsitter() {
     }, []);
 
     const handleForm = () => {
-        
+        setIsLoading(true);
+        fetchUsersInAreaAndService("petsitter", city.id, radius)
+        .then(res => onPetsitters(res))
+        .catch(err => console.error(err))
+        .finally(() => setIsLoading(false));
     }
     
   return (
-    <form className="">
+    <form>
         <span className="font-ChunkFive text-4xl">Je recherche quelqu'un du :</span>
         <div className="mt-6">
             <div className="flex items-center" id="dateRangePickerId">
@@ -75,12 +94,12 @@ export default function SearchPetsitter() {
         <div className='flex'>
             <div className='flex'>
                 <span className="font-ChunkFive text-4xl mr-6">aux environs de :</span>
-                <CitiesInput />
+                <CitiesInput onCitySelect={setCity} />
             </div>
             <div className='flex'>
                 <span className="font-ChunkFive text-4xl mx-6">dans un rayon de :</span>
                 <div className='flex bg-[#EEF0F4] items-center pl-4 rounded-2xl overflow-hidden'>
-                    <input type='number' name="radius-of" className='bg-inherit text-xl w-16 border-none' id="radius-of" />
+                    <input onChange={(e) => setRadius(parseInt(e.target.value))} type='number' name="radius-of" className='bg-inherit text-xl w-16 border-none' id="radius-of" />
                     <span className='pr-4 text-xl'>km</span>
                 </div>
             </div>
@@ -90,7 +109,16 @@ export default function SearchPetsitter() {
             <span className="font-ChunkFive text-4xl pr-4">pour garder :</span>
             <Select value={selectedAnimals} onChange={setSelectedAnimals} isMulti options={options} className='basic-multi-select w-1/2' classNamePrefix="select" id="select-animals" name="select-animals" />
         </div>
-        <button onClick={handleForm} className={`inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase float-right`}>Rechercher</button>
+        <br />
+        <div className='flex justify-end'>
+            {isLoading ? (
+                <>
+                    <Spinner className={`w-16 h-auto fill-blue-purple`} />
+                </>
+            ) : (
+                <button onClick={handleForm} type='button' className={`inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase`}>Rechercher</button>
+            )}
+        </div>
     </form>
   )
 }

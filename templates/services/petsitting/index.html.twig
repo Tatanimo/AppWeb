@@ -8,8 +8,8 @@
              alt="Chien et enfant devant une rivière"
              class="w-full object-cover">
     </section>
-    <section class="px-28 flex flex-col items-center">
+    <section class="flex flex-col items-center mb-8">
         <div {{ react_component('headers/FirstHeader', {'content': "Garde d'animaux", 'color': 'black', 'className': 'pt-32 mb-16'}) }}></div>
-        <div class="bg-beige w-full p-12 rounded-3xl" {{ react_component('forms/SearchPetsitter')}}></div>
+        <div {{react_component('services/Petsitting')}}></div>
     </section>
 {% endblock %}
