@@ -41,7 +41,11 @@ export default function SearchPetsitter() {
             });
             setOptions(selectables);
         });
-    }, [])
+    }, []);
+
+    const handleForm = () => {
+        
+    }
     
   return (
     <form className="">
@@ -86,7 +90,7 @@ export default function SearchPetsitter() {
             <span className="font-ChunkFive text-4xl pr-4">pour garder :</span>
             <Select value={selectedAnimals} onChange={setSelectedAnimals} isMulti options={options} className='basic-multi-select w-1/2' classNamePrefix="select" id="select-animals" name="select-animals" />
         </div>
-        <ButtonSubmit className={"float-right"} content={"Rechercher"} />
+        <button onClick={handleForm} className={`inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase float-right`}>Rechercher</button>
     </form>
   )
 }

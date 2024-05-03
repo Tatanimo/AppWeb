@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240430132558 extends AbstractMigration
+final class Version20240503082001 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,7 +23,7 @@ final class Version20240430132558 extends AbstractMigration
         $this->addSql('CREATE TABLE animals (id INT AUTO_INCREMENT NOT NULL, fk_category_id INT NOT NULL, fk_user_id INT NOT NULL, name VARCHAR(50) NOT NULL, race VARCHAR(50) DEFAULT NULL, weight DOUBLE PRECISION DEFAULT NULL, birthdate DATE DEFAULT NULL, death TINYINT(1) DEFAULT NULL, description LONGTEXT DEFAULT NULL, INDEX IDX_966C69DD7BB031D6 (fk_category_id), INDEX IDX_966C69DD5741EEB9 (fk_user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE articles (id INT AUTO_INCREMENT NOT NULL, users_id INT DEFAULT NULL, title VARCHAR(50) NOT NULL, content LONGTEXT NOT NULL, image VARCHAR(50) DEFAULT NULL, publication_date DATE DEFAULT NULL, state TINYINT(1) DEFAULT NULL, keyword JSON DEFAULT NULL, modification_date DATE DEFAULT NULL, slug VARCHAR(50) NOT NULL, INDEX IDX_BFDD316867B3B43D (users_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE category_animals (id INT AUTO_INCREMENT NOT NULL, fk_family_id INT DEFAULT NULL, name VARCHAR(50) NOT NULL, description LONGTEXT DEFAULT NULL, image VARCHAR(50) DEFAULT NULL, INDEX IDX_51B429A3A20781FA (fk_family_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE cities (id INT AUTO_INCREMENT NOT NULL, department_code VARCHAR(3) DEFAULT NULL, name VARCHAR(255) NOT NULL, zip_code VARCHAR(5) DEFAULT NULL, insee_code VARCHAR(5) DEFAULT NULL, slug VARCHAR(255) DEFAULT NULL, INDEX IDX_D95DB16BD50F57CD (department_code), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE cities (id INT AUTO_INCREMENT NOT NULL, department_code VARCHAR(3) DEFAULT NULL, name VARCHAR(255) NOT NULL, zip_code INT DEFAULT NULL, latitude DOUBLE PRECISION DEFAULT NULL, longitude DOUBLE PRECISION DEFAULT NULL, insee_code INT DEFAULT NULL, slug VARCHAR(255) DEFAULT NULL, INDEX IDX_D95DB16BD50F57CD (department_code), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE commentaries (id INT AUTO_INCREMENT NOT NULL, fk_user_id INT NOT NULL, posts_id INT NOT NULL, content LONGTEXT NOT NULL, publication_date DATE NOT NULL, modification_date DATETIME DEFAULT NULL, INDEX IDX_4ED55CCB5741EEB9 (fk_user_id), INDEX IDX_4ED55CCBD5E258C5 (posts_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE companies (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, image VARCHAR(50) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE companies_addresses (id INT AUTO_INCREMENT NOT NULL, companies_id INT NOT NULL, cities_id INT NOT NULL, address VARCHAR(255) NOT NULL, INDEX IDX_9E53F9446AE4741E (companies_id), INDEX IDX_9E53F944CAC75398 (cities_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

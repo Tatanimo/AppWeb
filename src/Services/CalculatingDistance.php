@@ -2,19 +2,24 @@
 
 namespace App\Services;
 
+use App\Repository\CitiesRepository;
+use App\Repository\UsersRepository;
+
 class CalculatingDistance
 {
-/**
- * Calculates the great-circle distance between two points, with
- * the Haversine formula.
- * @param float $latitudeFrom Latitude of start point in [deg decimal]
- * @param float $longitudeFrom Longitude of start point in [deg decimal]
- * @param float $latitudeTo Latitude of target point in [deg decimal]
- * @param float $longitudeTo Longitude of target point in [deg decimal]
- * @param float $earthRadius Mean earth radius in [m]
- * @return float Distance between points in [m] (same as earthRadius)
- */
-function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
+  public function __construct(private UsersRepository $usersRepository, private CitiesRepository $citiesRepository){}
+
+  /**
+   * Calculates the great-circle distance between two points, with
+   * the Haversine formula.
+   * @param float $latitudeFrom Latitude of start point in [deg decimal]
+   * @param float $longitudeFrom Longitude of start point in [deg decimal]
+   * @param float $latitudeTo Latitude of target point in [deg decimal]
+   * @param float $longitudeTo Longitude of target point in [deg decimal]
+   * @param float $earthRadius Mean earth radius in [m]
+   * @return float Distance between points in [m] (same as earthRadius)
+   */
+  public function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
   {
     $latFrom = deg2rad($latitudeFrom);
     $lonFrom = deg2rad($longitudeFrom);
@@ -26,5 +31,41 @@ function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo
   
     $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
     return $angle * $earthRadius;
+  }
+
+  private function findByKM(int $id, int $dist) : array {
+    $city = $this->citiesRepository->findOneBy(["id" => $id]);
+    $allCities = $this->citiesRepository->findAll();
+
+    $cities = [];
+    foreach ($allCities as $e) {
+        $distanceFromCity = $this->haversineGreatCircleDistance($city->getLatitude(), $city->getLongitude(), $e->getLatitude(), $e->getLongitude());
+        if ($distanceFromCity <= $dist) {
+            array_push($cities, ["dist" => $distanceFromCity, "id" => $e->getId()]);
+        }
+    }
+
+    usort($cities, function ($a, $b) {
+        return $a["dist"] > $b["dist"];
+    });
+
+    return $cities;
+  }
+
+  public function getUsersInAreaAndService(string $type, int $idCity, int $km) : array
+  {
+    $users = $this->usersRepository->findAllByCompaniesType($type);
+    $cities = $this->findByKM($idCity, $km);
+    $idCities = array_column($cities, 'id');
+    $usersInArea = [];
+    foreach ($users as $user) {
+        $city = $user->getCities();
+        if (in_array($city->getId(), $idCities)) {
+            $key = array_search($city->getId(), $idCities);
+            array_push($usersInArea, [$user, $cities[$key]["dist"]]);
+        }
+    }
+
+    return $usersInArea;
   }
 }

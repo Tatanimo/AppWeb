@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Cities;
+use App\Services\CalculatingDistance;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query\Parameter;
@@ -58,7 +59,6 @@ class CitiesRepository extends ServiceEntityRepository
                 ->getResult()
             ;
         }
-
         
         public function findOneByRequest($request) : Cities
         {
@@ -66,15 +66,5 @@ class CitiesRepository extends ServiceEntityRepository
             $cityName = trim($explodeCity[0]);
             $zipCode = rtrim($explodeCity[1], ')');
             return $this->findOneBy(['name' => $cityName, 'zip_code' => $zipCode]);
-        }   
-
-    //    public function findOneBySomeField($value): ?Cities
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        } 
 }

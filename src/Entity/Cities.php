@@ -22,8 +22,8 @@ class Cities
     private ?string $name = null;
 
     #[Groups("main")]
-    #[ORM\Column(length: 5, nullable: true)]
-    private ?string $zip_code = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $zip_code = null;
 
     #[ORM\OneToMany(targetEntity: Users::class, mappedBy: 'cities')]
     private Collection $users;
@@ -33,8 +33,15 @@ class Cities
     private ?Departments $department_code = null;
 
     #[Groups("main")]
-    #[ORM\Column(length: 5, nullable: true)]
-    private ?string $insee_code = null;
+    #[ORM\Column(nullable: true)]
+    private ?float $latitude = null;
+    #[Groups("main")]
+    #[ORM\Column(nullable: true)]
+    private ?float $longitude = null;
+
+    #[Groups("main")]
+    #[ORM\Column(nullable: true)]
+    private ?int $insee_code = null;
 
     #[Groups("main")]
     #[ORM\Column(length: 255, nullable: true)]
@@ -66,12 +73,36 @@ class Cities
         return $this;
     }
 
-    public function getZipCode(): ?string
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(float $longitude): static
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(float $latitude): static
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?int
     {
         return $this->zip_code;
     }
 
-    public function setZipCode(string $zip_code): static
+    public function setZipCode(int $zip_code): static
     {
         $this->zip_code = $zip_code;
 
@@ -90,12 +121,12 @@ class Cities
         return $this;
     }
 
-    public function getInseeCode(): ?string
+    public function getInseeCode(): ?int
     {
         return $this->insee_code;
     }
 
-    public function setInseeCode(?string $insee_code): static
+    public function setInseeCode(?int $insee_code): static
     {
         $this->insee_code = $insee_code;
 
