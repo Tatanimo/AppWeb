@@ -74,12 +74,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Animals::class, mappedBy: 'fk_user', orphanRemoval: true)]
     private Collection $animals;
 
-    #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'fk_user_sender', orphanRemoval: true)]
-    private Collection $reviewsSender;
-
-    #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'fk_user_receiver', orphanRemoval: true)]
-    private Collection $reviewsReceiver;
-
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups("main")]
@@ -100,17 +94,25 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_date = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Professionals $professionals = null;
+
+    /**
+     * @var Collection<int, Reviews>
+     */
+    #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'user')]
+    private Collection $reviews;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->commentaries = new ArrayCollection();
         $this->animals = new ArrayCollection();
-        $this->reviewsSender = new ArrayCollection();
-        $this->reviewsReceiver = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->schedules = new ArrayCollection();
         $this->articles = new ArrayCollection();
         $this->reactions = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -374,66 +376,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, AvisUser>
-     */
-    public function getReviewsSender(): Collection
-    {
-        return $this->reviewsSender;
-    }
-
-    public function addReviewsSender(Reviews $reviews): static
-    {
-        if (!$this->reviewsSender->contains($reviews)) {
-            $this->reviewsSender->add($reviews);
-            $reviews->setFkUserSender($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReviewsSender(Reviews $reviews): static
-    {
-        if ($this->reviewsSender->removeElement($reviews)) {
-            // set the owning side to null (unless already changed)
-            if ($reviews->getFkUserSender() === $this) {
-                $reviews->setFkUserSender(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, AvisUser>
-     */
-    public function getReviewsReceiver(): Collection
-    {
-        return $this->reviewsReceiver;
-    }
-
-    public function addReviewsReceiver(Reviews $reviews): static
-    {
-        if (!$this->reviewsReceiver->contains($reviews)) {
-            $this->reviewsReceiver->add($reviews);
-            $reviews->setFkUserReceiver($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReviewsReceiver(Reviews $reviews): static
-    {
-        if ($this->reviewsReceiver->removeElement($reviews)) {
-            // set the owning side to null (unless already changed)
-            if ($reviews->getFkUserReceiver() === $this) {
-                $reviews->setFkUserReceiver(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getCities(): ?Cities
     {
         return $this->cities;
@@ -574,6 +516,53 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedDate(\DateTimeInterface $created_date): static
     {
         $this->created_date = $created_date;
+
+        return $this;
+    }
+
+    public function getProfessionals(): ?Professionals
+    {
+        return $this->professionals;
+    }
+
+    public function setProfessionals(Professionals $professionals): static
+    {
+        // set the owning side of the relation if necessary
+        if ($professionals->getUser() !== $this) {
+            $professionals->setUser($this);
+        }
+
+        $this->professionals = $professionals;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reviews>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Reviews $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Reviews $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getUser() === $this) {
+                $review->setUser(null);
+            }
+        }
 
         return $this;
     }

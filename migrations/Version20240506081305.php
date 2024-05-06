@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240503082001 extends AbstractMigration
+final class Version20240506081305 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,6 +31,7 @@ final class Version20240503082001 extends AbstractMigration
         $this->addSql('CREATE TABLE family_animals (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, description LONGTEXT DEFAULT NULL, image VARCHAR(50) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE messages (id INT AUTO_INCREMENT NOT NULL, rooms_id VARCHAR(255) DEFAULT NULL, author_id INT NOT NULL, content LONGTEXT NOT NULL, publication_date DATETIME NOT NULL, INDEX IDX_DB021E968E2368AB (rooms_id), INDEX IDX_DB021E96F675F31B (author_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE posts (id INT AUTO_INCREMENT NOT NULL, fk_user_id INT NOT NULL, content LONGTEXT NOT NULL, publication_date DATE NOT NULL, keyword JSON DEFAULT NULL, state TINYINT(1) DEFAULT NULL, modification_date DATETIME DEFAULT NULL, INDEX IDX_885DBAFA5741EEB9 (fk_user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE professionals (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, live_in VARCHAR(255) NOT NULL, price DOUBLE PRECISION NOT NULL, address VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, criteria JSON DEFAULT NULL, UNIQUE INDEX UNIQ_2DBE308EA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reactions (id INT AUTO_INCREMENT NOT NULL, posts_id INT DEFAULT NULL, users_id INT NOT NULL, commentaries_id INT DEFAULT NULL, emoji VARCHAR(50) NOT NULL, INDEX IDX_38737FB3D5E258C5 (posts_id), INDEX IDX_38737FB367B3B43D (users_id), INDEX IDX_38737FB31B0C88DC (commentaries_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE regions (code VARCHAR(3) NOT NULL, name VARCHAR(255) DEFAULT NULL, slug VARCHAR(255) DEFAULT NULL, PRIMARY KEY(code)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reviews (fk_user_sender_id INT NOT NULL, fk_user_receiver_id INT NOT NULL, rating INT NOT NULL, comment VARCHAR(255) DEFAULT NULL, INDEX IDX_6970EB0F83CAD790 (fk_user_sender_id), INDEX IDX_6970EB0F32224354 (fk_user_receiver_id), PRIMARY KEY(fk_user_sender_id, fk_user_receiver_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -53,6 +54,7 @@ final class Version20240503082001 extends AbstractMigration
         $this->addSql('ALTER TABLE messages ADD CONSTRAINT FK_DB021E968E2368AB FOREIGN KEY (rooms_id) REFERENCES rooms (reference)');
         $this->addSql('ALTER TABLE messages ADD CONSTRAINT FK_DB021E96F675F31B FOREIGN KEY (author_id) REFERENCES `users` (id)');
         $this->addSql('ALTER TABLE posts ADD CONSTRAINT FK_885DBAFA5741EEB9 FOREIGN KEY (fk_user_id) REFERENCES `users` (id)');
+        $this->addSql('ALTER TABLE professionals ADD CONSTRAINT FK_2DBE308EA76ED395 FOREIGN KEY (user_id) REFERENCES `users` (id)');
         $this->addSql('ALTER TABLE reactions ADD CONSTRAINT FK_38737FB3D5E258C5 FOREIGN KEY (posts_id) REFERENCES posts (id)');
         $this->addSql('ALTER TABLE reactions ADD CONSTRAINT FK_38737FB367B3B43D FOREIGN KEY (users_id) REFERENCES `users` (id)');
         $this->addSql('ALTER TABLE reactions ADD CONSTRAINT FK_38737FB31B0C88DC FOREIGN KEY (commentaries_id) REFERENCES commentaries (id)');
@@ -82,6 +84,7 @@ final class Version20240503082001 extends AbstractMigration
         $this->addSql('ALTER TABLE messages DROP FOREIGN KEY FK_DB021E968E2368AB');
         $this->addSql('ALTER TABLE messages DROP FOREIGN KEY FK_DB021E96F675F31B');
         $this->addSql('ALTER TABLE posts DROP FOREIGN KEY FK_885DBAFA5741EEB9');
+        $this->addSql('ALTER TABLE professionals DROP FOREIGN KEY FK_2DBE308EA76ED395');
         $this->addSql('ALTER TABLE reactions DROP FOREIGN KEY FK_38737FB3D5E258C5');
         $this->addSql('ALTER TABLE reactions DROP FOREIGN KEY FK_38737FB367B3B43D');
         $this->addSql('ALTER TABLE reactions DROP FOREIGN KEY FK_38737FB31B0C88DC');
@@ -104,6 +107,7 @@ final class Version20240503082001 extends AbstractMigration
         $this->addSql('DROP TABLE family_animals');
         $this->addSql('DROP TABLE messages');
         $this->addSql('DROP TABLE posts');
+        $this->addSql('DROP TABLE professionals');
         $this->addSql('DROP TABLE reactions');
         $this->addSql('DROP TABLE regions');
         $this->addSql('DROP TABLE reviews');

@@ -50,10 +50,17 @@ class Cities
     #[ORM\OneToMany(targetEntity: CompaniesAddresses::class, mappedBy: 'cities', orphanRemoval: true)]
     private Collection $companiesAddresses;
 
+    /**
+     * @var Collection<int, Professionals>
+     */
+    #[ORM\OneToMany(targetEntity: Professionals::class, mappedBy: 'city')]
+    private Collection $professionals;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->companiesAddresses = new ArrayCollection();
+        $this->professionals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -169,6 +176,36 @@ class Cities
             // set the owning side to null (unless already changed)
             if ($companiesAddress->getCities() === $this) {
                 $companiesAddress->setCities(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Professionals>
+     */
+    public function getProfessionals(): Collection
+    {
+        return $this->professionals;
+    }
+
+    public function addProfessional(Professionals $professional): static
+    {
+        if (!$this->professionals->contains($professional)) {
+            $this->professionals->add($professional);
+            $professional->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProfessional(Professionals $professional): static
+    {
+        if ($this->professionals->removeElement($professional)) {
+            // set the owning side to null (unless already changed)
+            if ($professional->getCity() === $this) {
+                $professional->setCity(null);
             }
         }
 
