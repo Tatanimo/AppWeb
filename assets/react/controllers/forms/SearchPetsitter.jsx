@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import CitiesInput from './CitiesInput'
-import ButtonSubmit from '../button/ButtonSubmit'
 import { DateRangePicker, Datepicker } from 'flowbite-datepicker';
 import fr from 'flowbite-datepicker/locales/fr';
 import Select from 'react-select';
@@ -18,7 +17,7 @@ async function fetchAnimals(){
     return response;
 }
 
-async function fetchUsersInAreaAndService(service, idCity, area){
+async function fetchProfessionalsInAreaAndService(service, idCity, area){
     let response;
     await axios.get(`/ajax/users/${service}/${idCity}/${area}`, {
         headers: {
@@ -60,8 +59,8 @@ export default function SearchPetsitter({onPetsitters}) {
 
     const handleForm = () => {
         setIsLoading(true);
-        fetchUsersInAreaAndService("petsitter", city.id, radius)
-        .then(res => onPetsitters(res))
+        fetchProfessionalsInAreaAndService("petsitter", city.id, radius)
+        .then(res => {onPetsitters(res), console.log(res)})
         .catch(err => console.error(err))
         .finally(() => setIsLoading(false));
     }

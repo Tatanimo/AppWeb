@@ -22,14 +22,14 @@ class UserController extends AbstractController
     }
 
     #[Route('/ajax/users/{service}/{idCity}/{area}', name: 'app_getUser', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function fetchUsersInAreaAndService(CalculatingDistance $calculatingDistance, string $service, int $idCity, int $area): JsonResponse 
+    public function fetchProfessionalsInAreaAndService(CalculatingDistance $calculatingDistance, string $service, int $idCity, int $area): JsonResponse 
     {
-        $users = $calculatingDistance->getUsersInAreaAndService($service, $idCity, $area);
+        $professionals = $calculatingDistance->getProfessionalsInAreaAndService($service, $idCity, $area);
 
-        if (!isset($users)) {
+        if (!isset($professionals)) {
             return $this->json("Utilisateurs introuvable", 401);
         }
 
-        return $this->json($users, 200, context: ["groups" => "main"]);
+        return $this->json($professionals, 200, context: ["groups" => "main"]);
     }
 }

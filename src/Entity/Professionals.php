@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ProfessionalsRepository::class)]
 class Professionals
@@ -14,36 +15,50 @@ class Professionals
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("main")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("main")]
     private ?string $LiveIn = null;
 
     #[ORM\Column]
+    #[Groups("main")]
     private ?float $price = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("main")]
     private ?string $address = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups("main")]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("main")]
     private ?array $criteria = null;
 
     #[ORM\OneToOne(inversedBy: 'professionals', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("main")]
     private ?Users $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'professionals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("main")]
     private ?Cities $city = null;
 
     /**
      * @var Collection<int, Reviews>
      */
     #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'professional')]
+    #[Groups("main")]
     private Collection $reviews;
+
+    #[ORM\ManyToOne(inversedBy: 'professionals')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups("main")]
+    private ?ServicesType $service = null;
 
     public function __construct()
     {
@@ -165,6 +180,18 @@ class Professionals
                 $review->setProfessional(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getService(): ?ServicesType
+    {
+        return $this->service;
+    }
+
+    public function setService(?ServicesType $service): static
+    {
+        $this->service = $service;
 
         return $this;
     }

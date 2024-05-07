@@ -12,10 +12,10 @@ function Petsitting() {
         </div>
         <div className='grid xl:grid-cols-3 grid-cols-2 justify-items-center grid-rows-1 gap-5 mt-8'>
             {petsitters.map((e) => {
-                const user = e[0];
+                const professional = e[0];
                 const dist = e[1];
                 return(
-                    <PetsitterCard key={user.id} user={user} dist={dist} />
+                    <PetsitterCard key={professional.id} professional={professional} dist={dist} />
                 )
             })}
         </div>

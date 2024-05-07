@@ -56,10 +56,10 @@ class ReviewsFixtures extends Fixture implements DependentFixtureInterface
                 do {
                     $user = $this->usersRepository->randomUser();
                 } while (
-                    $professional->getUser() == $user || $this->reviewsRepository->findOneByUserAndProfessional($user->getId(), $professional->getId(), true) != null
+                    $professional->getUser() == $user || $this->reviewsRepository->findOneByUserAndProfessional($user->getId(), $professional->getId(), false) != null
                 );
 
-                $review->setUser($user)->setProfessional($professional)->setProfessionalReceiver(true)->setRating(rand(1,5))->setComment(boolval($randomComment) ? $faker->sentence() : null);
+                $review->setUser($user)->setProfessional($professional)->setProfessionalReceiver(false)->setRating(rand(1,5))->setComment(boolval($randomComment) ? $faker->sentence() : null);
                 
                 $manager->persist($review);
                 $manager->flush();

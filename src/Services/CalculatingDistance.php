@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Repository\CitiesRepository;
+use App\Repository\ProfessionalsRepository;
+use App\Repository\ServicesTypeRepository;
 use App\Repository\UsersRepository;
 
 class CalculatingDistance
 {
-  public function __construct(private UsersRepository $usersRepository, private CitiesRepository $citiesRepository){}
+  public function __construct(private UsersRepository $usersRepository, private CitiesRepository $citiesRepository, private ProfessionalsRepository $professionalsRepository, private ServicesTypeRepository $servicesTypeRepository){}
 
   /**
    * Calculates the great-circle distance between two points, with
@@ -52,20 +54,21 @@ class CalculatingDistance
     return $cities;
   }
 
-  public function getUsersInAreaAndService(string $type, int $idCity, int $km) : array
+  public function getProfessionalsInAreaAndService(string $type, int $idCity, int $km) : array
   {
-    $users = $this->usersRepository->findAllByCompaniesType($type);
+    $service = $this->servicesTypeRepository->findOneBy(["type" => $type]);
+    $professionals = $this->professionalsRepository->findBy(["service" => $service]);
     $cities = $this->findByKM($idCity, $km);
     $idCities = array_column($cities, 'id');
-    $usersInArea = [];
-    foreach ($users as $user) {
-        $city = $user->getCities();
+    $professionalsInArea = [];
+    foreach ($professionals as $professional) {
+        $city = $professional->getCity();
         if (in_array($city->getId(), $idCities)) {
             $key = array_search($city->getId(), $idCities);
-            array_push($usersInArea, [$user, $cities[$key]["dist"]]);
+            array_push($professionalsInArea, [$professional, $cities[$key]["dist"]]);
         }
     }
 
-    return $usersInArea;
+    return $professionalsInArea;
   }
 }
