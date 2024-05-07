@@ -5,6 +5,7 @@ import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 export default function SquareImage({srcPath, main, number, userId, animalId}) {
+  console.log(srcPath)
   const [openModal, setOpenModal] = useState(false);
   const [file, setFile] = useState();
   const [newImage, setNewImage] = useState('');
@@ -73,7 +74,7 @@ export default function SquareImage({srcPath, main, number, userId, animalId}) {
     return (
       <>
         <div onClick={() => setOpenModal(true)} className={`transition-opacity bg-light-gray cursor-pointer relative group hover:opacity-85 aspect-square ${main ? 'w-full' : 'w-1/3' }`}>  
-          {newImage ? <img src={newImage} className="w-full h-full object-cover" alt="user image" /> : srcPath ? <img src={srcPath} className="w-full h-full object-cover" alt="user image" /> : null}
+          {newImage ? <img src={newImage} className="w-full h-full object-cover" alt="user image" /> : srcPath ? <img src={`/${srcPath}`} className="w-full h-full object-cover" alt="user image" /> : null}
           <span className="transition-opacity duration-300 absolute left-1/2 top-1/2 font-ChunkFive font-bolder text-5xl -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100">+</span>
         </div>
 

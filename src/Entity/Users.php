@@ -72,6 +72,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $commentaries;
 
     #[ORM\OneToMany(targetEntity: Animals::class, mappedBy: 'fk_user', orphanRemoval: true)]
+    #[Groups("main")]
     private Collection $animals;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
