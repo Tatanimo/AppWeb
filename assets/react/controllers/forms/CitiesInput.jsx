@@ -4,7 +4,7 @@ import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 
-export default function CitiesInput({onCitySelect}) {
+export default function CitiesInput({onCitySelect, marginTop}) {
   const [cities, setCities] = useState([]);
   const [selected, setSelected] = useState({})
   const [query, setQuery] = useState('')
@@ -57,7 +57,7 @@ export default function CitiesInput({onCitySelect}) {
     );
     
   return (
-    <div className="top-16 w-72">
+    <div className={`top-16 w-72 ${marginTop}`}>
       <Combobox value={selected} onChange={(e) => setSelected(e)}>
         <div className="relative mt-1">
           <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">

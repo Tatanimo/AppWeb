@@ -1,22 +1,27 @@
 import { Menu, MenuHandler, MenuList, MenuItem, Button } from '@material-tailwind/react'
-import React from 'react'
+import React, { useState } from 'react'
+import ProfessionalModal from '../modals/ProfessionalModal'
 
 function ProfileDropdown({userInfo}) {
+    const [openModal, setOpenModal] = useState(false);
   return (
-    <Menu>
-      <MenuHandler>
-        <Button>
-            <img src="/img/icons/user_profile.svg"className="h-8"/>
-        </Button>
-      </MenuHandler>
-      <MenuList>
-        <a href={`/profil/${userInfo.id}`}>
-            <MenuItem>Profil</MenuItem>
-        </a>
-        <MenuItem>Menu Item 2</MenuItem>
-        <MenuItem>Menu Item 3</MenuItem>
-      </MenuList>
-    </Menu>
+    <>
+        <Menu>
+        <MenuHandler>
+            <Button>
+                <img src="/img/icons/user_profile.svg"className="h-8"/>
+            </Button>
+        </MenuHandler>
+        <MenuList>
+            <a href={`/profil/${userInfo.id}`}>
+                <MenuItem>Profil</MenuItem>
+            </a>
+            <MenuItem onClick={setOpenModal}>Devenir professionnel</MenuItem>
+        </MenuList>
+        </Menu>
+
+        <ProfessionalModal openModal={openModal} setOpenModal={setOpenModal} />
+    </>
   )
 }
 

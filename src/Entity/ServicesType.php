@@ -6,6 +6,7 @@ use App\Repository\ServicesTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ServicesTypeRepository::class)]
 class ServicesType
@@ -13,9 +14,11 @@ class ServicesType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("main")]
     private ?int $id = null;
 
     #[ORM\Column(length: 30, nullable: false)]
+    #[Groups("main")]
     private ?string $type = null;
 
     #[ORM\ManyToMany(targetEntity: Companies::class, inversedBy: 'servicesTypes')]
