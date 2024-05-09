@@ -3,7 +3,7 @@ import LoginRegisterModal from "../modals/LoginRegisterModal";
 
 export default function NavigationBar({user}) {
     const [openModal, setOpenModal] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(JSON.parse(user).id ? true : false);
+    const [userInfo, setUserInfo] = useState(JSON.parse(user) ?? null);
     return (
         <>
             <nav className="flex items-center justify-between pe-8">
@@ -37,9 +37,9 @@ export default function NavigationBar({user}) {
                         </a>
                     </li>
                     <li className="hover:bg-light-gray p-2 rounded-xl transition">
-                        {isLoggedIn ? (
+                        {userInfo ? (
                             <a className="cursor-pointer"
-                            href={`/profil/${JSON.parse(user).id}`}>
+                            href={`/profil/${userInfo.id}`}>
                                 <img src="/img/icons/user_profile.svg"
                                     className="h-8"/>
                             </a>
@@ -54,7 +54,7 @@ export default function NavigationBar({user}) {
                 </ul>
             </nav>
             <LoginRegisterModal openModal={openModal}
-                                setOpenModal={setOpenModal} setIsLoggedIn={setIsLoggedIn}/>
+                                setOpenModal={setOpenModal} setUserInfo={setUserInfo}/>
         </>
     );
 }

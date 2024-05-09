@@ -3,7 +3,7 @@ import { Button, TextInput } from "flowbite-react";
 import { Spinner } from "@material-tailwind/react";
 import Axios from "axios";
 
-export default function Login({setShowRegister, setOpenModal, setIsLoggedIn}) {
+export default function Login({setShowRegister, setOpenModal, setUserInfo}) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -19,10 +19,10 @@ export default function Login({setShowRegister, setOpenModal, setIsLoggedIn}) {
               headers: {
                 'Content-Type': 'application/json'
               }  
-            }).then(() => {
+            }).then((res) => {
+              setUserInfo(res.data.user);
               setLoading(false);
               setOpenModal(false);
-              setIsLoggedIn(true);
             }).catch((err) => {
               setLoading(false);
               throw err;
