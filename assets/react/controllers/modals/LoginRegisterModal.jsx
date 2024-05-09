@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Login from "../forms/Login";
 import Register from "../forms/Register";
 
-export default function LoginRegisterModal({openModal, setOpenModal, setUserInfo}) {
+export default function LoginRegisterModal({openModal, setOpenModal, setUserId}) {
   const [showRegister, setShowRegister] = useState(false);
 
   return (
@@ -12,7 +12,7 @@ export default function LoginRegisterModal({openModal, setOpenModal, setUserInfo
         <Modal.Header />
           <Modal.Body>
             {showRegister != true ? (
-              <Login setShowRegister={setShowRegister} setOpenModal={setOpenModal} setUserInfo={setUserInfo}/>
+              <Login setShowRegister={setShowRegister} setOpenModal={setOpenModal} setUserId={setUserId}/>
             ) : (
               <Register setShowRegister={setShowRegister} />
             )}

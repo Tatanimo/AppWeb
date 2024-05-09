@@ -4,7 +4,7 @@ import ProfileDropdown from "../dropdown/ProfileDropdown";
 
 export default function NavigationBar({user}) {
     const [openModal, setOpenModal] = useState(false);
-    const [userInfo, setUserInfo] = useState(JSON.parse(user) ?? null);
+    const [userId, setUserId] = useState(user ?? null);
     return (
         <>
             <nav className="flex items-center justify-between pe-8">
@@ -38,8 +38,8 @@ export default function NavigationBar({user}) {
                         </a>
                     </li>
                     <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
-                        {userInfo ? (
-                            <ProfileDropdown userInfo={userInfo} />
+                        {userId ? (
+                            <ProfileDropdown userId={userId} />
                         ) : (
                             <a className="cursor-pointer"
                             onClick={() => setOpenModal(true)}>
@@ -51,7 +51,7 @@ export default function NavigationBar({user}) {
                 </ul>
             </nav>
             <LoginRegisterModal openModal={openModal}
-                                setOpenModal={setOpenModal} setUserInfo={setUserInfo}/>
+                                setOpenModal={setOpenModal} setUserId={setUserId}/>
         </>
     );
 }

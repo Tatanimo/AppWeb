@@ -2,7 +2,7 @@ import { Menu, MenuHandler, MenuList, MenuItem, Button } from '@material-tailwin
 import React, { useState } from 'react'
 import ProfessionalModal from '../modals/ProfessionalModal'
 
-function ProfileDropdown({userInfo}) {
+function ProfileDropdown({userId}) {
     const [openModal, setOpenModal] = useState(false);
   return (
     <>
@@ -13,7 +13,7 @@ function ProfileDropdown({userInfo}) {
             </Button>
         </MenuHandler>
         <MenuList>
-            <a href={`/profil/${userInfo.id}`}>
+            <a href={`/profil/${userId}`}>
                 <MenuItem>Profil</MenuItem>
             </a>
             <MenuItem onClick={setOpenModal}>Devenir professionnel</MenuItem>

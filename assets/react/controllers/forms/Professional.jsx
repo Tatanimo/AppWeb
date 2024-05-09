@@ -5,8 +5,8 @@ import Requirement from '../alerts/Requirement';
 import CitiesInput from './CitiesInput';
 
 function Professional({setOpenModal}) {
-    const [service, setService] = useState();
     const [services, setServices] = useState([]);
+    const [service, setService] = useState();
     const [city, setCity] = useState({});
     const [housing, setHousing] = useState("");
     const [address, setAddress] = useState("");
@@ -34,17 +34,20 @@ function Professional({setOpenModal}) {
     const onSubmit = async () => {
         if (handleForm() == true) {
             setLoading(true);
-            await axios.post('/register', {
-                "email": email,
-                "password": password,
-                "firstname": firstname,
-                "lastname": lastname
+            await axios.post('/ajax/professional', {
+                "service": service,
+                "city": city,
+                "housing": housing,
+                "address": address,
+                "price": price
             }, 
             {
                 headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
                     'Content-Type': 'application/json'
                 }  
-            }).then(() => {
+            }).then((e) => {
+                console.log(e)
                 setLoading(false);
                 setOpenModal(false);
             }).catch((err) => {

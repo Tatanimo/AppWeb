@@ -29,7 +29,7 @@ class SecurityController extends AbstractController
 
         return $this->json([
             'user' => $user
-        ]);
+        ], 200, context: ["groups" => "main"]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
@@ -68,7 +68,6 @@ class SecurityController extends AbstractController
 
                 return $this->json('success', 200);
             } catch (\Throwable $th) {
-                // Blabla erreur
                 $this->alert->generate("fail", "Erreur de sauvegarde", "Une erreur s'est produite, votre compte n'a pas été enregistré. Veuillez réessayer.");
                 
                 return $this->json('Fail to save the user in database. The error is: '.$th, 400);
