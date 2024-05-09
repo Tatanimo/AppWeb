@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import LoginRegisterModal from "../modals/LoginRegisterModal";
+import ProfileDropdown from "../dropdown/ProfileDropdown";
 
 export default function NavigationBar({user}) {
     const [openModal, setOpenModal] = useState(false);
@@ -36,13 +37,9 @@ export default function NavigationBar({user}) {
                                  className="h-8"/>
                         </a>
                     </li>
-                    <li className="hover:bg-light-gray p-2 rounded-xl transition">
+                    <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
                         {userInfo ? (
-                            <a className="cursor-pointer"
-                            href={`/profil/${userInfo.id}`}>
-                                <img src="/img/icons/user_profile.svg"
-                                    className="h-8"/>
-                            </a>
+                            <ProfileDropdown userInfo={userInfo} />
                         ) : (
                             <a className="cursor-pointer"
                             onClick={() => setOpenModal(true)}>
