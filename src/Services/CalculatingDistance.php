@@ -5,11 +5,11 @@ namespace App\Services;
 use App\Repository\CitiesRepository;
 use App\Repository\ProfessionalsRepository;
 use App\Repository\ServicesTypeRepository;
-use App\Repository\UsersRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class CalculatingDistance
 {
-  public function __construct(private UsersRepository $usersRepository, private CitiesRepository $citiesRepository, private ProfessionalsRepository $professionalsRepository, private ServicesTypeRepository $servicesTypeRepository){}
+  public function __construct(private Security $security, private CitiesRepository $citiesRepository, private ProfessionalsRepository $professionalsRepository, private ServicesTypeRepository $servicesTypeRepository){}
 
   /**
    * Calculates the great-circle distance between two points, with
@@ -56,8 +56,19 @@ class CalculatingDistance
 
   public function getProfessionalsInAreaAndService(string $type, int $idCity, int $km) : array
   {
+    $user = $this->security->getUser();
     $service = $this->servicesTypeRepository->findOneBy(["type" => $type]);
     $professionals = $this->professionalsRepository->findBy(["service" => $service]);
+    
+    
+    $searchResult = array_filter($professionals, function($professional) use ($user) {
+      return $professional->getId() == $user->getProfessionals()->getId();
+    });
+
+    if ($searchResult) {
+      unset($professionals[key($searchResult)]);
+    }
+    
     $cities = $this->findByKM($idCity, $km);
     $idCities = array_column($cities, 'id');
     $professionalsInArea = [];

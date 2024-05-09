@@ -30,6 +30,10 @@ class UserController extends AbstractController
             return $this->json("Utilisateurs introuvable", 401);
         }
 
+        usort($professionals, function($a, $b){
+            return $a[1] > $b[1];
+        });
+
         return $this->json($professionals, 200, context: ["groups" => "main"]);
     }
 }
