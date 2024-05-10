@@ -42,6 +42,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups("main")]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(length: 100, nullable: true)]
