@@ -6,6 +6,10 @@
     outline: none;
 }
 
+.react-calendar__tile--now, .react-calendar__tile--now:enabled:hover{
+    background: unset;
+}
+
 #grid-img-contact {
     grid: none;
 }

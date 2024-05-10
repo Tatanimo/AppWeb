@@ -17,8 +17,6 @@ function ProfileDropdown({userId}) {
         .catch(err => console.error(err));
     }, []);
 
-    console.log(professional)
-
   return (
     <>
         <Menu>

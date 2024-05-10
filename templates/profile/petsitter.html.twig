@@ -6,17 +6,19 @@
 <pre>
     {{ dump(professional) }}
 </pre>
-    <div class="m-12 mt-0 flex">
-        <div id="left-body" class="w-1/2 flex flex-col items-center">
-            <section id="sec-avatar">
+    <div class="m-12 mt-0 flex justify-center">
+        <div id="left-body" class="flex flex-col items-center mr-16 max-w-96">
+            <section id="sec-avatar" class="p-4">
                 <div class="w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]">
                     <img class="w-full h-full object-cover" src="https://s3-alpha-sig.figma.com/img/2d96/18ef/fd467c0026c0518551170473875fa686?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Vy5ZHOgfB471TWHW4CRpJWtMaqX3dMIwaFtlRYnpf8jOcsm2y9Cxpld95zrZrYd~C43yxCKgJqAVYiHLc2UVKW0PM~QAO3AoCYqNXb2uCJtchcQ8N7VWci1iEETkNKRTbzHSC3SV12LE6~W5U8l6MwzPm-M2riNgOT3MZVveJkK70u1XK8LZNzBAwqne-enB98DRE8Gk38tDKyzC6ky~N1fmjhBydChTZgJUMvS5MkXz4GMElHyiI8ZLJBpDmqc8SvDTWa~6MpGAYXVHwyskYIa4rdJJPgWEXBd4JTw81Nv9LywL1koBklt0wMgDSqNh7DAmZlXqtHMf5zPV6-VURg__" alt="avatar profil pro">
                 </div>
             </section>
-            <section id="sec-agenda">
+            <section id="sec-agenda" class="w-full mt-12">
+                <h1 class="text-4xl font-ChunkFive mr-4 capitalize">Agenda</h1>
+                <div {{react_component('calendar/Professional')}}></div>
             </section>
         </div>
-        <div id="right-body" class="flex flex-col w-1/2">
+        <div id="right-body" class="flex flex-col max-w-[600px]">
             <section id="sec-desc">
                 <div class="flex flex-row">
                     <h1 class="text-4xl font-ChunkFive mr-4 capitalize">{{professional.user.lastName}}</h1> 
@@ -30,9 +32,20 @@
                     <h1 class="text-4xl font-ChunkFive">{{difference.y}} ans</h1>
                 {% endif %}
                 <br>
-                <p class="min-w-96">{{professional.description}}</p>
+                <p class="min-w-96 text-2xl">{{professional.description}}</p>
             </section>
-            <section id="sec-criteria">
+            <br>
+            <section id="sec-criteria" class="border-t border-b border-black p-4">
+                <h5 class="font-semibold">Accueil</h5>
+                <br>
+                <div class="grid grid-cols-2 grid-rows-1 gap-6">
+                    {% for item in professional.criteria %}
+                        <div class="flex flex-row items-center">
+                            <img class="w-6 mr-4" src="{{asset('img/emojis/' ~ item.emoji ~ '.svg')}}" alt="icon">
+                            <p class="text-sm">{{item.content}}</p>
+                        </div>
+                    {% endfor %}
+                </div>
             </section>
             <section id="sec-rating">
             </section>
