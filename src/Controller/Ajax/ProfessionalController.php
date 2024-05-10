@@ -3,7 +3,9 @@
 namespace App\Controller\Ajax;
 
 use App\Entity\Professionals;
+use App\Entity\Users;
 use App\Repository\CitiesRepository;
+use App\Repository\ProfessionalsRepository;
 use App\Repository\ServicesTypeRepository;
 use App\Services\CalculatingDistance;
 use App\Services\Mercure\AlertService;
@@ -12,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class ProfessionalController extends AbstractController
 {
@@ -57,6 +60,22 @@ class ProfessionalController extends AbstractController
         } else {
             $alert->generate("fail", "Erreur de sauvegarde", "Une erreur s'est produite, une ou plusieurs données sont manquantes.");
             return $this->json("Fail to fetch data, there's one or multiple missing.", 400);
+        }
+    }
+
+    #[Route('/ajax/professional', name: 'app_getProfessional', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function getProfessional(#[CurrentUser] Users $user, ProfessionalsRepository $professionalsRepository): JsonResponse 
+    {
+        if (!isset($user)) {
+            return $this->json("Non authentifiée", 401);
+        }
+
+        $professional = $professionalsRepository->findOneBy(["user" => $user]);
+
+        if (!isset($professional)) {
+            return $this->json(false, 200);
+        } else {
+            return $this->json($professional, 200, context: ["groups" => "main"]);
         }
     }
 }
