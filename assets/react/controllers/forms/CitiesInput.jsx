@@ -41,11 +41,12 @@ export default function CitiesInput({onCitySelect, marginTop}) {
           if (/\d/.test(query)) {
             const Name = query.replace(/\d/g, '').trim();
             const ZipCode = query.replace(/\D/g, '').trim();
+            console.log(ZipCode, city.zip_code.toString().includes(ZipCode))
             city.name
               .toLowerCase()
               .replace(/\s+/g, '')
               .includes(Name.toLowerCase().replace(/\s+/g, ''));
-            return city.zip_code
+            return city.zip_code.toString()
               .includes(ZipCode);
           } else {
             return city.name

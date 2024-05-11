@@ -19,7 +19,7 @@ class SerializeExtension extends AbstractExtension
             new TwigFilter('serialize', [$this, 'serialize']),
         ];
     }
-    public function serialize($data, string $format = 'json', array $context = []): string
+    public function serialize($data, string $format = 'json', array $context = ["groups"=> "main"]): string
     {
         return $this->serializer->serialize($data, $format, $context);
     }

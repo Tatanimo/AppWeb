@@ -16,7 +16,7 @@ function Reviews({idProfessional}) {
         .then(res => setReviews(res.data.reviews.filter(e => e.professional_receiver == true)))
         .catch(err => console.error(err));
     }, [])
-    console.log(reviews.length)
+
   return (
     <>
         {reviews.length == 0 ? (
