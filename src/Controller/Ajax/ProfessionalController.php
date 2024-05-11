@@ -78,4 +78,50 @@ class ProfessionalController extends AbstractController
             return $this->json($professional, 200, context: ["groups" => "main"]);
         }
     }
+
+    #[Route('/ajax/professional/desc/{id}', name: 'app_setProfessionalDescription', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function setProfessionalDescription(#[CurrentUser] Users $user, ProfessionalsRepository $professionalsRepository, Request $request, EntityManagerInterface $em, AlertService $alert, $id): JsonResponse 
+    {
+        if (!isset($user)) {
+            return $this->json("Non authentifiée", 401);
+        }
+
+        $professional = $professionalsRepository->findOneBy(["user" => $user, "id" => $id]);
+
+        if (!isset($professional)) {
+            return $this->json("Professional not found", 400);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        $desc = $data["description"];
+
+        if (!isset($desc)) {
+            return $this->json("Description not found", 400);
+        }
+
+        $professional->setDescription($desc);
+
+        try {
+            $em->persist($professional);
+            $em->flush();
+            $alert->generate("success", "Description sauvegardée", "La description de votre compte professionnel a bien été sauvegardée.");
+        } catch (\Throwable $th) {
+            $alert->generate("fail", "Erreur de sauvegarde", "Une erreur s'est produite, la description de votre compte professionnel n'a pas été enregistré. Veuillez réessayer.");
+        }
+
+        return $this->json($professional, 200, context: ["groups" => "main"]);
+    }
+
+    #[Route('/ajax/professional/{id}', name:'app_getProfessionalById', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function getProfessionalById(ProfessionalsRepository $professionalsRepository, $id): JsonResponse
+    {
+        $professional = $professionalsRepository->findOneBy(["id" => $id]);
+
+        if (!isset($professional)) {
+            return $this->json("Professional not found", 400);
+        }
+
+        return $this->json($professional, 200, context: ["groups" => "main"]);
+    }
 }

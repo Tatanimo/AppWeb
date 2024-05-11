@@ -4,19 +4,23 @@ namespace App\Entity;
 
 use App\Repository\ReviewsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ReviewsRepository::class)]
 class Reviews
 {
     #[ORM\Column]
+    #[Groups("main")]
     private ?int $rating = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("main")]
     private ?string $comment = null;
 
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("main")]
     private ?users $user = null;
 
     #[ORM\Id]
@@ -26,6 +30,7 @@ class Reviews
 
     #[ORM\Id]
     #[ORM\Column]
+    #[Groups("main")]
     private ?bool $professional_receiver = null;
 
     public function getRating(): ?int

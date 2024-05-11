@@ -93,7 +93,7 @@ export default function SearchPetsitter({onPetsitters}) {
         <div className='flex'>
             <div className='flex'>
                 <span className="font-ChunkFive text-3xl mr-6">aux environs de :</span>
-                <CitiesInput onCitySelect={setCity} />
+                <CitiesInput onCitySelect={setCity} marginTop={0} />
             </div>
             <div className='flex'>
                 <span className="font-ChunkFive text-3xl mx-6">dans un rayon de :</span>

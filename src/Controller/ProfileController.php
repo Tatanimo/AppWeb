@@ -31,9 +31,9 @@ class ProfileController extends AbstractController
                 break;
             
             default:
-            return $this->render('profile/petsitter.html.twig', [
-                'professional' => $professional,
-            ]);
+                return $this->render('profile/petsitter.html.twig', [
+                    'professional' => $professional,
+                ]);
                 break;
         }
     }
