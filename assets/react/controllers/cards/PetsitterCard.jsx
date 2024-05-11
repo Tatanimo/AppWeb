@@ -13,7 +13,7 @@ function PetsitterCard({professional, dist}) {
         <div id="card-petsitter-header" className='flex mb-2'>
             <div id="photo-profile" className='overflow-hidden rounded-full aspect-square bg-gray-200 min-w-32 max-w-32 mr-4'>
                 {imgValid ? (
-                    <img src={`${endpoint.img}/professionals/professional-${professional.id}-1.jpg`} onError={setImgValid(false)} alt="utilisateur" />
+                    <img src={`${endpoint.img}/professionals/professional-${professional.id}-1.jpg`} onError={() => setImgValid(false)} alt="utilisateur" />
                 ) : null}
             </div>
             <div className='flex flex-col place-content-between'>

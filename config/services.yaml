@@ -9,6 +9,7 @@ parameters:
     app.public_folder: '%kernel.project_dir%/public/'
     app.user_images_folder: '%kernel.project_dir%/public/img/users/'
     app.animals_images_folder: '%kernel.project_dir%/public/img/animals/'
+    app.professionals_images_folder: '%kernel.project_dir%/public/img/professionals/'
 services:
     App\Services\UuidSession:
         tags: 

@@ -6,7 +6,7 @@
     <div class="m-12 mt-0 flex justify-center">
         <div id="left-body" class="flex flex-col items-center mr-16 max-w-96">
             <section id="sec-avatar" class="p-4">
-                <div class="w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/MainImage', {id: professional.user.id})}}>
+                <div class="w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/SquareImageProfessional', {srcPath: findProfessionalImage(professional.id) ? 'img/professionals/professional-' ~ professional.id ~ '-1.jpg' : null, professional: professional|serialize, userId: app.user.id})}}>
                 </div>
             </section>
             <section id="sec-agenda" class="w-full mt-12">

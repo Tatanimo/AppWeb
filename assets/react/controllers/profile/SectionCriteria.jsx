@@ -6,7 +6,7 @@ function SectionCriteria({userId, professional}) {
     const professionalObject = JSON.parse(professional);
     const housing = professionalObject.LiveIn == "appartment" ? "un appartement" : "une maison";
     const [criterias, setCriterias] = useState(professionalObject.criteria);
-    console.log(criterias);
+
   return (
     <>
         <div className="flex flex-row items-center justify-between">

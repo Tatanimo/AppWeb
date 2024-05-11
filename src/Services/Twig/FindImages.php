@@ -18,7 +18,20 @@ class FindImages extends AbstractExtension
         return [
             new TwigFunction('findUserImages', [$this, 'findUserImages']),
             new TwigFunction('findAnimalImages', [$this, 'findAnimalImages']),
+            new TwigFunction('findProfessionalImage', [$this, 'findProfessionalImage']),
         ];
+    }
+
+    public function findProfessionalImage(int $id) : bool 
+    {
+        $professionalImagesFolder = $this->params->get("app.professionals_images_folder");
+        $file = "professional-$id-1.jpg";
+        $file = glob($professionalImagesFolder.$file);
+        if (count($file) > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function findUserImages(int $id) : array 

@@ -5,7 +5,6 @@ import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 export default function SquareImage({srcPath, main, number, userId, animalId}) {
-  console.log(srcPath)
   const [openModal, setOpenModal] = useState(false);
   const [file, setFile] = useState();
   const [newImage, setNewImage] = useState('');
