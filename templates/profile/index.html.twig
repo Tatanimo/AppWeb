@@ -3,24 +3,30 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
+<pre>
+    {{ dump(profil) }}
+</pre>
+    {% set profilUser = app.user.id == profil.id %}
     <div class="m-12 mt-0">
         <section class="justify-center flex" id="section-profile">
-            <div class="mx-6 min-w-[28rem] max-w-[28rem]" id="profile-img" {{react_component('images/ProfileImages', {userId: app.user.id, images: findUserImages(app.user.id)})}}></div>
+            <div class="mx-6 min-w-[28rem] max-w-[28rem]" id="profile-img" {{react_component('images/ProfileImages', {userId: profil.id, images: findUserImages(profil.id), profilUser: profilUser})}}></div>
             <div id="profile-field" class="w-1/2 mx-6">
-                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.lastname, "size": 1, input: "text", type:"lastname", id: app.user.id}) }}></div>
-                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.firstname, "size": 1, input: "text", type:"firstname", id: app.user.id}) }}></div>
-                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.birthdate, "size": 2, input: "date", id: app.user.id}) }}></div>
-                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.email, "size": 3, input: "email", id: app.user.id}) }}></div>
-                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': app.user.phonenumber ?? "Entrer un numéro de téléphone" , "size": 3, input: "phone", id: app.user.id}) }}></div>
-                <button class='inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase w-full my-2 p-4'>VOIR MON AGENDA</button>
-                <button class='inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase w-full my-2 p-4'>VOIR MES CONTRATS DE GARDE</button>
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': profil.lastname, "size": 1, input: "text", type:"lastname", id: profil.id, profilUser: profilUser}) }}></div>
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': profil.firstname, "size": 1, input: "text", type:"firstname", id: profil.id, profilUser: profilUser}) }}></div>
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': profil.birthdate, "size": 2, input: "date", id: profil.id, profilUser: profilUser}) }}></div>
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': profil.email, "size": 3, input: "email", id: profil.id, profilUser: profilUser}) }}></div>
+                <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': profil.phonenumber ?? "Entrer un numéro de téléphone" , "size": 3, input: "phone", id: profil.id, profilUser: profilUser}) }}></div>
+                {% if app.user.id == profil.id %}
+                    <button class='inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase w-full my-2 p-4'>VOIR MON AGENDA</button>
+                    <button class='inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase w-full my-2 p-4'>VOIR MES CONTRATS DE GARDE</button>
+                {% endif %}
             </div>
         </section>
 
-        <section id="section-description" class="flex justify-center flex-col my-12" {{react_component('profile/Description', {description: app.user.description, userId: app.user.id})}}></section>
+        <section id="section-description" class="flex justify-center flex-col my-12" {{react_component('profile/Description', {description: profil.description, userId: profil.id, profilUser: profilUser})}}></section>
 
         <section id="section-animals" >
-            <div {{react_component('profile/Animals')}}></div>
+            <div {{react_component('profile/Animals', {userId: profil.id, profilUser: profilUser})}}></div>
         </section>
     </div>
 {% endblock %}

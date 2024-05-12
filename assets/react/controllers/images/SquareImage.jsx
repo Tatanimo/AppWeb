@@ -4,7 +4,7 @@ import React, {useEffect, useState, useRef} from 'react'
 import Cropper, { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
-export default function SquareImage({srcPath, main, number, userId, animalId}) {
+export default function SquareImage({srcPath, main, number, userId, animalId, profilUser}) {
   const [openModal, setOpenModal] = useState(false);
   const [file, setFile] = useState();
   const [newImage, setNewImage] = useState('');
@@ -72,35 +72,39 @@ export default function SquareImage({srcPath, main, number, userId, animalId}) {
 
     return (
       <>
-        <div onClick={() => setOpenModal(true)} className={`transition-opacity bg-light-gray cursor-pointer relative group hover:opacity-85 aspect-square ${main ? 'w-full' : 'w-1/3' }`}>  
+        <div onClick={() => profilUser ? setOpenModal(true) : null} className={`transition-opacity bg-light-gray ${profilUser ? "cursor-pointer" : null} relative group hover:opacity-85 aspect-square ${main ? 'w-full' : 'w-1/3' }`}>  
           {newImage ? <img src={newImage} className="w-full h-full object-cover" alt="user image" /> : srcPath ? <img src={`/${srcPath}`} className="w-full h-full object-cover" alt="user image" /> : null}
-          <span className="transition-opacity duration-300 absolute left-1/2 top-1/2 font-ChunkFive font-bolder text-5xl -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100">+</span>
+          {profilUser ? (
+            <span className="transition-opacity duration-300 absolute left-1/2 top-1/2 font-ChunkFive font-bolder text-5xl -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100">+</span>
+          ) : null}
         </div>
 
-        <Modal className="" dismissible show={openModal} size="md" popup onClose={() => setOpenModal(false)}>
-          <Modal.Header />
-            <Modal.Body>
-              <input type="file" accept="image/*" name="" id="" onChange={(e) => setFile(e.target.files[0])} />
-              {typeof file == "object" ? (
-                <>
-                  {beforeCropImage ? (
-                      <Cropper
-                        aspectRatio={1/1}
-                        src={beforeCropImage}
-                        minCropBoxWidth={100} minCropBoxHeight={100}
-                        guides={false}
-                        crop={onCrop}
-                        ref={cropperRef}
-                      />
-                  ) : null}
+        {profilUser ? (
+          <Modal className="" dismissible show={openModal} size="md" popup onClose={() => setOpenModal(false)}>
+            <Modal.Header />
+              <Modal.Body>
+                <input type="file" accept="image/*" name="" id="" onChange={(e) => setFile(e.target.files[0])} />
+                {typeof file == "object" ? (
+                  <>
+                    {beforeCropImage ? (
+                        <Cropper
+                          aspectRatio={1/1}
+                          src={beforeCropImage}
+                          minCropBoxWidth={100} minCropBoxHeight={100}
+                          guides={false}
+                          crop={onCrop}
+                          ref={cropperRef}
+                        />
+                    ) : null}
 
-                  {typeof cropperImage.current == "object" && uploadingImage == false ? (
-                    <button type="button" className="mt-4 inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-base bg-blue-purple px-3 py-2 rounded-xl uppercase float-right" onClick={saveImage}>Envoyer</button>
-                  ) : <Spinner className="mt-4 inline-block justify-center float-right h-10 w-10 text-blue-purple"/>}
-                </>
-              ) : null}
-          </Modal.Body>
-        </Modal>
+                    {typeof cropperImage.current == "object" && uploadingImage == false ? (
+                      <button type="button" className="mt-4 inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-base bg-blue-purple px-3 py-2 rounded-xl uppercase float-right" onClick={saveImage}>Envoyer</button>
+                    ) : <Spinner className="mt-4 inline-block justify-center float-right h-10 w-10 text-blue-purple"/>}
+                  </>
+                ) : null}
+            </Modal.Body>
+          </Modal>
+        ) : null}
       </>
     )
 }

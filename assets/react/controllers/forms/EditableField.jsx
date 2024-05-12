@@ -17,7 +17,7 @@ function generateDateRegex() {
     return new RegExp(regexString);
 }
 
-export default function EditableField({originalValue, size, type, input, id}) {
+export default function EditableField({originalValue, size, type, input, id, profilUser}) {
     const [classSize, setClassSize] = useState("");
     const [isUpdating, setIsUpdating] = useState(false);
     const [value, setValue] = useState(input == "date" ? originalValue?.date : originalValue);
@@ -134,10 +134,12 @@ export default function EditableField({originalValue, size, type, input, id}) {
                 </>
                 ) : (
                 <>
-                    <p className={classSize}>{input == "date" ? ( value ? new Date(value).toLocaleDateString() : "Entrer une date de naissance") : value}</p>
-                    <button onClick={() => setIsUpdating(true)} type="button" className='border-solid border-black border-x border-y rounded-full p-2 transition-all hover:opacity-70 active:scale-75'>
-                        <img src="/img/icons/paint-brush.svg" alt="paint-brush" className='w-4'/>
-                    </button>
+                    <p className={classSize}>{input == "date" ? ( value ? new Date(value).toLocaleDateString() : profilUser ? "Entrer une date de naissance" : null) : value}</p>
+                    {profilUser ? (
+                        <button onClick={() => setIsUpdating(true)} type="button" className='border-solid border-black border-x border-y rounded-full p-2 transition-all hover:opacity-70 active:scale-75'>
+                            <img src="/img/icons/paint-brush.svg" alt="paint-brush" className='w-4'/>
+                        </button>
+                    ) : null}
                 </>
             )}
         </>

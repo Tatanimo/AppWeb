@@ -5,9 +5,9 @@ import UpdateAnimal from './UpdateAnimal';
 import axios from 'axios';
 import datetimeDifference from 'datetime-difference';
 
-async function fetchAnimals(){
+async function fetchAnimals(userId){
     let response;
-    await axios.get('/ajax/animal/user', {
+    await axios.get(`/ajax/animal/user/${userId}`, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
@@ -44,12 +44,12 @@ function age(difference){
     return `${num} ${date}`;
 }
 
-function Animals() {
+function Animals({userId, profilUser}) {
     const [animals, setAnimals] = useState([]);
     const [fetchById, setFetchById] = useState(null);
 
     useEffect(() => {
-        fetchAnimals().then(res => setAnimals(res));
+        fetchAnimals(userId).then(res => setAnimals(res));
     }, []);
 
     useEffect(() => {
@@ -79,7 +79,7 @@ function Animals() {
             return (
                 <div key={e.id} id="animal-card" className="border border-black rounded-lg h-96 flex p-4 m-4">
                     <div className="mx-6 min-w-64 max-w-64 content-center" id="animal-img">
-                        <ProfileImages animalId={e.id} images={e.images}  />
+                        <ProfileImages animalId={e.id} images={e.images} profilUser={profilUser} />
                     </div>
                     <div id="animal-content" className="w-full">
                         <h2 className="font-ChunkFive text-4xl capitalize">{e.name}</h2>
@@ -87,15 +87,19 @@ function Animals() {
                         <br/>
                         <p className="text-lg">{e.description}</p>
                     </div>
-                    <div id="animal-setting" className="min-w-20 max-w-20 flex flex-col justify-end ml-4">
-                        <UpdateAnimal animalId={e.id} setFetchById={setFetchById} />
-                    </div>
+                    {profilUser ? (
+                        <div id="animal-setting" className="min-w-20 max-w-20 flex flex-col justify-end ml-4">
+                            <UpdateAnimal animalId={e.id} setFetchById={setFetchById} />
+                        </div>
+                    ) : null}
                 </div> 
             );
         })}
-        <div className="flex justify-end mt-4" id="add-animal">
-            <AddAnimal setFetchById={setFetchById} />
-        </div>
+        {profilUser ? (
+            <div className="flex justify-end mt-4" id="add-animal">
+                <AddAnimal setFetchById={setFetchById} />
+            </div>
+        ) : null}
     </>
   )
 }

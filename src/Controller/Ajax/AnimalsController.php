@@ -6,6 +6,7 @@ use App\Entity\Animals;
 use App\Entity\Users;
 use App\Repository\AnimalsRepository;
 use App\Repository\CategoryAnimalsRepository;
+use App\Repository\UsersRepository;
 use App\Services\Mercure\AlertService;
 use App\Services\Twig\FindImages;
 use DateTime;
@@ -63,11 +64,13 @@ class AnimalsController extends AbstractController
         return $this->json($animal->getId(), 200);
     }
     
-    #[Route('/ajax/animal/user', name: 'app_ajax_getAnimalsByUser', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function getAnimalsByUser(#[CurrentUser] ?Users $user, AnimalsRepository $animalsRepository, FindImages $findImages): JsonResponse
+    #[Route('/ajax/animal/user/{id}', name: 'app_ajax_getAnimalsByUser', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function getAnimalsByUser(AnimalsRepository $animalsRepository, FindImages $findImages, $id, UsersRepository $usersRepository): JsonResponse
     {
+        $user = $usersRepository->findOneBy(["id" => $id]);
+
         if (!isset($user)) {
-            return $this->json("Non authentifiée", 401);
+            return $this->json("Utilisateur introuvable", 401);
         }
 
         $animals = $animalsRepository->findBy(["fk_user" => $user]);
