@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Reviews;
+use App\Repository\ProfessionalsRepository;
 use App\Repository\ReviewsRepository;
 use App\Repository\UsersRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -12,7 +13,7 @@ use Faker\Factory;
 
 class ReviewsFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function __construct(private UsersRepository $usersRepository, private ReviewsRepository $reviewsRepository)
+    public function __construct(private UsersRepository $usersRepository, private ProfessionalsRepository $professionalsRepository, private ReviewsRepository $reviewsRepository)
     {
         
     }
@@ -21,9 +22,10 @@ class ReviewsFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
         $users = $this->usersRepository->findAll();
+        $professionals = $this->professionalsRepository->findAll();
 
         foreach ($users as $user) {
-            $randReceiver = rand(1, 5);
+            $randReceiver = rand(0, 5);
             
             for ($i=0; $i < $randReceiver; $i++) { 
                 $review = new Reviews();
@@ -31,12 +33,33 @@ class ReviewsFixtures extends Fixture implements DependentFixtureInterface
                 $randomComment = rand(0,1);
                 
                 do {
-                    $randomReceiver = $this->usersRepository->randomUser();
+                    $professional = $this->professionalsRepository->randomProfessional();
                 } while (
-                    $randomReceiver == $user || $this->reviewsRepository->findOneByReceiverAndSender($randomReceiver->getId(), $user->getId()) != null
+                    $professional->getUser() == $user || $this->reviewsRepository->findOneByUserAndProfessional($user->getId(), $professional->getId(), true) != null
                 );
 
-                $review->setFkUserReceiver($randomReceiver)->setFkUserSender($user)->setRating(rand(1,5))->setComment(boolval($randomComment) ? $faker->sentence() : null);
+                $review->setUser($user)->setProfessional($professional)->setProfessionalReceiver(true)->setRating(rand(1,5))->setComment(boolval($randomComment) ? $faker->sentence() : null);
+                
+                $manager->persist($review);
+                $manager->flush();
+            }
+        }
+
+        foreach ($professionals as $professional) {
+            $randReceiver = rand(0, 5);
+            
+            for ($i=0; $i < $randReceiver; $i++) { 
+                $review = new Reviews();
+
+                $randomComment = rand(0,1);
+                
+                do {
+                    $user = $this->usersRepository->randomUser();
+                } while (
+                    $professional->getUser() == $user || $this->reviewsRepository->findOneByUserAndProfessional($user->getId(), $professional->getId(), false) != null
+                );
+
+                $review->setUser($user)->setProfessional($professional)->setProfessionalReceiver(false)->setRating(rand(1,5))->setComment(boolval($randomComment) ? $faker->sentence() : null);
                 
                 $manager->persist($review);
                 $manager->flush();
@@ -49,6 +72,7 @@ class ReviewsFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             UsersFixtures::class,
+            ProfessionalsFixtures::class
         ];
     }
 }

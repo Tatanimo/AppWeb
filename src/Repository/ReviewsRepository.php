@@ -38,15 +38,17 @@ class ReviewsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-        public function findOneByReceiverAndSender($receiver, $sender): ?Reviews
+        public function findOneByUserAndProfessional($user, $professional, $isProfessionalReceiver): ?Reviews
         {
             return $this->createQueryBuilder('a')
-                ->andWhere('a.fk_user_sender = :sender')
-                ->andWhere('a.fk_user_receiver = :receiver')
+                ->andWhere('a.user = :user')
+                ->andWhere('a.professional = :professional')
+                ->andWhere('a.professional_receiver = :isProfessionalReceiver')
                 ->setParameters(
                     new ArrayCollection([
-                        new Parameter('receiver', $receiver),
-                        new Parameter('sender', $sender),
+                        new Parameter('user', $user),
+                        new Parameter('professional', $professional),
+                        new Parameter('isProfessionalReceiver', $isProfessionalReceiver),
                     ])
                 )
                 ->getQuery()

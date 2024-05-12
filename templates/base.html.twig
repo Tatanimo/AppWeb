@@ -20,10 +20,6 @@
         {% endblock %}
 
         {% block javascripts %}
-            <!-- Mercure Notification -->
-            <script type="application/json" id="mercure-notification">
-                {{ mercure('alerts/' ~ sessionUuid())|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
-            </script>
             <!-- Google tag (gtag.js) -->
             <script async
                     src="https://www.googletagmanager.com/gtag/js?id=G-PNNQSVC804"></script>
@@ -42,19 +38,18 @@
         {% endblock %}
     </head>
     <body class="font-serif">
-        <input type="hidden" id="jwt-notification" value='{{ generateJWT()|json_encode|raw }}'>
         {# Alerte #}
-        <header class="sticky top-0 w-full bg-white z-10" data-turbo-temporary {{ react_component('navigation/NavigationBar', {'user': app.user}) }}></header>
+        <header class="sticky top-0 w-full bg-white z-10" {{ react_component('navigation/NavigationBar', {'user': app.user.id | default(null)}) }}></header>
         <div class="fixed top-0 left-0 z-50">
             {# Flash #}
             {% for type, flash in app.flashes %}
-                <div data-turbo-temporary {{ react_component('alerts/Alerts', {'type': type, 'flash': flash }) }}></div>
+                <div {{ react_component('alerts/Alerts', {'type': type, 'flash': flash }) }}></div>
             {% endfor %}
             {# Mercure #}
-            <div data-turbo-temporary {{ react_component('alerts/Mercure') }}></div>
+            <div data-turbo-temporary {{ react_component('alerts/Mercure', {jwtToken: generateJWT()|json_encode|raw, urlMercure: mercure('alerts/' ~ sessionUuid())|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }) }}></div>
         </div>
 
         {% block body %}{% endblock %}
-        <footer class="bg-turquoise w-full flex py-20" data-turbo-temporary {{ react_component('footer/Footer') }}></footer>
+        <footer class="bg-turquoise w-full flex py-20" {{ react_component('footer/Footer') }}></footer>
     </body>
 </html>

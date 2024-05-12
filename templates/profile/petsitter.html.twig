@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+    <div class="m-12 mt-0 flex justify-center">
+        <div id="left-body" class="flex flex-col items-center mr-16 max-w-96">
+            <section id="sec-avatar" class="p-4">
+                <div class="w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/SquareImageProfessional', {srcPath: findProfessionalImage(professional.id) ? 'img/professionals/professional-' ~ professional.id ~ '-1.jpg' : null, professional: professional|serialize, userId: app.user.id})}}>
+                </div>
+            </section>
+            <section id="sec-agenda" class="w-full mt-12">
+                <h1 class="text-4xl font-ChunkFive mr-4 capitalize">Agenda</h1>
+                <div {{react_component('calendar/Professional')}}></div>
+                <div class="flex items-center mt-2">
+                    <div class="h-4 w-4 rounded bg-green-300 mr-2"></div>
+                    <p>Disponible</p>
+                    <div class="h-4 w-4 rounded bg-gray-300 mr-2 ml-4"></div>
+                    <p>Indisponible</p>
+                </div>
+            </section>
+        </div>
+        <div id="right-body" class="flex flex-col max-w-[600px]">
+            <section id="sec-desc">
+                <div class="flex flex-row">
+                    <h1 class="text-4xl font-ChunkFive mr-4 capitalize">{{professional.user.lastName}}</h1> 
+                    <h1 class="text-4xl font-ChunkFive capitalize">{{professional.user.firstName}}</h1>
+                </div>
+                <br>
+                {% if professional.user.birthDate is not null %}
+                    {% set birthdate = professional.user.birthDate|date('d-m-Y') %}
+                    {% set now = 'now'|date('d-m-Y') %}
+                    {% set difference = date(now).diff(date(birthdate))%}
+                    <h1 class="text-4xl font-ChunkFive">{{difference.y}} ans</h1>
+                {% endif %}
+                <br>
+                {% if app.user.id == professional.user.id %}
+                    <div {{react_component("profile/ProfessionalDescription", {description: professional.description, professionalId: professional.id})}}></div>
+                {% else %}
+                    <p class="min-w-96 text-2xl">{{professional.description}}</p>
+                {% endif %}
+                
+            </section>
+            <br>
+            <section id="sec-criteria" class="border-t border-b border-black p-4">
+                <div {{react_component('profile/SectionCriteria', {userId: app.user.id, professional: professional|serialize})}}></div>
+            </section>
+            <section id="sec-rating">
+                <div class="flex flex-col justify-center" {{react_component('profile/Reviews', {idProfessional: professional.id})}}></div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

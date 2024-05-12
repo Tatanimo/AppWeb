@@ -2,15 +2,13 @@ import React, {useEffect, useState} from 'react'
 import Alerts from './Alerts';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 
-export default function Mercure() {
+export default function Mercure({jwtToken, urlMercure}) {
     const [alerts, setAlerts] = useState([]);
     
     useEffect(() => {
-        const url = JSON.parse(document.getElementById("mercure-notification").textContent);
-        const jwtInput = document.getElementById("jwt-notification");
-        const jwt = JSON.parse(jwtInput.value.replace(/\s/g, ''));
-        jwtInput.remove();
-        
+        const url = JSON.parse(urlMercure);
+        const jwt = JSON.parse(jwtToken.replace(/\s/g, ''));
+
         const eventSource = new EventSourcePolyfill(url, { withCredentials: true, 
             headers: {
                 'Authorization': `Bearer ${jwt}`

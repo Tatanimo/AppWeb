@@ -8,32 +8,8 @@
              alt="Chien et enfant devant une rivière"
              class="w-full object-cover">
     </section>
-    <section class="px-28 flex flex-col items-center">
+    <section class="flex flex-col items-center mb-8">
         <div {{ react_component('headers/FirstHeader', {'content': "Garde d'animaux", 'color': 'black', 'className': 'pt-32 mb-16'}) }}></div>
-        <form class="bg-beige w-full p-12 rounded-3xl">
-            <span class="font-ChunkFive text-4xl">Je recherche quelqu'un du :</span>
-            <div class="flex">
-                <input placeholder="Date de début" name="date-start" id="date-start" class="w-full"/>
-                <span class="font-ChunkFive text-4xl">au</span>
-                <input placeholder="Date de fin" name="date-end" id="date-end" class="w-full"/>
-            </div>
-            <div>
-                <span class="font-ChunkFive text-4xl">Aux environs de :</span>
-                <div {{ react_component('forms/CitiesInput') }}></div>
-            </div>
-            <div>
-                <span class="font-ChunkFive text-4xl">dans un rayon de :</span>
-                <input name="radius-of" id="radius-of" placeholder="km" />
-            </div>
-            <div>
-                <span class="font-ChunkFive text-4xl">pour garder :</span>
-                <select id="select-animals" name="select-animals">
-                    <option>Animal 1</option>
-                    <option>Animal 2</option>
-                    <option>Animal 3</option>
-                </select>
-            </div>
-            <div {{ react_component('button/ButtonSubmit', {"content": "Rechercher"}) }}></div>
-        </form>
+        <div {{react_component('services/Petsitting')}} class="flex flex-col items-center"></div>
     </section>
 {% endblock %}

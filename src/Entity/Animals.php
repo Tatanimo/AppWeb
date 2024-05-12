@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AnimalsRepository::class)]
 class Animals
@@ -14,32 +15,39 @@ class Animals
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("main")]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups("main")]
     private ?string $name = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups("main")]
     private ?string $race = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $weight = null;
+    #[Groups("main")]
+    private ?float $weight = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups("main")]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("main")]
     private ?bool $death = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups("main")]
     private ?string $description = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CategoryAnimals $fk_category = null;
+
+    #[Groups("main")]
+    private ?int $fk_categoryId = null;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
@@ -48,9 +56,28 @@ class Animals
     #[ORM\OneToMany(targetEntity: Schedules::class, mappedBy: 'animals')]
     private Collection $schedules;
 
+    #[Groups("main")]
+    private array $images = [];
+
     public function __construct()
     {
         $this->schedules = new ArrayCollection();
+    }
+
+    public function getImages(): array 
+    {
+        return $this->images;
+    }
+
+    public function setImages($value): static 
+    {
+        $this->images = $value;
+        return $this;
+    }
+
+    public function getFkCategoryId(): ?int
+    {
+        return $this->fk_category->getId();
     }
 
     public function getId(): ?int
@@ -82,12 +109,12 @@ class Animals
         return $this;
     }
 
-    public function getWeight(): ?int
+    public function getWeight(): ?float
     {
         return $this->weight;
     }
 
-    public function setWeight(?int $weight): static
+    public function setWeight(?float $weight): static
     {
         $this->weight = $weight;
 
@@ -126,18 +153,6 @@ class Animals
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
 
         return $this;
     }

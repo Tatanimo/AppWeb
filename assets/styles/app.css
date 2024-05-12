@@ -6,6 +6,10 @@
     outline: none;
 }
 
+.react-calendar__tile--now, .react-calendar__tile--now:enabled:hover{
+    background: unset;
+}
+
 #grid-img-contact {
     grid: none;
 }
@@ -15,4 +19,29 @@
         font-family: 'Chunk Five';
         src: url(../../public/font/ChunkFive/Chunkfive.ttf);
     }
+}
+
+span.disabled{
+    background: #f9c7c7;
+    cursor: not-allowed;
+    border-radius: unset;
+}
+
+span.disabled:hover{
+    background: #f9c7c7;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    --tw-ring-shadow: 0 0 #000 !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.react-calendar__month-view__days__day--weekend{
+    color: unset;
 }

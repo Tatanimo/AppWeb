@@ -28,7 +28,6 @@ export default function LoadingChatRoom({user, contact, room}) {
         });
         
         eventSource.onmessage = event => {
-            console.log(JSON.parse(event.data));
             setMessages(prevMessages => [...prevMessages, JSON.parse(event.data)]);
         }
     }, [])

@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\Table(name: '`users`')]
@@ -18,15 +18,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("main")]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups("main")]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Groups("main")]
     private array $roles = [];
 
     /**
@@ -35,7 +38,12 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups("main")]
+    private ?string $description = null;
+
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups("main")]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\Column(length: 100, nullable: true)]
@@ -47,13 +55,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 34, nullable: true)]
     private ?string $iban = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $image = null;
 
     #[ORM\Column(length: 50, nullable: false)]
+    #[Groups("main")]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 100, nullable: false)]
+    #[Groups("main")]
     private ?string $last_name = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
@@ -66,16 +74,12 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $commentaries;
 
     #[ORM\OneToMany(targetEntity: Animals::class, mappedBy: 'fk_user', orphanRemoval: true)]
+    #[Groups("main")]
     private Collection $animals;
-
-    #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'fk_user_sender', orphanRemoval: true)]
-    private Collection $reviewsSender;
-
-    #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'fk_user_receiver', orphanRemoval: true)]
-    private Collection $reviewsReceiver;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups("main")]
     private ?Cities $cities = null;
 
     #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'author')]
@@ -93,17 +97,25 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_date = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Professionals $professionals = null;
+
+    /**
+     * @var Collection<int, Reviews>
+     */
+    #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'user')]
+    private Collection $reviews;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->commentaries = new ArrayCollection();
         $this->animals = new ArrayCollection();
-        $this->reviewsSender = new ArrayCollection();
-        $this->reviewsReceiver = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->schedules = new ArrayCollection();
         $this->articles = new ArrayCollection();
         $this->reactions = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -171,6 +183,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
@@ -225,18 +249,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIban(?string $iban): static
     {
         $this->iban = $iban;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
 
         return $this;
     }
@@ -361,66 +373,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($animal->getFkUser() === $this) {
                 $animal->setFkUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, AvisUser>
-     */
-    public function getReviewsSender(): Collection
-    {
-        return $this->reviewsSender;
-    }
-
-    public function addReviewsSender(Reviews $reviews): static
-    {
-        if (!$this->reviewsSender->contains($reviews)) {
-            $this->reviewsSender->add($reviews);
-            $reviews->setFkUserSender($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReviewsSender(Reviews $reviews): static
-    {
-        if ($this->reviewsSender->removeElement($reviews)) {
-            // set the owning side to null (unless already changed)
-            if ($reviews->getFkUserSender() === $this) {
-                $reviews->setFkUserSender(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, AvisUser>
-     */
-    public function getReviewsReceiver(): Collection
-    {
-        return $this->reviewsReceiver;
-    }
-
-    public function addReviewsReceiver(Reviews $reviews): static
-    {
-        if (!$this->reviewsReceiver->contains($reviews)) {
-            $this->reviewsReceiver->add($reviews);
-            $reviews->setFkUserReceiver($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReviewsReceiver(Reviews $reviews): static
-    {
-        if ($this->reviewsReceiver->removeElement($reviews)) {
-            // set the owning side to null (unless already changed)
-            if ($reviews->getFkUserReceiver() === $this) {
-                $reviews->setFkUserReceiver(null);
             }
         }
 
@@ -567,6 +519,53 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedDate(\DateTimeInterface $created_date): static
     {
         $this->created_date = $created_date;
+
+        return $this;
+    }
+
+    public function getProfessionals(): ?Professionals
+    {
+        return $this->professionals;
+    }
+
+    public function setProfessionals(Professionals $professionals): static
+    {
+        // set the owning side of the relation if necessary
+        if ($professionals->getUser() !== $this) {
+            $professionals->setUser($this);
+        }
+
+        $this->professionals = $professionals;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reviews>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Reviews $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Reviews $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getUser() === $this) {
+                $review->setUser(null);
+            }
+        }
 
         return $this;
     }

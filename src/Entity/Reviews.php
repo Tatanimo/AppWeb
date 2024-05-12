@@ -4,25 +4,34 @@ namespace App\Entity;
 
 use App\Repository\ReviewsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ReviewsRepository::class)]
 class Reviews
 {
     #[ORM\Column]
+    #[Groups("main")]
     private ?int $rating = null;
 
-    #[ORM\Id]
-    #[ORM\ManyToOne(inversedBy: 'avisUsers')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Users $fk_user_sender = null;
-
-    #[ORM\Id]
-    #[ORM\ManyToOne(inversedBy: 'avisUsersReceiver')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Users $fk_user_receiver = null;
-
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("main")]
     private ?string $comment = null;
+
+    #[ORM\Id]
+    #[ORM\ManyToOne(inversedBy: 'reviews')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups("main")]
+    private ?users $user = null;
+
+    #[ORM\Id]
+    #[ORM\ManyToOne(inversedBy: 'reviews')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?professionals $professional = null;
+
+    #[ORM\Id]
+    #[ORM\Column]
+    #[Groups("main")]
+    private ?bool $professional_receiver = null;
 
     public function getRating(): ?int
     {
@@ -36,30 +45,6 @@ class Reviews
         return $this;
     }
 
-    public function getFkUserSender(): ?Users
-    {
-        return $this->fk_user_sender;
-    }
-
-    public function setFkUserSender(?Users $fk_user_sender): static
-    {
-        $this->fk_user_sender = $fk_user_sender;
-
-        return $this;
-    }
-
-    public function getFkUserReceiver(): ?Users
-    {
-        return $this->fk_user_receiver;
-    }
-
-    public function setFkUserReceiver(?Users $fk_user_receiver): static
-    {
-        $this->fk_user_receiver = $fk_user_receiver;
-
-        return $this;
-    }
-
     public function getComment(): ?string
     {
         return $this->comment;
@@ -68,6 +53,42 @@ class Reviews
     public function setComment(?string $comment): static
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getUser(): ?users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?users $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getProfessional(): ?professionals
+    {
+        return $this->professional;
+    }
+
+    public function setProfessional(?professionals $professional): static
+    {
+        $this->professional = $professional;
+
+        return $this;
+    }
+
+    public function isProfessionalReceiver(): ?bool
+    {
+        return $this->professional_receiver;
+    }
+
+    public function setProfessionalReceiver(bool $professional_receiver): static
+    {
+        $this->professional_receiver = $professional_receiver;
 
         return $this;
     }

@@ -15,14 +15,18 @@ class AlertService
 
     public function generate(string $type, string $title, string $message)
     {
-        $uuid = $this->uuidSession->sessionUuid();
-
-        $update = new Update(
-            "alerts/$uuid",
-            json_encode(['type' => $type, 'flash' => array(['title' => $title, 'message' => $message])]),
-            true
-        );
-        
-        $this->hub->publish($update);
+        try {
+            $uuid = $this->uuidSession->sessionUuid();
+    
+            $update = new Update(
+                "alerts/$uuid",
+                json_encode(['type' => $type, 'flash' => array(['title' => $title, 'message' => $message])]),
+                true
+            );
+            
+            $this->hub->publish($update);
+        } catch (\Throwable $th) {
+           
+        }
     }
 }
