@@ -21,7 +21,6 @@ function ReviewCard({review}) {
         setStars(arr);
     }, []);
 
-    console.log(review)
   return (
     <div className='flex flex-row border border-black rounded-2xl py-8 px-4 my-8'>
         <div className='w-1/3 overflow-hidden mr-8'>
