@@ -3,9 +3,6 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-<pre>
-    {{ dump(profil) }}
-</pre>
     {% set profilUser = app.user.id == profil.id %}
     <div class="m-12 mt-0">
         <section class="justify-center flex" id="section-profile">

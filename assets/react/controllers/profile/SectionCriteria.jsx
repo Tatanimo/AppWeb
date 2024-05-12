@@ -21,8 +21,6 @@ function SectionCriteria({userId, professional}) {
         .catch(err => console.error(err));
     }
 
-    console.log(criterias);
-
   return (
     <>
         <div className="flex flex-row items-center justify-between">
