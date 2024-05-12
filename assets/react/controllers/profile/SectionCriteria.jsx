@@ -1,11 +1,27 @@
 import React, { useState } from 'react'
 import AddCriteria from './AddCriteria'
 import { endpoint } from '../../../config';
+import { ReactSVG } from 'react-svg';
+import axios from 'axios';
 
 function SectionCriteria({userId, professional}) {
     const professionalObject = JSON.parse(professional);
     const housing = professionalObject.LiveIn == "appartment" ? "un appartement" : "une maison";
     const [criterias, setCriterias] = useState(professionalObject.criteria);
+
+    const handleDelete = async (e) => {
+        axios.post(`/ajax/professional/criteria/delete/${professionalObject.id}`, {
+            criteria: e
+        }, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => setCriterias(res.data))
+        .catch(err => console.error(err));
+    }
+
+    console.log(criterias);
 
   return (
     <>
@@ -23,9 +39,14 @@ function SectionCriteria({userId, professional}) {
                 </div>
                 {criterias.map((e, i) => {
                     return(
-                        <div key={i} className="flex flex-row items-center">
+                        <div key={i} className="flex flex-row items-center group">
                             <img className="w-6 mr-4" src={`${endpoint.img}/emojis/${e.emoji}.svg`} alt="icon" />
-                            <p className="text-sm">{e.content}</p>
+                            <p className="text-sm cursor-default">{e.content}</p>
+                            {professionalObject.user.id == userId ? (
+                                <button type='button' className='w-6 ml-2 opacity-0 transition-all group-hover:opacity-100 hover:fill-red-600 active:fill-red-500 active:scale-75' onClick={() => handleDelete(e)}>
+                                    <ReactSVG src={`${endpoint.img}/icons/delete.svg`} />
+                                </button>
+                            ) : null }
                         </div>
                     )
                 })}

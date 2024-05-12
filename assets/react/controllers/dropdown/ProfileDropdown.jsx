@@ -36,6 +36,10 @@ function ProfileDropdown({userId}) {
                         <MenuItem>Profil <span className='capitalize'>{professional.service.type}</span></MenuItem>
                     </a>
                 )}
+                <hr />
+                <a href="/logout">
+                    <MenuItem>Déconnexion</MenuItem>
+                </a>
             </MenuList>
         </Menu>
 
