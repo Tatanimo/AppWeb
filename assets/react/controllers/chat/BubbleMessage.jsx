@@ -14,9 +14,9 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
 
         if (shape) {
             if (authorId == userId) {
-                setClassNameShape("rounded-br-none before:block before:absolute before:bg-chat-shape-turquoise before:bottom-0 before:right-[-46px] before:outline-turquoise before:outline-b-8 before:w-[50px] before:h-[80px]")
+                setClassNameShape("rounded-br-none before:block before:absolute before:bg-chat-shape-turquoise before:bottom-0 before:right-[-46px] before:outline-turquoise before:outline-b-8 before:w-[50px] before:h-[32px]")
             } else {
-                setClassNameShape("rounded-bl-none before:block before:absolute before:bg-chat-shape-blue before:bottom-0 before:left-[-46px] before:outline-blue-dark-purple before:outline-b-8 before:w-[50px] before:h-[80px]");
+                setClassNameShape("rounded-bl-none before:block before:absolute before:bg-chat-shape-blue before:bottom-0 before:left-[-46px] before:outline-blue-dark-purple before:outline-b-8 before:w-[50px] before:h-[32px]");
             }
         }
     }, []);
@@ -29,9 +29,9 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
             <div className="w-[144px]"></div>
         ) : null}
         {shape ? (
-            <p className={`${classNameP} relative min-h-[150px] max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8 ${classNameShape}`}>{content}</p>) 
+            <p className={`${classNameP} relative max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8 ${classNameShape}`}>{content}</p>) 
         : (
-            <p className={`${classNameP} relative min-h-[150px] max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8`}>{content}</p>
+            <p className={`${classNameP} relative max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8`}>{content}</p>
         )}
         
         {authorId == userId ? (

@@ -41,7 +41,7 @@ class Cities
 
     #[Groups("main")]
     #[ORM\Column(nullable: true)]
-    private ?int $insee_code = null;
+    private ?string $insee_code = null;
 
     #[Groups("main")]
     #[ORM\Column(length: 255, nullable: true)]
