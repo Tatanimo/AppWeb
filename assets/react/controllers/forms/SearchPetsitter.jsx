@@ -6,9 +6,9 @@ import Select from 'react-select';
 import axios from 'axios';
 import { Spinner } from 'flowbite-react';
 
-async function fetchAnimals(){
+async function fetchAnimals(id){
     let response;
-    await axios.get('/ajax/animal/user', {
+    await axios.get(`/ajax/animal/user/${id}`, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
@@ -28,7 +28,7 @@ async function fetchProfessionalsInAreaAndService(service, idCity, area){
     return response;
 }
 
-export default function SearchPetsitter({onPetsitters}) {
+export default function SearchPetsitter({id, onPetsitters}) {
     const [selectedAnimals, setSelectedAnimals] = useState([]);
     const [options, setOptions] = useState([]);
     const [city, setCity] = useState({});
@@ -44,17 +44,19 @@ export default function SearchPetsitter({onPetsitters}) {
             minDate : new Date(Date.now() + 86400000),
         }); 
 
-        fetchAnimals().then(res => {
-            let selectables = [];
-            res.forEach(animal => {
-                const select = {
-                    "value": animal.id,
-                    "label": animal.name
-                };
-                selectables.push(select);
+        if(id){
+            fetchAnimals(id).then(res => {
+                let selectables = [];
+                res.forEach(animal => {
+                    const select = {
+                        "value": animal.id,
+                        "label": animal.name
+                    };
+                    selectables.push(select);
+                });
+                setOptions(selectables);
             });
-            setOptions(selectables);
-        });
+        }
     }, []);
 
     const handleForm = () => {
@@ -104,10 +106,12 @@ export default function SearchPetsitter({onPetsitters}) {
             </div>
         </div>
         <br />
-        <div className='flex items-center'>
-            <span className="font-ChunkFive text-3xl pr-4">pour garder :</span>
-            <Select value={selectedAnimals} onChange={setSelectedAnimals} isMulti options={options} className='basic-multi-select w-1/2' classNamePrefix="select" id="select-animals" name="select-animals" />
-        </div>
+        {id ? (
+            <div className='flex items-center'>
+                <span className="font-ChunkFive text-3xl pr-4">pour garder :</span>
+                <Select value={selectedAnimals} onChange={setSelectedAnimals} isMulti options={options} className='basic-multi-select w-1/2' classNamePrefix="select" id="select-animals" name="select-animals" />
+            </div>
+        ) : null}
         <br />
         <div className='flex justify-end'>
             {isLoading ? (

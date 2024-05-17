@@ -23,6 +23,11 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute("app_home");
         }
 
+        if (!isset($professional)) {
+            $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Ce profil n'existe pas."]);
+            return $this->redirectToRoute("app_home");
+        }
+
         switch ($professional->getService()->getType()) {
             case 'petsitter':
                 return $this->render('profile/petsitter.html.twig', [

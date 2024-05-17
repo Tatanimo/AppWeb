@@ -10,6 +10,6 @@
     </section>
     <section class="flex flex-col items-center mb-8">
         <div {{ react_component('headers/FirstHeader', {'content': "Garde d'animaux", 'color': 'black', 'className': 'pt-32 mb-16'}) }}></div>
-        <div {{react_component('services/Petsitting')}} class="flex flex-col items-center"></div>
+        <div {{react_component('services/Petsitting', {'id': app.user ? app.user.id : null})}} class="flex flex-col items-center"></div>
     </section>
 {% endblock %}
