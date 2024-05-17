@@ -26,7 +26,7 @@ class MessagesController extends AbstractController
         ]);
     }
 
-    #[Route('/messages/mock', name: 'app_mock')]
+    #[Route('/messages/mock', name: 'app_mock_messages')]
     public function mock(UsersRepository $usersRepository): Response
     {
         $users = $usersRepository->findAll();

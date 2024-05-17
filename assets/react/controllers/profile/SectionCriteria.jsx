@@ -35,7 +35,7 @@ function SectionCriteria({userId, professional}) {
                     <img className="w-6 mr-4" alt="icon" src={`${endpoint.img}/emojis/${professionalObject.LiveIn}.svg`} />
                     <p className="text-sm">Habite dans {housing}</p>
                 </div>
-                {criterias.map((e, i) => {
+                {criterias != null && criterias.length > 0 ? criterias.map((e, i) => {
                     return(
                         <div key={i} className="flex flex-row items-center group">
                             <img className="w-6 mr-4" src={`${endpoint.img}/emojis/${e.emoji}.svg`} alt="icon" />
@@ -47,7 +47,7 @@ function SectionCriteria({userId, professional}) {
                             ) : null }
                         </div>
                     )
-                })}
+                }) : null}
         </div>
     </>
   )
