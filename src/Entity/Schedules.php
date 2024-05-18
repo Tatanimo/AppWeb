@@ -18,11 +18,7 @@ class Schedules
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Groups("main")]
-    private ?\DateTimeInterface $unavailabilityStart = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups("main")]
-    private ?\DateTimeInterface $unavailabilityEnd = null;
+    private ?\DateTimeInterface $unavailability = null;
 
     #[ORM\ManyToOne(inversedBy: 'schedules')]
     #[ORM\JoinColumn(nullable: false)]
@@ -33,26 +29,14 @@ class Schedules
         return $this->id;
     }
 
-    public function getUnavailabilityStart(): ?\DateTimeInterface
+    public function getUnavailability(): ?\DateTimeInterface
     {
-        return $this->unavailabilityStart;
+        return $this->unavailability;
     }
 
-    public function setUnavailabilityStart(\DateTimeInterface $unavailabilityStart): static
+    public function setUnavailability(\DateTimeInterface $unavailability): static
     {
-        $this->unavailabilityStart = $unavailabilityStart;
-
-        return $this;
-    }
-
-    public function getUnavailabilityEnd(): ?\DateTimeInterface
-    {
-        return $this->unavailabilityEnd;
-    }
-
-    public function setUnavailabilityEnd(\DateTimeInterface $unavailabilityEnd): static
-    {
-        $this->unavailabilityEnd = $unavailabilityEnd;
+        $this->unavailability = $unavailability;
 
         return $this;
     }

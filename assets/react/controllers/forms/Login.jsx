@@ -20,10 +20,10 @@ export default function Login({setShowRegister, setOpenModal, setUserId}) {
                 'Content-Type': 'application/json'
               }  
             }).then((res) => {
-              window.location.reload();
               setUserId(res.data.user.id);
               setLoading(false);
               setOpenModal(false);
+              window.location.reload();
             }).catch((err) => {
               setLoading(false);
               throw err;

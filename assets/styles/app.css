@@ -46,7 +46,7 @@ input::-webkit-inner-spin-button {
     color: unset;
 }
 
-.react-calendar__tile:disabled{
+.react-calendar__tile:disabled, .date-disabled{
     background: repeating-linear-gradient(
         -45deg,
         #d3d3d3a8,
@@ -54,12 +54,14 @@ input::-webkit-inner-spin-button {
         #fff 5px,
         #fff 10px
     );
-    color: #666;
+    color: #666 !important;
     text-shadow: 
     -1px -1px 0 #fff, 
     1px -1px 0 #fff, 
     -1px 1px 0 #fff, 
     1px 1px 0 #fff; 
+    font-weight: unset !important;
+    background-color: unset !important;
 }
 
 .react-calendar__tile{
@@ -67,6 +69,22 @@ input::-webkit-inner-spin-button {
     color: #000;
     font-weight: bold;
 }
+
+.react-calendar__tile:hover{
+    opacity: 0.75;
+    background-color: #c1e8c8 !important;
+}
+
+.react-calendar__tile:disabled:hover, .date-disabled:hover{
+    background: repeating-linear-gradient(-45deg, #d3d3d3a8, #d3d3d3a8 5px, #fff 5px, #fff 10px) !important;
+    opacity: 0.75;
+    background-color: unset !important;
+}
+
+.date-disabled:focus{
+    background: #1087ff !important;
+}
+
 #unavailable{
     background: repeating-linear-gradient(
         -45deg,

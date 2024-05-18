@@ -11,7 +11,7 @@
             </section>
             <section id="sec-agenda" class="w-full mt-12">
                 <h1 class="text-4xl font-ChunkFive mr-4 capitalize">Agenda</h1>
-                <div {{react_component('calendar/Professional', {id: professional.id})}}></div>
+                <div {{react_component('calendar/Professional', {id: professional.id, userId: app.user ? (app.user.professionals ? app.user.professionals.id : null) : null })}}></div>
                 <div class="flex items-center mt-2">
                     <div class="h-4 w-4 rounded bg-[#c1e8c8] mr-2"></div>
                     <p>Disponible</p>

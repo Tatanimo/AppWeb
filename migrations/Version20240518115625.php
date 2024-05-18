@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240518083236 extends AbstractMigration
+final class Version20240518115625 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -37,7 +37,7 @@ final class Version20240518083236 extends AbstractMigration
         $this->addSql('CREATE TABLE regions (code VARCHAR(3) NOT NULL, name VARCHAR(255) DEFAULT NULL, slug VARCHAR(255) DEFAULT NULL, PRIMARY KEY(code)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reviews (professional_receiver TINYINT(1) NOT NULL, user_id INT NOT NULL, professional_id INT NOT NULL, rating INT NOT NULL, comment VARCHAR(255) DEFAULT NULL, INDEX IDX_6970EB0FA76ED395 (user_id), INDEX IDX_6970EB0FDB77003 (professional_id), PRIMARY KEY(user_id, professional_id, professional_receiver)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE rooms (reference VARCHAR(255) NOT NULL, uuid VARCHAR(255) NOT NULL, PRIMARY KEY(reference)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE schedules (id INT AUTO_INCREMENT NOT NULL, professional_id INT NOT NULL, unavailability_start DATE NOT NULL, unavailability_end DATE NOT NULL, INDEX IDX_313BDC8EDB77003 (professional_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE schedules (id INT AUTO_INCREMENT NOT NULL, professional_id INT NOT NULL, unavailability DATE NOT NULL, INDEX IDX_313BDC8EDB77003 (professional_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE services_type (id INT AUTO_INCREMENT NOT NULL, type VARCHAR(30) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE services_type_companies (services_type_id INT NOT NULL, companies_id INT NOT NULL, INDEX IDX_78E76EF42CB74764 (services_type_id), INDEX IDX_78E76EF46AE4741E (companies_id), PRIMARY KEY(services_type_id, companies_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE `users` (id INT AUTO_INCREMENT NOT NULL, fk_company_id INT DEFAULT NULL, cities_id INT DEFAULT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, description VARCHAR(255) DEFAULT NULL, birthdate DATE DEFAULT NULL, address VARCHAR(100) DEFAULT NULL, phone_number VARCHAR(20) DEFAULT NULL, iban VARCHAR(34) DEFAULT NULL, first_name VARCHAR(50) NOT NULL, last_name VARCHAR(100) NOT NULL, created_date DATE NOT NULL, UNIQUE INDEX UNIQ_1483A5E9E7927C74 (email), INDEX IDX_1483A5E967F5D045 (fk_company_id), INDEX IDX_1483A5E9CAC75398 (cities_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

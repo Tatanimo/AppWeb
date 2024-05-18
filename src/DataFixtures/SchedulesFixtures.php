@@ -24,11 +24,10 @@ class SchedulesFixtures extends Fixture implements DependentFixtureInterface
         $professionals = $this->professionalsRepository->findAll();
 
         foreach ($professionals as $professional) {
-            for ($i=0; $i < rand(0, 4); $i++) { 
+            for ($i=0; $i < rand(0, 30); $i++) { 
                 $schedule = new Schedules();
                 $start = $faker->dateTimeBetween('now', '+2 months');
-                $end = $faker->dateTimeBetween($start, '+2 months');
-                $schedule->setProfessional($professional)->setUnavailabilityStart($start)->setUnavailabilityEnd($end);
+                $schedule->setProfessional($professional)->setUnavailability($start);
     
                 $manager->persist($schedule);
             }

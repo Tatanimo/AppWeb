@@ -47,9 +47,7 @@ function Professional({setOpenModal}) {
                     'Content-Type': 'application/json'
                 }  
             }).then((e) => {
-                window.location.reset();
-                setLoading(false);
-                setOpenModal(false);
+                window.location.reload();
             }).catch((err) => {
                 setLoading(false);
                 throw err;
