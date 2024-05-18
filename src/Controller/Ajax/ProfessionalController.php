@@ -11,6 +11,7 @@ use App\Repository\SchedulesRepository;
 use App\Repository\ServicesTypeRepository;
 use App\Services\CalculatingDistance;
 use App\Services\Mercure\AlertService;
+use App\Utils\ArrayUtils;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -235,13 +236,13 @@ class ProfessionalController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
-        $first_date = new DateTime($data[0]);
-        $first_date->modify("+1 day")->settime(0,0);
+        $start_date = new DateTime($data[0]);
+        $start_date->modify("+1 day")->settime(0,0);
         $end_date = new DateTime($data[1]);
         $end_date->modify("+1 day")->settime(0,0);
 
         $period = new DatePeriod(
-            $first_date,
+            $start_date,
             new DateInterval('P1D'),
             $end_date
         );
@@ -281,12 +282,38 @@ class ProfessionalController extends AbstractController
     }
 
     #[Route('/ajax/professionals/{service}/{idCity}/{area}', name: 'app_getProfesionnals', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function fetchProfessionalsInAreaAndService(CalculatingDistance $calculatingDistance, string $service, int $idCity, int $area): JsonResponse 
+    public function fetchProfessionalsInAreaAndService(CalculatingDistance $calculatingDistance, string $service, int $idCity, int $area, Request $request): JsonResponse 
     {
         $professionals = $calculatingDistance->getProfessionalsInAreaAndService($service, $idCity, $area);
 
         if (!isset($professionals)) {
             return $this->json("Utilisateurs introuvable", 401);
+        }
+
+        $data = $request->query;
+        $start_date = new DateTime($data->get('startDate'));
+        $start_date->modify("+1 day")->settime(0,0);
+        $end_date = new DateTime($data->get('endDate'));
+        $end_date->modify("+2 days")->settime(0,0);
+
+        $period = new DatePeriod(
+            $start_date,
+            new DateInterval('P1D'),
+            $end_date
+        );
+
+        foreach ($professionals as $index => $professional) {
+            foreach ($period as $date) {
+                $schedules = $professional[0]->getSchedules()->toArray();
+                if (isset($schedules)) {
+                    $some = ArrayUtils::arraySome($schedules, function($a) use ($date) {
+                        return $a->getUnavailability() == $date;
+                    });
+                    if ($some) {
+                        unset($professionals[$index]);
+                    }
+                }
+            }
         }
 
         usort($professionals, function($a, $b){
