@@ -18,11 +18,6 @@ class ProfileController extends AbstractController
     {
         $professional = $professionalsRepository->findOneBy(["id" => $id]);
 
-        if (!isset($user)) {
-            $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Vous n'avez pas accès au profil sans être connecté."]);
-            return $this->redirectToRoute("app_home");
-        }
-
         if (!isset($professional)) {
             $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Ce profil n'existe pas."]);
             return $this->redirectToRoute("app_home");
@@ -47,11 +42,6 @@ class ProfileController extends AbstractController
     public function index(#[CurrentUser] ?Users $user, $id, UsersRepository $usersRepository): Response
     {
         $profil = $usersRepository->findOneBy(["id" => $id]);
-
-        if (!isset($user)) {
-            $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Vous n'avez pas accès au profil sans être connecté."]);
-            return $this->redirectToRoute("app_home");
-        }
 
         return $this->render('profile/index.html.twig', [
             'profil' => $profil,

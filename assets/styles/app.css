@@ -45,3 +45,34 @@ input::-webkit-inner-spin-button {
 .react-calendar__month-view__days__day--weekend{
     color: unset;
 }
+
+.react-calendar__tile:disabled{
+    background: repeating-linear-gradient(
+        -45deg,
+        #d3d3d3a8,
+        #d3d3d3a8 5px,
+        #fff 5px,
+        #fff 10px
+    );
+    color: #666;
+    text-shadow: 
+    -1px -1px 0 #fff, 
+    1px -1px 0 #fff, 
+    -1px 1px 0 #fff, 
+    1px 1px 0 #fff; 
+}
+
+.react-calendar__tile{
+    background-color: #c1e8c8;
+    color: #000;
+    font-weight: bold;
+}
+#unavailable{
+    background: repeating-linear-gradient(
+        -45deg,
+        #d3d3d3a8, 
+        #d3d3d3a8 5px,
+        #fff 5px,
+        #fff 8px 
+    );
+}

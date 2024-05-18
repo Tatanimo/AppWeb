@@ -6,6 +6,7 @@ use App\Entity\Professionals;
 use App\Entity\Users;
 use App\Repository\CitiesRepository;
 use App\Repository\ProfessionalsRepository;
+use App\Repository\SchedulesRepository;
 use App\Repository\ServicesTypeRepository;
 use App\Services\CalculatingDistance;
 use App\Services\Mercure\AlertService;
@@ -204,6 +205,20 @@ class ProfessionalController extends AbstractController
         }
 
         return $this->json($professional, 200, context: ["groups" => "main"]);
+    }
+
+    #[Route('/ajax/professional/schedules/{id}', name:'app_getProfessionalSchedulesById', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function getProfessionalSchedulesById(ProfessionalsRepository $professionalsRepository, SchedulesRepository $schedulesRepository, $id): JsonResponse
+    {
+        $professional = $professionalsRepository->findOneBy(["id" => $id]);
+
+        if (!isset($professional)) {
+            return $this->json("Professional not found", 400);
+        }
+
+        $schedules = $schedulesRepository->findBy(["professional" => $professional]);
+
+        return $this->json($schedules, 200, context: ["groups" => "main"]);
     }
 
     #[Route('/ajax/professional/{id}', name:'app_getProfessionalById', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]

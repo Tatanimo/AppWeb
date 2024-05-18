@@ -60,9 +60,23 @@ class Professionals
     #[Groups("main")]
     private ?ServicesType $service = null;
 
+    /**
+     * @var Collection<int, Appointments>
+     */
+    #[ORM\OneToMany(targetEntity: Appointments::class, mappedBy: 'professional')]
+    private Collection $appointments;
+
+    /**
+     * @var Collection<int, Schedules>
+     */
+    #[ORM\OneToMany(targetEntity: Schedules::class, mappedBy: 'professional', orphanRemoval: true)]
+    private Collection $schedules;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
+        $this->appointments = new ArrayCollection();
+        $this->schedules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,6 +206,66 @@ class Professionals
     public function setService(?ServicesType $service): static
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Appointments>
+     */
+    public function getAppointments(): Collection
+    {
+        return $this->appointments;
+    }
+
+    public function addAppointment(Appointments $appointment): static
+    {
+        if (!$this->appointments->contains($appointment)) {
+            $this->appointments->add($appointment);
+            $appointment->setProfessional($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppointment(Appointments $appointment): static
+    {
+        if ($this->appointments->removeElement($appointment)) {
+            // set the owning side to null (unless already changed)
+            if ($appointment->getProfessional() === $this) {
+                $appointment->setProfessional(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Schedules>
+     */
+    public function getSchedules(): Collection
+    {
+        return $this->schedules;
+    }
+
+    public function addSchedule(Schedules $schedule): static
+    {
+        if (!$this->schedules->contains($schedule)) {
+            $this->schedules->add($schedule);
+            $schedule->setProfessional($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSchedule(Schedules $schedule): static
+    {
+        if ($this->schedules->removeElement($schedule)) {
+            // set the owning side to null (unless already changed)
+            if ($schedule->getProfessional() === $this) {
+                $schedule->setProfessional(null);
+            }
+        }
 
         return $this;
     }

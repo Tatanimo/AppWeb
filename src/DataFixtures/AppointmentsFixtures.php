@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Appointments;
-use App\Entity\Schedules;
 use App\Repository\AnimalsRepository;
 use App\Repository\ProfessionalsRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -11,7 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
-class SchedulesFixtures extends Fixture implements DependentFixtureInterface
+class AppointmentsFixtures extends Fixture implements DependentFixtureInterface
 {
     public function __construct(private AnimalsRepository $animalsRepository, private ProfessionalsRepository $professionalsRepository)
     {
@@ -21,17 +20,13 @@ class SchedulesFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-        $professionals = $this->professionalsRepository->findAll();
 
-        foreach ($professionals as $professional) {
-            for ($i=0; $i < rand(0, 4); $i++) { 
-                $schedule = new Schedules();
-                $start = $faker->dateTimeBetween('now', '+2 months');
-                $end = $faker->dateTimeBetween($start, '+2 months');
-                $schedule->setProfessional($professional)->setUnavailabilityStart($start)->setUnavailabilityEnd($end);
-    
-                $manager->persist($schedule);
-            }
+        for ($i=1; $i < 50 ; $i++) { 
+            $appointment = new Appointments();
+            $animal = $this->animalsRepository->randomAnimal();
+            $startDate = $faker->dateTimeThisDecade();
+            $appointment->setStartDate($startDate)->setEndDate($faker->dateTimeBetween($startDate))->setAnimal($animal)->setProfessional($this->professionalsRepository->randomProfessional());
+            $manager->persist($appointment);            
         }
 
         $manager->flush();
@@ -40,6 +35,7 @@ class SchedulesFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
+            AnimalsFixtures::class,
             ProfessionalsFixtures::class
         ];
     }

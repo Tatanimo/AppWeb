@@ -6,16 +6,16 @@
     <div class="m-12 mt-0 flex justify-center">
         <div id="left-body" class="flex flex-col items-center mr-16 max-w-96">
             <section id="sec-avatar" class="p-4">
-                <div class="w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/SquareImageProfessional', {srcPath: findProfessionalImage(professional.id) ? 'img/professionals/professional-' ~ professional.id ~ '-1.jpg' : null, professional: professional|serialize, userId: app.user.id})}}>
+                <div class="w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/SquareImageProfessional', {srcPath: findProfessionalImage(professional.id) ? 'img/professionals/professional-' ~ professional.id ~ '-1.jpg' : null, professional: professional|serialize, userId: app.user ? app.user.id : null})}}>
                 </div>
             </section>
             <section id="sec-agenda" class="w-full mt-12">
                 <h1 class="text-4xl font-ChunkFive mr-4 capitalize">Agenda</h1>
-                <div {{react_component('calendar/Professional')}}></div>
+                <div {{react_component('calendar/Professional', {id: professional.id})}}></div>
                 <div class="flex items-center mt-2">
-                    <div class="h-4 w-4 rounded bg-green-300 mr-2"></div>
+                    <div class="h-4 w-4 rounded bg-[#c1e8c8] mr-2"></div>
                     <p>Disponible</p>
-                    <div class="h-4 w-4 rounded bg-gray-300 mr-2 ml-4"></div>
+                    <div class="h-4 w-4 rounded mr-2 ml-4" id="unavailable"></div>
                     <p>Indisponible</p>
                 </div>
             </section>
@@ -34,7 +34,7 @@
                     <h1 class="text-4xl font-ChunkFive">{{difference.y}} ans</h1>
                 {% endif %}
                 <br>
-                {% if app.user.id == professional.user.id %}
+                {% if app.user ? app.user.id == professional.user.id : false %}
                     <div {{react_component("profile/ProfessionalDescription", {description: professional.description, professionalId: professional.id})}}></div>
                 {% else %}
                     <p class="min-w-96 text-2xl">{{professional.description}}</p>
@@ -43,7 +43,7 @@
             </section>
             <br>
             <section id="sec-criteria" class="border-t border-b border-black p-4">
-                <div {{react_component('profile/SectionCriteria', {userId: app.user.id, professional: professional|serialize})}}></div>
+                <div {{react_component('profile/SectionCriteria', {userId: app.user ? app.user.id : null, professional: professional|serialize})}}></div>
             </section>
             <section id="sec-rating">
                 <div class="flex flex-col justify-center" {{react_component('profile/Reviews', {idProfessional: professional.id})}}></div>
