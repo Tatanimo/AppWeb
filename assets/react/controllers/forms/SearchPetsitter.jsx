@@ -17,12 +17,13 @@ async function fetchAnimals(id){
     return response;
 }
 
-async function fetchProfessionalsInAreaAndService(service, idCity, area, date){
+async function fetchProfessionalsInAreaAndService(service, idCity, area, date, selectedAnimals){
     let response;
     await axios.get(`/ajax/professionals/${service}/${idCity}/${area}`, {
         params: {
             startDate: date[0],
-            endDate: date[1]
+            endDate: date[1],
+            selectedAnimals: JSON.stringify(selectedAnimals)
         },
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
@@ -32,7 +33,7 @@ async function fetchProfessionalsInAreaAndService(service, idCity, area, date){
     return response;
 }
 
-export default function SearchPetsitter({id, onPetsitters}) {
+export default function SearchPetsitter({id, onPetsittersFound}) {
     const [selectedAnimals, setSelectedAnimals] = useState([]);
     const [options, setOptions] = useState([]);
     const [city, setCity] = useState({});
@@ -55,7 +56,7 @@ export default function SearchPetsitter({id, onPetsitters}) {
                 let selectables = [];
                 res.forEach(animal => {
                     const select = {
-                        "value": animal.id,
+                        "value": animal.fk_category,
                         "label": animal.name
                     };
                     selectables.push(select);
@@ -72,17 +73,19 @@ export default function SearchPetsitter({id, onPetsitters}) {
             const start = new Date(startArray[2], startArray[1] - 1, startArray[0]);
             const end = new Date(endArray[2], endArray[1] - 1, endArray[0]);
 
-            if (!isNaN(start) && !isNaN(end)) {
+            if (!isNaN(start) && !isNaN(end) && id ? selectedAnimals.length > 0 : true) {
+                const transformedSelectedAnimals = selectedAnimals.map(item => item.value);
                 setIsLoading(true);
-                fetchProfessionalsInAreaAndService("petsitter", city.id, radius, [start, end])
+                fetchProfessionalsInAreaAndService("petsitter", city.id, radius, [start, end], transformedSelectedAnimals)
                 .then(res => {
-                    onPetsitters(res)})
+                    console.log(res)
+                    onPetsittersFound(res)})
                 .catch(err => console.error(err))
                 .finally(() => setIsLoading(false));
             }
         }
     }
-    
+
   return (
     <form>
         <span className="font-ChunkFive text-3xl">Je recherche quelqu'un du :</span>

@@ -44,6 +44,7 @@ class Animals
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("main")]
     private ?CategoryAnimals $fk_category = null;
 
     #[Groups("main")]

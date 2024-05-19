@@ -297,6 +297,7 @@ class ProfessionalController extends AbstractController
         }
 
         $data = $request->query;
+        
         $start_date = new DateTime($data->get('startDate'));
         $start_date->modify("+1 day")->settime(0,0);
         $end_date = new DateTime($data->get('endDate'));
@@ -308,6 +309,9 @@ class ProfessionalController extends AbstractController
             $end_date
         );
 
+        $selectedAnimals = json_decode($data->get('selectedAnimals'), true);
+        $selectedAnimalsCategoriesNames = array_column($selectedAnimals, 'name');
+
         foreach ($professionals as $index => $professional) {
             foreach ($period as $date) {
                 $schedules = $professional[0]->getSchedules()->toArray();
@@ -318,6 +322,16 @@ class ProfessionalController extends AbstractController
                     if ($some) {
                         unset($professionals[$index]);
                     }
+                }
+            }
+
+            $allowedCategories = $professional[0]->getAllowedCategories()->toArray();
+            $allowedCategoriesName = array_map(function($e){
+                return $e->getName();
+            }, $allowedCategories);
+            foreach ($selectedAnimalsCategoriesNames as $category) {
+                if (!in_array($category, $allowedCategoriesName)) {
+                    unset($professionals[$index]);
                 }
             }
         }

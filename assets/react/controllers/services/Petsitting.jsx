@@ -8,7 +8,7 @@ function Petsitting({id}) {
   return (
     <>
         <div className="bg-beige w-full p-12 rounded-3xl max-w-[1152px] min-w-[1152px]">
-            <SearchPetsitter id={id} onPetsitters={setPetsitters} />
+            <SearchPetsitter id={id} onPetsittersFound={setPetsitters} />
         </div>
         <div className='grid xl:grid-cols-3 grid-cols-2 justify-items-center grid-rows-1 gap-5 mt-8'>
             {petsitters.map((e) => {
