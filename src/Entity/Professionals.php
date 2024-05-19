@@ -72,11 +72,18 @@ class Professionals
     #[ORM\OneToMany(targetEntity: Schedules::class, mappedBy: 'professional', orphanRemoval: true)]
     private Collection $schedules;
 
+    /**
+     * @var Collection<int, CategoryAnimals>
+     */
+    #[ORM\ManyToMany(targetEntity: CategoryAnimals::class, inversedBy: 'professionals')]
+    private Collection $allowed_categories;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
         $this->appointments = new ArrayCollection();
         $this->schedules = new ArrayCollection();
+        $this->allowed_categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -266,6 +273,30 @@ class Professionals
                 $schedule->setProfessional(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CategoryAnimals>
+     */
+    public function getAllowedCategories(): Collection
+    {
+        return $this->allowed_categories;
+    }
+
+    public function addAllowedCategory(CategoryAnimals $allowedCategory): static
+    {
+        if (!$this->allowed_categories->contains($allowedCategory)) {
+            $this->allowed_categories->add($allowedCategory);
+        }
+
+        return $this;
+    }
+
+    public function removeAllowedCategory(CategoryAnimals $allowedCategory): static
+    {
+        $this->allowed_categories->removeElement($allowedCategory);
 
         return $this;
     }

@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class ProfileController extends AbstractController
 {
     #[Route('/professionnel/{id}', name: 'app_profile_pro')]
-    public function professional(#[CurrentUser] ?Users $user, $id, ProfessionalsRepository $professionalsRepository): Response
+    public function professional($id, ProfessionalsRepository $professionalsRepository): Response
     {
         $professional = $professionalsRepository->findOneBy(["id" => $id]);
 

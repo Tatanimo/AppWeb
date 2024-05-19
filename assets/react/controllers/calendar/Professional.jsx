@@ -26,7 +26,6 @@ function Professional({id, userId}) {
         }
       })
       .then(res => {
-        console.log(res.data)
         setDateUnavailable(res.data)})
       .catch(err => console.error(err))
       .finally(() => document.activeElement.blur());

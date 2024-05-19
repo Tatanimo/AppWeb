@@ -1,8 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Label, Radio, Select, Spinner, TextInput } from 'flowbite-react';
+import { Button, Label, Radio, Select as SelectFlowbite, Spinner, TextInput } from 'flowbite-react';
+import Select from 'react-select';
 import axios from 'axios';
 import Requirement from '../alerts/Requirement';
 import CitiesInput from './CitiesInput';
+
+async function fetchCategoriesAnimals(){
+    let response;
+    await axios.get(`/ajax/animals/categories`, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(res => response = res.data);
+    return response;
+}
 
 function Professional({setOpenModal}) {
     const [services, setServices] = useState([]);
@@ -11,6 +23,8 @@ function Professional({setOpenModal}) {
     const [housing, setHousing] = useState("");
     const [address, setAddress] = useState("");
     const [price, setPrice] = useState(0);
+    const [selectedCategoriesAnimals, setSelectedCategoriesAnimals] = useState([]);
+    const [options, setOptions] = useState([]);
     const [requirements, setRequirements] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -22,6 +36,19 @@ function Professional({setOpenModal}) {
         }).then(response => {
             setServices(response.data);
         }).catch(error => console.error(error));
+
+        fetchCategoriesAnimals().then(res => {
+            console.log(res)
+            let selectables = [];
+            res.forEach(categories => {
+                const select = {
+                    "value": categories.id,
+                    "label": categories.name
+                };
+                selectables.push(select);
+            });
+            setOptions(selectables);
+        })
     }, []);
 
     const handleNumberInput = (e) => {
@@ -39,7 +66,8 @@ function Professional({setOpenModal}) {
                 "city": city,
                 "housing": housing,
                 "address": address,
-                "price": price
+                "price": price,
+                "categories": selectedCategoriesAnimals
             }, 
             {
                 headers: {
@@ -69,6 +97,9 @@ function Professional({setOpenModal}) {
         }
         if (price == "" || price == null) {
             arrayRequirements.push("Le prix est vide, veuillez insérer un prix.");
+        }
+        if (selectedCategoriesAnimals == null || selectedCategoriesAnimals.length == 0) {
+            arrayRequirements.push("Veuillez choisir une catégorie d'animal.");
         }
 
         if (arrayRequirements.length > 0) {
@@ -109,16 +140,18 @@ function Professional({setOpenModal}) {
                 <div className="mb-2 block">
                     <Label htmlFor="housing" value="Selectionner votre habitation:" />
                 </div>
-                <Select id="housing" onChange={e => setHousing(e.target.value)} className='!mt-0' required>
+                <SelectFlowbite id="housing" onChange={e => setHousing(e.target.value)} className='!mt-0' required>
                     <option value="">---------------</option>
                     <option value="appartment">Appartement</option>
                     <option value="house">Maison</option>
-                </Select>
+                </SelectFlowbite>
 
                 <div className="mb-2 block">
                     <Label htmlFor="housing" value="Entrer votre prix (en €) par jour:" />
                 </div>
                 <TextInput maxLength={3} onKeyDown={e => handleNumberInput(e)} onChange={e => setPrice(e.target.value)} id="address" placeholder='32€' required className='!mt-0'/>
+
+                <Select closeMenuOnSelect={false} menuPlacement='top' value={selectedCategoriesAnimals} onChange={setSelectedCategoriesAnimals} isMulti options={options} className='basic-multi-select w-full' classNamePrefix="select" id="select-categories-animals" placeholder="Catégories d'animaux autorisées" />
 
                 {loading ? (
                 <Spinner className="m-auto h-10 w-10 text-blue-purple"/>

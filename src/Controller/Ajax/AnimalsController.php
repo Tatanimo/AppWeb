@@ -8,6 +8,7 @@ use App\Repository\AnimalsRepository;
 use App\Repository\CategoryAnimalsRepository;
 use App\Repository\UsersRepository;
 use App\Services\Mercure\AlertService;
+use App\Services\Twig\CategoriesAnimals;
 use App\Services\Twig\FindImages;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,6 +20,19 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class AnimalsController extends AbstractController
 {
+    #[Route('/ajax/animals/categories', name: 'app_ajax_getCategoriesAnimals', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function getCategoriesAnimals(CategoryAnimalsRepository $categoryAnimalsRepository): JsonResponse
+    {
+
+        $categories = $categoryAnimalsRepository->findAll();
+
+        if (!isset($categories)) {
+            return $this->json("Catégories introuvables", 401);
+        }
+
+        return $this->json($categories, 200, context: ['groups'=>'main']);
+    }
+
     #[Route('/ajax/animal', name: 'app_ajax_addAnimal', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
     public function addAnimal(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, AlertService $alertService, CategoryAnimalsRepository $categoryAnimalsRepository, AnimalsRepository $animalsRepository): JsonResponse
     {

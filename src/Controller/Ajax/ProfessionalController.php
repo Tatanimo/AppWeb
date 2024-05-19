@@ -5,6 +5,7 @@ namespace App\Controller\Ajax;
 use App\Entity\Professionals;
 use App\Entity\Schedules;
 use App\Entity\Users;
+use App\Repository\CategoryAnimalsRepository;
 use App\Repository\CitiesRepository;
 use App\Repository\ProfessionalsRepository;
 use App\Repository\SchedulesRepository;
@@ -25,7 +26,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class ProfessionalController extends AbstractController
 {
     #[Route('/ajax/professional', name: 'app_addProfessional', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function addProfessional(Request $request, ServicesTypeRepository $servicesTypeRepository, CitiesRepository $citiesRepository, AlertService $alert, EntityManagerInterface $em): JsonResponse
+    public function addProfessional(Request $request, ServicesTypeRepository $servicesTypeRepository, CitiesRepository $citiesRepository, AlertService $alert, EntityManagerInterface $em, CategoryAnimalsRepository $categoryAnimalsRepository): JsonResponse
     {
         $user = $this->getUser();
 
@@ -40,14 +41,20 @@ class ProfessionalController extends AbstractController
         $housing = $data['housing'] ?? null;
         $address = $data['address'] ?? null;
         $price = $data['price'] ?? null;
+        $categories = $data['categories'] ?? null;
 
-        if (isset($serviceId) && isset($cityFetch) && isset($housing) && isset($address) && isset($price)) {
+        if (isset($serviceId) && isset($cityFetch) && isset($housing) && isset($address) && isset($price) && isset($categories)) {
             $professional = new Professionals();
 
             $service = $servicesTypeRepository->findOneBy(["id" => $serviceId]);
             $city = $citiesRepository->findOneBy(["id" => $cityFetch["id"]]);
 
             $professional->setUser($user)->setService($service)->setCity($city)->setLiveIn($housing)->setAddress($address)->setPrice($price);
+
+            foreach ($categories as $category) {
+                $categoryAnimal = $categoryAnimalsRepository->findOneBy(["id" => $category]);
+                $professional->addAllowedCategory($categoryAnimal);
+            }
 
             $type = $service->getType();
 

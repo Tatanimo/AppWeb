@@ -19,7 +19,6 @@ async function fetchAnimals(id){
 
 async function fetchProfessionalsInAreaAndService(service, idCity, area, date){
     let response;
-    console.log(date)
     await axios.get(`/ajax/professionals/${service}/${idCity}/${area}`, {
         params: {
             startDate: date[0],
@@ -77,7 +76,6 @@ export default function SearchPetsitter({id, onPetsitters}) {
                 setIsLoading(true);
                 fetchProfessionalsInAreaAndService("petsitter", city.id, radius, [start, end])
                 .then(res => {
-                    console.log(res)
                     onPetsitters(res)})
                 .catch(err => console.error(err))
                 .finally(() => setIsLoading(false));
