@@ -55,9 +55,12 @@ class ProfessionalsFixtures extends Fixture implements DependentFixtureInterface
                 $professional->setAddress($faker->address())->setCity($cities)->setDescription($faker->paragraph($randPar, true))->setLiveIn($liveIn[$randLivIn])->setPrice($faker->randomNumber(3))->setUser($user)->setCriteria($criteriaList)->setService($services[$randomServices]);
 
                 $categoriesAnimals = $this->categoryAnimalsRepository->findAll();
+                shuffle($categoriesAnimals);
 
                 for ($i=0; $i < rand(1, count($categoriesAnimals)) ; $i++) { 
-                    $professional->addAllowedCategory($categoriesAnimals[$i]);
+                    $in = array_rand($categoriesAnimals);
+                    $professional->addAllowedCategory($categoriesAnimals[$in]);
+                    unset($categoriesAnimals[$in]);
                 }
 
                 $manager->persist($professional);
