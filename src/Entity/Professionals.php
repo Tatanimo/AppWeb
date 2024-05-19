@@ -76,6 +76,7 @@ class Professionals
      * @var Collection<int, CategoryAnimals>
      */
     #[ORM\ManyToMany(targetEntity: CategoryAnimals::class, inversedBy: 'professionals')]
+    #[Groups("main")]
     private Collection $allowed_categories;
 
     public function __construct()

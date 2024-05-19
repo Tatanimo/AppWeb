@@ -169,7 +169,6 @@ class ProfessionalController extends AbstractController
             $alert->generate("fail", "Erreur de suppression", "Une erreur s'est produite, le critère de votre compte professionnel n'a pas été supprimé. Veuillez réessayer.");
             return $this->json("Delete failed", 400);
         }
-
     }
 
     #[Route('/ajax/professional/criteria/{id}', name: 'app_setProfessionalCriteria', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]

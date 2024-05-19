@@ -9,7 +9,7 @@
                 <div class="w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/SquareImageProfessional', {srcPath: findProfessionalImage(professional.id) ? 'img/professionals/professional-' ~ professional.id ~ '-1.jpg' : null, professional: professional|serialize, userId: app.user ? app.user.id : null})}}>
                 </div>
             </section>
-            <section id="sec-agenda" class="w-full mt-12">
+            <section id="sec-agenda" class="w-full mt-12 sticky top-28">
                 <h1 class="text-4xl font-ChunkFive mr-4 capitalize">Agenda</h1>
                 <div {{react_component('calendar/Professional', {id: professional.id, userId: app.user ? (app.user.professionals ? app.user.professionals.id : null) : null })}}></div>
                 <div class="flex items-center mt-2">
@@ -44,6 +44,10 @@
             <br>
             <section id="sec-criteria" class="border-t border-b border-black p-4">
                 <div {{react_component('profile/SectionCriteria', {userId: app.user ? app.user.id : null, professional: professional|serialize})}}></div>
+            </section>
+            <br>
+            <section id="sec-allowed-categories-animals" class="border-t border-b border-black p-4">
+                <div {{react_component('profile/SectionAllowedCategoriesAnimals', {userId: app.user ? app.user.id : null, professional: professional|serialize})}}></div>
             </section>
             <section id="sec-rating">
                 <div class="flex flex-col justify-center" {{react_component('profile/Reviews', {idProfessional: professional.id})}}></div>

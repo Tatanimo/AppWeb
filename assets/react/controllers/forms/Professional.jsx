@@ -38,7 +38,6 @@ function Professional({setOpenModal}) {
         }).catch(error => console.error(error));
 
         fetchCategoriesAnimals().then(res => {
-            console.log(res)
             let selectables = [];
             res.forEach(categories => {
                 const select = {
@@ -151,7 +150,7 @@ function Professional({setOpenModal}) {
                 </div>
                 <TextInput maxLength={3} onKeyDown={e => handleNumberInput(e)} onChange={e => setPrice(e.target.value)} id="address" placeholder='32€' required className='!mt-0'/>
 
-                <Select closeMenuOnSelect={false} menuPlacement='top' value={selectedCategoriesAnimals} onChange={setSelectedCategoriesAnimals} isMulti options={options} className='basic-multi-select w-full' classNamePrefix="select" id="select-categories-animals" placeholder="Catégories d'animaux autorisées" />
+                <Select closeMenuOnSelect={false} menuPosition="fixed" value={selectedCategoriesAnimals} onChange={setSelectedCategoriesAnimals} isMulti options={options} className='basic-multi-select w-full' classNamePrefix="select" id="select-categories-animals" placeholder="Catégories d'animaux autorisées" />
 
                 {loading ? (
                 <Spinner className="m-auto h-10 w-10 text-blue-purple"/>
