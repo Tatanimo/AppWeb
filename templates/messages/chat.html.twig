@@ -15,22 +15,24 @@
 {% block javascripts %}
     {{ parent() }}
     <!-- Mercure Message -->
-    <script type="application/json" id="mercure-messages">
-        {{ mercure('messages/' ~ uuid)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
-    </script>
+    <script type="application/json"
+            id="mercure-messages">{{ mercure('messages/' ~ uuid)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}</script>
 {% endblock %}
 
 {% block body %}
-    <input type="hidden" id="jwt-messages" value='{{ generateJWT()|json_encode|raw }}'>
-    <section id="section-contact-info" class="py-6 px-12 bg-blue-dark-purple">
-        <div class="flex items-center justify-start">
-            <h1 class="font-ChunkFive text-dark-blue text-xl mb-0 min-w-fit">{{contact.lastname|upper}} {{contact.firstname|capitalize }} {{contact.cities.name|capitalize}}</h1>
-        </div>
+    <input type="hidden"
+           id="jwt-messages"
+           value='{{ generateJWT()|json_encode|raw }}'>
+    <section id="section-contact-info"
+             class="py-6 px-12 bg-blue-dark-purple">
+        <div {{ react_component('chat/ChatTopBar', {author: contact.id, lastName: contact.lastname|upper, firstName: contact.firstname|capitalize, cityName: contact.cities.name|capitalize}) }}></div>
     </section>
-    <section id="section-chat" class="bg-beige p-10 h-[calc(100vh-96px-112px-76px)] overflow-y-auto">
-        <div {{react_component('chat/LoadingChatRoom', {user: app.user.id, contact: contact.id, room: uuid})}}></div>
+    <section id="section-chat"
+             class="bg-beige p-10 h-[calc(100vh-96px-112px-128px)] overflow-y-auto">
+        <div {{ react_component('chat/LoadingChatRoom', {user: app.user.id, contact: contact.id, room: uuid}) }}></div>
     </section>
-    <section id="section-input-chat" class="bg-blue-dark-purple p-8 flex items-center justify-center"> <!--height: calc(100vh - 96px - 128px - 96px);-->
-        <div class="flex items-center justify-center gap-6 w-full" {{react_component('chat/InputChat', {room: uuid, user: app.user.id})}}></div>
+    <section id="section-input-chat"
+             class="bg-blue-dark-purple p-8 flex items-center justify-center">
+        <div class="flex items-center justify-center gap-6 w-full" {{ react_component('chat/InputChat', {room: uuid, user: app.user.id}) }}></div>
     </section>
 {% endblock %}
