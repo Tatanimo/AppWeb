@@ -41,7 +41,7 @@ export default function NavigationBar({user}) {
                         {userId ? (
                             <ProfileDropdown userId={userId} />
                         ) : (
-                            <a className="cursor-pointer"
+                            <a id="link-login" className="cursor-pointer"
                             onClick={() => setOpenModal(true)}>
                                 <img src="/img/icons/login.svg"
                                     className="h-8"/>

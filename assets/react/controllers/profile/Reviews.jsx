@@ -28,7 +28,7 @@ function Reviews({idProfessional}) {
                 <ReviewCard key={i} review={e}/>
             )
         })}
-        {reviewsLength <= reviews.length ? (
+        {reviewsLength < reviews.length ? (
             <button type='button' onClick={() => setReviewsLength(reviewsLength + 3)} className='inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase'>Voir plus</button>
         ) : null}
     </>

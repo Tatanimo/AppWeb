@@ -85,6 +85,10 @@ input::-webkit-inner-spin-button {
     background: #1087ff !important;
 }
 
+.date-selected, .date-selected:hover{
+    background: #b6e2f7 !important;
+}
+
 #unavailable{
     background: repeating-linear-gradient(
         -45deg,

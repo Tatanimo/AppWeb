@@ -9,15 +9,22 @@
                 <div class="w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/SquareImageProfessional', {srcPath: findProfessionalImage(professional.id) ? 'img/professionals/professional-' ~ professional.id ~ '-1.jpg' : null, professional: professional|serialize, userId: app.user ? app.user.id : null})}}>
                 </div>
             </section>
-            <section id="sec-agenda" class="w-full mt-12 sticky top-28">
+            <section id="sec-agenda-appointment" class="w-full mt-12 sticky top-28">
                 <h1 class="text-4xl font-ChunkFive mr-4 capitalize">Agenda</h1>
-                <div {{react_component('calendar/Professional', {id: professional.id, userId: app.user ? (app.user.professionals ? app.user.professionals.id : null) : null })}}></div>
+                <div {{react_component('calendar/Professional', {id: professional.id, userId: app.user ? (app.user.professionals ? app.user.professionals.id : null) : null, appointment: false})}}></div>
                 <div class="flex items-center mt-2">
                     <div class="h-4 w-4 rounded bg-[#c1e8c8] mr-2"></div>
                     <p>Disponible</p>
                     <div class="h-4 w-4 rounded mr-2 ml-4" id="unavailable"></div>
                     <p>Indisponible</p>
                 </div>
+                {% if app.user is null %}
+                    <br>
+                    <button onclick="getElementById('link-login').click()" class="inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase">Prendre rendez-vous</button>
+                {% elseif app.user.professionals.id is not defined or app.user.professionals.id != professional.id %}
+                    <br>
+                    <div {{react_component('profile/Appointment', {id: app.user ? app.user.id : null, professional: professional|serialize})}}></div>
+                {% endif %}
             </section>
         </div>
         <div id="right-body" class="flex flex-col max-w-[600px]">

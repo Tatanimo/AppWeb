@@ -6,6 +6,7 @@ use App\Entity\Animals;
 use App\Entity\Users;
 use App\Repository\AnimalsRepository;
 use App\Repository\CategoryAnimalsRepository;
+use App\Repository\ProfessionalsRepository;
 use App\Repository\UsersRepository;
 use App\Services\Mercure\AlertService;
 use App\Services\Twig\CategoriesAnimals;
@@ -99,6 +100,42 @@ class AnimalsController extends AbstractController
         }
 
         return $this->json($animals, 200, context: ['groups'=>'main']);
+    }
+
+    #[Route('/ajax/animals/{idUser}/{idPro}', name: 'app_ajax_getAllowedAnimals', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function getAllowedAnimals(AnimalsRepository $animalsRepository, $idUser, $idPro, UsersRepository $usersRepository, ProfessionalsRepository $professionalsRepository): JsonResponse
+    {
+        $user = $usersRepository->findOneBy(["id" => $idUser]);
+
+        if (!isset($user)) {
+            return $this->json("Utilisateur introuvable", 401);
+        }
+
+        $professional = $professionalsRepository->findOneBy(["id" => $idPro]);
+
+        if (!isset($professional)) {
+            return $this->json("Professionnel introuvable", 401);
+        }
+
+        $animals = $animalsRepository->findBy(["fk_user" => $user]);
+
+        if (!isset($animals)) {
+            return $this->json("Animaux introuvables", 401);
+        }
+
+        $allowedAnimals = [];
+        $allowedCategories = $professional->getAllowedCategories()->toArray();
+        $allowedCategoriesName = array_map(function($e){
+            return $e->getName();
+        }, $allowedCategories);
+
+        foreach ($animals as $animal) {
+            if (in_array($animal->getFkCategory()->getName(), $allowedCategoriesName)) {
+                array_push($allowedAnimals, $animal);
+            }
+        }
+
+        return $this->json($allowedAnimals, 200, context: ['groups'=>'main']);
     }
 
     #[Route('/ajax/animal/{id}', name: 'app_ajax_getAnimal', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
