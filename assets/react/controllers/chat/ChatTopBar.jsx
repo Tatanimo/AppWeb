@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {endpoint} from "../../../config";
 
 export default function ChatTopBar({contactSerialize, roomsPro, professionalSerialize}) {
     const [imgNotFound, setImgNotFound] = useState(false);
     const contact = JSON.parse(contactSerialize);
-    const professional = JSON.parse(professionalSerialize)
-    console.log(roomsPro, professional)
+    const professional = JSON.parse(professionalSerialize);
+    console.log(roomsPro);
+    console.log(professional);
 
     return (
         <div className="flex items-center justify-between gap-4">
@@ -27,10 +28,10 @@ export default function ChatTopBar({contactSerialize, roomsPro, professionalSeri
                 <a href={`${endpoint.base}/profil/${contact.id}`}
                    className="overflow-hidden rounded-full bg-gray-200 w-[80px] h-[80px]">
 
-                        <img src={`${endpoint.img}/${roomsPro == professional.id ? `professionals/professional-${professional.id}` : "users/user"}-1.jpg`}
-                             className="w-[80px] h-[80px] object-cover rounded-full hover:scale-110 transition"
-                             alt="Logo utilisateur"
-                             onError={() => setImgNotFound(true)}/>
+                    <img src={`${endpoint.img}/${roomsPro == professional.id ? `professionals/professional-${professional.id}` : `users/user-${professional.user.id}`}-1.jpg`}
+                         className="w-[80px] h-[80px] object-cover rounded-full hover:scale-110 transition"
+                         alt="Logo utilisateur"
+                         onError={() => setImgNotFound(true)}/>
 
                 </a>
             </div>
