@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import 'react-calendar/dist/Calendar.css';
 import axios from 'axios';
 
-function Professional({id, userId, appointment}) {
+function Professional({id, userId, appointment, onDateSelected}) {
   const [dateSelected, setDateSelected] = useState([]);
   const [dateUnavailable, setDateUnavailable] = useState([]);
   const [today, setToday] = useState(new Date())
@@ -29,8 +29,9 @@ function Professional({id, userId, appointment}) {
         setDateUnavailable(res.data)})
       .catch(err => console.error(err))
       .finally(() => document.activeElement.blur());
-    } else {
+    } else if(appointment) {
       document.activeElement.blur();
+      onDateSelected(dateSelected);
     }
   }, [dateSelected]);
 

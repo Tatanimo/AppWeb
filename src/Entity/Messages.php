@@ -35,6 +35,11 @@ class Messages
     #[Groups("message")]
     private ?int $authorId = null;
 
+    # 3 types : "message", "image", "appointment"
+    #[ORM\Column(length: 20)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?string $type = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +94,18 @@ class Messages
     public function setAuthor(?Users $author): static
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

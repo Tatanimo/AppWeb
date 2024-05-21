@@ -2,10 +2,11 @@ import axios from 'axios'
 import React from 'react'
 import { endpoint } from '../../../config';
 
-export default function AccessChat({petsitter}) {
+export default function AccessChat({contactId, appointment}) {
     const accessing = async () => {
         await axios.post(`/ajax/messages`, {
-            'petsitter': petsitter
+            'contact': contactId,
+            'appointment': appointment
         }, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'

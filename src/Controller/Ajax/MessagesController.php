@@ -26,18 +26,24 @@ class MessagesController extends AbstractController
             return $this->json("Non authentifiée", 401);
         }
         
-        $petsitter = json_decode($request->getContent(), true)["petsitter"];
+        $contact = json_decode($request->getContent(), true)["contact"];
 
-        if (!isset($petsitter)) {
-            return $this->json("petsitter non trouvée", 401);
+        if (!isset($contact)) {
+            return $this->json("contact non trouvée", 401);
         }
 
-        $reference = $user->getId() < $petsitter ? $user->getId().'-'.$petsitter : $petsitter.'-'.$user->getId();
+        $reference = $user->getId() < $contact ? $user->getId().'-'.$contact : $contact.'-'.$user->getId();
 
         $roomAlreadyExist = $roomsRepository->findOneBy(["reference" => $reference]);
 
         if (isset($roomAlreadyExist)) {
             return $this->json($roomAlreadyExist->getUuid(), 200);
+        }
+
+        $appointment = json_decode($request->getContent(), true)["appointment"];
+
+        if (!isset($appointment)) {
+            return $this->json("rendez-vous non trouvé", 401);
         }
 
         try {
@@ -49,6 +55,17 @@ class MessagesController extends AbstractController
             $em->flush();
         } catch (\Throwable $th) {
             return $this->json("Erreur dans la génération de la room: $th", 401);
+        }
+
+        try {
+            $message = new Messages();
+            
+            $message->setAuthor($user)->setType("appointment")->setRooms($room)->setContent(json_encode($appointment))->setPublicationDate(new DateTime());
+
+            $em->persist($message);
+            $em->flush();
+        } catch (\Throwable $th) {
+            return $this->json("Erreur dans la génération du message: $th", 401);
         }
 
         return $this->json($room->getUuid(), 200);

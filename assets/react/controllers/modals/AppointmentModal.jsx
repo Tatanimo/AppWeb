@@ -11,9 +11,6 @@ export default function AppointmentModal({openModal, setOpenModal, id, professio
         <Modal.Body>
             <Appointment id={id} professional={professional}/>
         </Modal.Body>
-        <Modal.Footer className='justify-end'>
-            <button type="button" className='inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-lg bg-blue-purple px-5 py-3 rounded-xl uppercase'>Contacter</button>
-        </Modal.Footer>
     </Modal>
   )
 }
