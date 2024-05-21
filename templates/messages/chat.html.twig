@@ -18,14 +18,13 @@
     <script type="application/json"
             id="mercure-messages">{{ mercure('messages/' ~ uuid)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}</script>
 {% endblock %}
-
 {% block body %}
     <input type="hidden"
            id="jwt-messages"
            value='{{ generateJWT()|json_encode|raw }}'>
     <section id="section-contact-info"
              class="py-6 px-12 bg-blue-dark-purple">
-        <div {{ react_component('chat/ChatTopBar', {author: contact.id, lastName: contact.lastname|upper, firstName: contact.firstname|capitalize, cityName: contact.cities.name|capitalize}) }}></div>
+        <div {{ react_component('chat/ChatTopBar', {contactSerialize: contact|serialize, roomsPro: rooms.professionalId, professionalSerialize: professional|serialize}) }}></div>
     </section>
     <section id="section-chat"
              class="bg-beige p-10 h-[calc(100vh-96px-112px-128px)] overflow-y-auto">

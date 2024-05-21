@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {endpoint} from "../../../config";
 
-export default function ChatTopBar(author, lastName, firstName, cityName) {
-    console.log(author.author);
+export default function ChatTopBar({contactSerialize, roomsPro, professionalSerialize}) {
+    const [imgNotFound, setImgNotFound] = useState(false);
+    const contact = JSON.parse(contactSerialize);
+    const professional = JSON.parse(professionalSerialize)
+    console.log(roomsPro, professional)
+
     return (
         <div className="flex items-center justify-between gap-4">
             <a href={`${endpoint.base}/messages`}
@@ -14,17 +18,20 @@ export default function ChatTopBar(author, lastName, firstName, cityName) {
             <div className="flex items-center justify-between gap-4">
                 <div className="flex flex-col">
                     <h1 className="font-ChunkFive text-dark-blue text-xl mb-0 min-w-fit hover:underline">
-                        <a href={`${endpoint.base}/profil/${author.author}`}>
-                            {author.lastName} {author.firstName}
+                        <a href={`${endpoint.base}/profil/${contact.id}`}>
+                            {contact.last_name} {contact.first_name}
                         </a>
                     </h1>
-                    <span>{author.cityName}</span>
+                    <span>{contact.cities.name}</span>
                 </div>
-                <a href={`${endpoint.base}/profil/${author.author}`}
-                   className="overflow-hidden rounded-full">
-                    <img src={`${endpoint.img}/users/user-${author.author}-1.jpg`}
-                         className="w-[80px] h-[80px] object-cover rounded-full hover:scale-110 transition"
-                         alt="Logo utilisateur"/>
+                <a href={`${endpoint.base}/profil/${contact.id}`}
+                   className="overflow-hidden rounded-full bg-gray-200 w-[80px] h-[80px]">
+
+                        <img src={`${endpoint.img}/${roomsPro == professional.id ? `professionals/professional-${professional.id}` : "users/user"}-1.jpg`}
+                             className="w-[80px] h-[80px] object-cover rounded-full hover:scale-110 transition"
+                             alt="Logo utilisateur"
+                             onError={() => setImgNotFound(true)}/>
+
                 </a>
             </div>
         </div>

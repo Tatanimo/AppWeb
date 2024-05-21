@@ -95,6 +95,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $created_date = null;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[Groups("t")]
     private ?Professionals $professionals = null;
 
     /**

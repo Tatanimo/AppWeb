@@ -78,7 +78,6 @@ export default function SearchPetsitter({id, onPetsittersFound}) {
                 setIsLoading(true);
                 fetchProfessionalsInAreaAndService("petsitter", city.id, radius, [start, end], transformedSelectedAnimals)
                 .then(res => {
-                    console.log(res)
                     onPetsittersFound(res)})
                 .catch(err => console.error(err))
                 .finally(() => setIsLoading(false));

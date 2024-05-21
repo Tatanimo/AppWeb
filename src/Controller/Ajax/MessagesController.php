@@ -6,7 +6,9 @@ use App\Entity\Messages;
 use App\Entity\Rooms;
 use App\Entity\Users;
 use App\Repository\MessagesRepository;
+use App\Repository\ProfessionalsRepository;
 use App\Repository\RoomsRepository;
+use App\Repository\UsersRepository;
 use App\Services\Mercure\MessageService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,13 +22,14 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class MessagesController extends AbstractController
 {
     #[Route('/ajax/messages', name: 'app_ajax_add_messages', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function addRoom(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository): JsonResponse
+    public function addRoom(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, UsersRepository $usersRepository): JsonResponse
     {
         if (!isset($user)) {
             return $this->json("Non authentifiée", 401);
         }
         
         $contact = json_decode($request->getContent(), true)["contact"];
+        $contactUser = $usersRepository->findOneBy(["id" => $contact]);
 
         if (!isset($contact)) {
             return $this->json("contact non trouvée", 401);
@@ -48,8 +51,7 @@ class MessagesController extends AbstractController
 
         try {
             $room = new Rooms();
-    
-            $room->setReference($reference)->setUuid(Uuid::v3(Uuid::fromString(Uuid::NAMESPACE_OID), $reference));
+            $room->setReference($reference)->setUuid(Uuid::v3(Uuid::fromString(Uuid::NAMESPACE_OID), $reference))->setProfessionalId($contactUser?->getProfessionals()?->getId());
     
             $em->persist($room);
             $em->flush();
@@ -97,22 +99,22 @@ class MessagesController extends AbstractController
             return $this->json("Contenu du message non trouvable", 401);
         }
         
-        if(!$messageService->generate($uuid, $message["content"], $message["author"], $message["publication_date"])){
-            return $this->json("Erreur dans l'envoie du message", 401);
-        }
-
         try {
             $newMessage = new Messages();
-    
+            
             $date = new DateTime($message["publication_date"]);
-
+            
             $room = $roomsRepository->findOneBy(["uuid" => $uuid]);
-            $newMessage->setRooms($room)->setAuthor($user)->setPublicationDate($date)->setContent($message["content"]);
-
+            $newMessage->setRooms($room)->setAuthor($user)->setPublicationDate($date)->setContent($message["content"])->setType("message");
+            
             $em->persist($newMessage);
             $em->flush();
         } catch (\Throwable $th) {
             return $this->json("Erreur lors de l'envoie du message: $th", 401);
+        }
+
+        if(!$messageService->generate($uuid, $message["content"], $message["author"], $message["publication_date"])){
+            return $this->json("Erreur dans l'envoie du message", 401);
         }
         
         return $this->json("Message bien envoyé", 200);

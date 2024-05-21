@@ -16,6 +16,9 @@ class Rooms
     #[ORM\Column(length:255, nullable:false)]
     private ?string $reference = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $professionalId = null;
+
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $uuid = null;
 
@@ -25,6 +28,17 @@ class Rooms
     public function __construct()
     {
         $this->fk_messages = new ArrayCollection();
+    }
+    
+    public function getProfessionalId(): ?int
+    {
+        return $this->professionalId;
+    }
+
+    public function setProfessionalId(int $professionalId): static
+    {
+        $this->professionalId = $professionalId;
+        return $this;
     }
 
     public function getReference(): ?string

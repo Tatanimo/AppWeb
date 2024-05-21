@@ -32,7 +32,8 @@ export default function Appointment({id, professional}) {
             res.forEach(animal => {
                 const select = {
                     "value": animal.fk_category,
-                    "label": animal.name
+                    "label": animal.name,
+                    "animal": animal
                 };
                 selectables.push(select);
             });
@@ -65,9 +66,10 @@ export default function Appointment({id, professional}) {
     const onSubmit = () => {
         if (handleForm()) {
             setLoading(true);
+            const animals = selectedAnimals.map(e => e.animal);
             const appointment = {
                 date: dateSelected,
-                animals: selectedAnimals,
+                animals: animals,
                 price: professional.price * calculDaysSelected(),
             };
             return accessing(professional.user.id, appointment);

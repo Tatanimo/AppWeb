@@ -20,7 +20,6 @@ export default function LoadingChatRoom({user, contact, room}) {
         const url = JSON.parse(document.getElementById("mercure-messages").textContent);
         const jwtInput = document.getElementById("jwt-messages");
         const jwt = JSON.parse(jwtInput.value.replace(/\s/g, ""));
-        jwtInput.remove();
 
         const eventSource = new EventSourcePolyfill(url, {
             withCredentials: true,
@@ -33,7 +32,6 @@ export default function LoadingChatRoom({user, contact, room}) {
             setMessages(prevMessages => [...prevMessages, JSON.parse(event.data)]);
         };
     }, []);
-
     function scrollBottom() {
         document.querySelector("#section-chat").scrollTo(0, 999999999);
     }
@@ -65,6 +63,7 @@ export default function LoadingChatRoom({user, contact, room}) {
                                    authorId={e.authorId}
                                    userId={user}
                                    shape={e.shape}
+                                   type={e.type}
                                    key={e.authorId + e.publication_date + i}/>
                 );
             })}

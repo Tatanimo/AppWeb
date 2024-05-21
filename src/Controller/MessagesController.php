@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Users;
+use App\Repository\ProfessionalsRepository;
 use App\Repository\RoomsRepository;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,7 +38,7 @@ class MessagesController extends AbstractController
     }
     
     #[Route('/messages/{uuid}', name: 'app_chat')]
-    public function chat(#[CurrentUser] ?Users $user, RoomsRepository $roomsRepository, $uuid, UsersRepository $usersRepository): Response
+    public function chat(#[CurrentUser] ?Users $user, RoomsRepository $roomsRepository, $uuid, UsersRepository $usersRepository, ProfessionalsRepository $professionalsRepository): Response
     {
         if (!isset($user)) {
             $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Vous n'avez pas accès à la messagerie sans être connecté."]);
@@ -65,10 +66,13 @@ class MessagesController extends AbstractController
         }
 
         $contact = $usersRepository->findOneBy(["id" => $contact]);
+        $professional = $professionalsRepository->findOneBy(["user" => $contact]);
         
         return $this->render('messages/chat.html.twig', [
             "contact" => $contact,
-            "uuid" => $uuid
+            "professional" => $professional,
+            "uuid" => $uuid,
+            "rooms" => $rooms
         ]);
     }
 }

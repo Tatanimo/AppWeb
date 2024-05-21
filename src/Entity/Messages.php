@@ -38,6 +38,7 @@ class Messages
     # 3 types : "message", "image", "appointment"
     #[ORM\Column(length: 20)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("message")]
     private ?string $type = null;
 
     public function getId(): ?int
