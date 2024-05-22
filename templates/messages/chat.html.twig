@@ -24,7 +24,7 @@
            value='{{ generateJWT()|json_encode|raw }}'>
     <section id="section-contact-info"
              class="py-6 px-12 bg-blue-dark-purple">
-        <div {{ react_component('chat/ChatTopBar', {contactSerialize: contact|serialize, roomsPro: rooms.professionalId, professionalSerialize: professional|serialize}) }}></div>
+        <div {{ react_component('chat/ChatTopBar', {contactSerialize: contact|serialize}) }}></div>
     </section>
     <section id="section-chat"
              class="bg-beige p-10 h-[calc(100vh-96px-112px-128px)] overflow-y-auto">

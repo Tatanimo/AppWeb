@@ -51,7 +51,7 @@ class MessagesController extends AbstractController
 
         try {
             $room = new Rooms();
-            $room->setReference($reference)->setUuid(Uuid::v3(Uuid::fromString(Uuid::NAMESPACE_OID), $reference))->setProfessionalId($contactUser?->getProfessionals()?->getId());
+            $room->setReference($reference)->setUuid(Uuid::v3(Uuid::fromString(Uuid::NAMESPACE_OID), $reference));
     
             $em->persist($room);
             $em->flush();

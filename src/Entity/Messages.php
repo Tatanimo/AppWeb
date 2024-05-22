@@ -13,15 +13,15 @@ class Messages
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups("message")]
+    #[Groups(["message", "main"])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups("message")]
+    #[Groups(["message", "main"])]
     private ?string $content = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups("message")]
+    #[Groups(["message", "main"])]
     private ?\DateTimeInterface $publication_date = null;
 
     #[ORM\ManyToOne(inversedBy: 'fk_messages')]
@@ -32,7 +32,7 @@ class Messages
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $author = null;
 
-    #[Groups("message")]
+    #[Groups(["message", "main"])]
     private ?int $authorId = null;
 
     # 3 types : "message", "image", "appointment"

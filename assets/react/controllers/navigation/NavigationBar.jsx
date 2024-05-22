@@ -32,7 +32,7 @@ export default function NavigationBar({user}) {
                 </ul>
                 <ul className="flex items-center gap-6">
                     <li className="hover:bg-light-gray p-2 rounded-xl transition">
-                        <a href="#">
+                        <a href="/messages">
                             <img src="/img/icons/mail.svg"
                                  className="h-8"/>
                         </a>

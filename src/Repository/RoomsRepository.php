@@ -21,20 +21,21 @@ class RoomsRepository extends ServiceEntityRepository
         parent::__construct($registry, Rooms::class);
     }
 
-//    /**
-//     * @return Rooms[] Returns an array of Rooms objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Rooms[] Returns an array of Rooms objects
+    */
+   public function findByReferenceId($id): array
+   {
+       return $this->createQueryBuilder('r')
+           ->select('r, m')
+           ->leftJoin('r.fk_messages', 'm')
+           ->andWhere('r.reference LIKE :id')
+           ->setParameter('id', "%$id%")
+           ->orderBy('m.publication_date', 'DESC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?Rooms
 //    {

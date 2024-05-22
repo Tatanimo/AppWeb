@@ -15,25 +15,27 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class MessagesController extends AbstractController
 {
     #[Route('/messages', name: 'app_messages', methods: ["GET"])]
-    public function index(#[CurrentUser] ?Users $user): Response
+    public function index(#[CurrentUser] ?Users $user, RoomsRepository $roomsRepository, UsersRepository $usersRepository): Response
     {
         if (!isset($user)) {
             $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Vous n'avez pas accès à la messagerie sans être connecté."]);
             return $this->redirectToRoute("app_home");
         }
 
-        return $this->render('messages/index.html.twig', [
-            
-        ]);
-    }
+        $rooms = $roomsRepository->findByReferenceId($user->getId());
+        $contacts = [];
+        foreach ($rooms as $room) {
+            $ids = explode("-", $room->getReference());
+            $id = array_filter($ids, function($e) use($user) {
+                return $e != $user->getId();
+            });
+            $contact = $usersRepository->findOneBy(["id" => $id]);
+            array_push($contacts, $contact);
+        }
 
-    #[Route('/messages/mock', name: 'app_mock_messages')]
-    public function mock(UsersRepository $usersRepository): Response
-    {
-        $users = $usersRepository->findAll();
-        
-        return $this->render('messages/mockuser.html.twig', [
-            'users' => $users,
+        return $this->render('messages/index.html.twig', [
+            "rooms" => $rooms,
+            "contacts" => $contacts
         ]);
     }
     
@@ -66,11 +68,9 @@ class MessagesController extends AbstractController
         }
 
         $contact = $usersRepository->findOneBy(["id" => $contact]);
-        $professional = $professionalsRepository->findOneBy(["user" => $contact]);
         
         return $this->render('messages/chat.html.twig', [
             "contact" => $contact,
-            "professional" => $professional,
             "uuid" => $uuid,
             "rooms" => $rooms
         ]);
