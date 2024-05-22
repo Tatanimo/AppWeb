@@ -31,7 +31,7 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
                         <br />
                         {appointment.animals.map(animal => {
                             return(
-                                <div className="flex justify-between">
+                                <div key={animal.id} className="flex justify-between">
                                     <p className="font-bold mr-2">Animal:</p>
                                     <p>{animal.fk_category.name} ({animal.race}) - {animal.name}</p>
                                 </div>

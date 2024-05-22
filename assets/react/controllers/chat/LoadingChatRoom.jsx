@@ -26,6 +26,7 @@ export default function LoadingChatRoom({user, contact, room}) {
             headers: {
                 "Authorization": `Bearer ${jwt}`,
             },
+            heartbeatTimeout: 120000,
         });
 
         eventSource.onmessage = event => {

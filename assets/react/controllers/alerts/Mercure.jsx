@@ -9,10 +9,12 @@ export default function Mercure({jwtToken, urlMercure}) {
         const url = JSON.parse(urlMercure);
         const jwt = JSON.parse(jwtToken.replace(/\s/g, ''));
 
-        const eventSource = new EventSourcePolyfill(url, { withCredentials: true, 
+        const eventSource = new EventSourcePolyfill(url, { 
+            withCredentials: true, 
             headers: {
                 'Authorization': `Bearer ${jwt}`
-            }
+            },
+            heartbeatTimeout: 120000,
         });
         
         eventSource.onmessage = event => {
