@@ -29,7 +29,6 @@ class MessagesController extends AbstractController
         }
         
         $contact = json_decode($request->getContent(), true)["contact"];
-        $contactUser = $usersRepository->findOneBy(["id" => $contact]);
 
         if (!isset($contact)) {
             return $this->json("contact non trouvée", 401);
@@ -113,10 +112,76 @@ class MessagesController extends AbstractController
             return $this->json("Erreur lors de l'envoie du message: $th", 401);
         }
 
-        if(!$messageService->generate($uuid, $message["content"], $message["author"], $message["publication_date"])){
+        if(!$messageService->generate($uuid, $message["content"], $message["author"], $message["publication_date"], "message")){
             return $this->json("Erreur dans l'envoie du message", 401);
         }
         
         return $this->json("Message bien envoyé", 200);
+    }
+
+    #[Route('/ajax/messages/appointment/{uuid}', name: 'app_ajax_post_appointment_message', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function addAppointment(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, MessageService $messageService, $uuid): JsonResponse
+    {
+        if (!isset($user)) {
+            return $this->json("Non authentifiée", 401);
+        }
+
+        $appointment = json_decode($request->getContent(), true)["appointment"];
+
+        if (!isset($appointment)) {
+            return $this->json("Contenu du rendez-vous non trouvable", 401);
+        }
+
+        $type = json_decode($request->getContent(), true)["type"];
+        
+        try {
+            $newMessage = new Messages();
+            
+            $date = new DateTime();
+            
+            $room = $roomsRepository->findOneBy(["uuid" => $uuid]);
+            $newMessage->setRooms($room)->setAuthor($user)->setPublicationDate($date)->setContent(json_encode($appointment))->setType($type);
+            
+            $em->persist($newMessage);
+            $em->flush();
+        } catch (\Throwable $th) {
+            return $this->json("Erreur lors de l'envoie du message: $th", 401);
+        }
+
+        $date = $newMessage->getPublicationDate();
+        $dateString = $date->format('d-m-Y H:i:s');
+
+        if(!$messageService->generate($uuid, $newMessage->getContent(), $newMessage->getAuthor()->getId(), $dateString, $type)){
+            return $this->json("Erreur dans l'envoie du message", 401);
+        }
+        
+        return $this->json("Message bien envoyé", 200);
+    }
+
+    #[Route('/ajax/messages/update/{id}', name: 'app_ajax_update_message', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function updateMessage(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, MessagesRepository $messagesRepository, $id): JsonResponse
+    {
+        if (!isset($user)) {
+            return $this->json("Non authentifiée", 401);
+        }
+
+        $appointment = json_decode($request->getContent(), true)["appointment"];
+
+        if (!isset($appointment)) {
+            return $this->json("rendez-vous non trouvé", 401);
+        }
+        
+        try {
+            $message = $messagesRepository->findOneBy(["id" => $id]);
+
+            $message->setContent(json_encode($appointment));
+            
+            $em->persist($message);
+            $em->flush();
+        } catch (\Throwable $th) {
+            return $this->json("Erreur lors de la modification du message: $th", 401);
+        }
+        
+        return $this->json("Message bien modifié", 200);
     }
 }

@@ -53,6 +53,7 @@
         "event-source-polyfill": "^1.0.31",
         "flowbite-datepicker": "^1.2.6",
         "flowbite-react": "^0.8.0",
+        "howler": "^2.2.4",
         "react-avatar-editor": "^13.0.2",
         "react-calendar": "^5.0.0",
         "react-contenteditable": "^3.3.7",

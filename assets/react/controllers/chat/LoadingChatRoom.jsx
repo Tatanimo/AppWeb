@@ -2,9 +2,12 @@ import React, {useEffect, useState} from "react";
 import BubbleMessage from "./BubbleMessage";
 import axios from "axios";
 import {EventSourcePolyfill} from "event-source-polyfill";
+import { endpoint } from "../../../config";
+import { Howl } from "howler";
 
 export default function LoadingChatRoom({user, contact, room}) {
     const [messages, setMessages] = useState([]);
+    const [initScroll, setInitScroll] = useState(false);
 
     useEffect(() => {
         // récupération des messages précédemment envoyés
@@ -13,7 +16,9 @@ export default function LoadingChatRoom({user, contact, room}) {
                 "X-Requested-With": "XMLHttpRequest",
             },
         })
-            .then(response => setMessages(response.data))
+            .then(response => {
+                setMessages(response.data);
+            })
             .catch(e => console.error(e));
 
         // récupération des futurs messages envoyés
@@ -33,8 +38,27 @@ export default function LoadingChatRoom({user, contact, room}) {
             setMessages(prevMessages => [...prevMessages, JSON.parse(event.data)]);
         };
     }, []);
+
+    useEffect(() => {
+        if (messages.length > 0) {
+            if (!initScroll) {
+                scrollBottom();
+                setInitScroll(true);
+            } else {
+                if (messages[messages.length - 1].authorId != user) {
+                    const notification = new Howl({
+                        src: [`${endpoint.audio}/message-pop.mp3`],
+                        volume: 0.5,
+                    });
+                    notification.play();
+                }
+            }
+        }
+    }, [messages])
+
     function scrollBottom() {
-        document.querySelector("#section-chat").scrollTo(0, 999999999);
+        const sectionChat = document.querySelector("#section-chat");
+        sectionChat.scrollTo(0, 999999999);
     }
 
     const handleShape = () => {
@@ -57,15 +81,16 @@ export default function LoadingChatRoom({user, contact, room}) {
     return (
         <>
             {handleShape().map((e, i) => {
-
                 return (
                     <BubbleMessage content={e.content}
-                                   publicationDate={e.publication_date}
-                                   authorId={e.authorId}
-                                   userId={user}
-                                   shape={e.shape}
-                                   type={e.type}
-                                   key={e.authorId + e.publication_date + i}/>
+                                publicationDate={e.publication_date}
+                                authorId={e.authorId}
+                                userId={user}
+                                shape={e.shape}
+                                type={e.type}
+                                room={room}
+                                id={e.id}
+                                key={e.authorId + e.publication_date + i}/>
                 );
             })}
         </>

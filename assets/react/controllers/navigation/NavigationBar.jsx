@@ -2,9 +2,11 @@ import React, {useState} from "react";
 import LoginRegisterModal from "../modals/LoginRegisterModal";
 import ProfileDropdown from "../dropdown/ProfileDropdown";
 
-export default function NavigationBar({user}) {
+export default function NavigationBar({userSerialize, professionalSerialize}) {
     const [openModal, setOpenModal] = useState(false);
-    const [userId, setUserId] = useState(user ?? null);
+    const user = userSerialize ? JSON.parse(userSerialize) : null;
+    const professional = professionalSerialize ? JSON.parse(professionalSerialize) : null;
+
     return (
         <>
             <nav className="flex items-center justify-between pe-8">
@@ -38,8 +40,8 @@ export default function NavigationBar({user}) {
                         </a>
                     </li>
                     <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
-                        {userId ? (
-                            <ProfileDropdown userId={userId} />
+                        {user ? (
+                            <ProfileDropdown user={user} professional={professional} />
                         ) : (
                             <a id="link-login" className="cursor-pointer"
                             onClick={() => setOpenModal(true)}>
@@ -51,7 +53,7 @@ export default function NavigationBar({user}) {
                 </ul>
             </nav>
             <LoginRegisterModal openModal={openModal}
-                                setOpenModal={setOpenModal} setUserId={setUserId}/>
+                                setOpenModal={setOpenModal}/>
         </>
     );
 }

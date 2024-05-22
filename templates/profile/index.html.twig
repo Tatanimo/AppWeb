@@ -3,7 +3,7 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-    {% set profilUser = app.user.id == profil.id %}
+    {% set profilUser = app.user is not null ? app.user.id == profil.id : null %}
     <div class="m-12 mt-0">
         <section class="justify-center flex" id="section-profile">
             <div class="mx-6 min-w-[28rem] max-w-[28rem]" id="profile-img" {{react_component('images/ProfileImages', {userId: profil.id, images: findUserImages(profil.id), profilUser: profilUser})}}></div>
@@ -13,7 +13,7 @@
                 <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': profil.birthdate, "size": 2, input: "date", id: profil.id, profilUser: profilUser}) }}></div>
                 <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': profil.email, "size": 3, input: "email", id: profil.id, profilUser: profilUser}) }}></div>
                 <div class="flex justify-between p-4 items-center bg-light-gray rounded-md m-4" {{ react_component('forms/EditableField', {'originalValue': profil.phonenumber ?? "Entrer un numéro de téléphone" , "size": 3, input: "phone", id: profil.id, profilUser: profilUser}) }}></div>
-                {% if app.user.id == profil.id %}
+                {% if app.user is not null ? (app.user.id == profil.id) : false %}
                     <button class='inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase w-full my-2 p-4'>VOIR MON AGENDA</button>
                     <button class='inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase w-full my-2 p-4'>VOIR MES CONTRATS DE GARDE</button>
                 {% endif %}

@@ -1,21 +1,9 @@
 import { Menu, MenuHandler, MenuList, MenuItem, Button } from '@material-tailwind/react'
 import React, { useEffect, useState } from 'react'
 import ProfessionalModal from '../modals/ProfessionalModal'
-import axios from 'axios';
 
-function ProfileDropdown({userId}) {
+function ProfileDropdown({user, professional}) {
     const [openModal, setOpenModal] = useState(false);
-    const [professional, setProfessional] = useState();
-
-    useEffect(() => {
-        axios.get("/ajax/professional", {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(res => setProfessional(res.data))
-        .catch(err => console.error(err));
-    }, []);
 
   return (
     <>
@@ -26,7 +14,7 @@ function ProfileDropdown({userId}) {
                 </Button>
             </MenuHandler>
             <MenuList>
-                <a href={`/profil/${userId}`}>
+                <a href={`/profil/${user.id}`}>
                     <MenuItem>Profil</MenuItem>
                 </a>
                 {!professional ? (

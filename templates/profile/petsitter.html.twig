@@ -3,10 +3,11 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
+    {% set profilUser = app.user is not null ? app.user.id == professional.user.id : null %}
     <div class="m-12 mt-0 flex justify-center">
         <div id="left-body" class="flex flex-col items-center mr-16 max-w-96">
             <section id="sec-avatar" class="p-4">
-                <div class="w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/SquareImageProfessional', {srcPath: findProfessionalImage(professional.id) ? 'img/professionals/professional-' ~ professional.id ~ '-1.jpg' : null, professional: professional|serialize, userId: app.user ? app.user.id : null})}}>
+                <div class="w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/SquareImage', {srcPath: findUserImages(professional.user.id) ? 'img/users/user-' ~ professional.user.id ~ '-1.jpg' : null, main: true, userId: professional.user.id, number: 1, profilUser: profilUser})}}>
                 </div>
             </section>
             <section id="sec-agenda-appointment" class="w-full mt-12 sticky top-28">

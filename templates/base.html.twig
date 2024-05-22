@@ -39,7 +39,7 @@
     </head>
     <body class="font-serif">
         {# Alerte #}
-        <header class="sticky top-0 w-full bg-white z-10" {{ react_component('navigation/NavigationBar', {'user': app.user.id | default(null)}) }}></header>
+        <header class="sticky top-0 w-full bg-white z-10" {{ react_component('navigation/NavigationBar', {'userSerialize': app.user ? app.user|serialize : null, 'professionalSerialize': app.user ? (app.user.professionals ? app.user.professionals|serialize : null) : null}) }}></header>
         <div class="fixed top-0 left-0 z-50">
             {# Flash #}
             {% for type, flash in app.flashes %}

@@ -12,12 +12,12 @@ class MessageService
         
     }
 
-    public function generate(string $uuid, string $content, int $author, String $publication_date) : bool
+    public function generate(string $uuid, string $content, int $author, String $publication_date, String $type) : bool
     {
         try {
             $update = new Update(
                 "messages/$uuid",
-                json_encode(['content' => $content, 'authorId' => $author, 'publication_date' => $publication_date]),
+                json_encode(['content' => $content, 'authorId' => $author, 'publication_date' => $publication_date, 'type' => $type]),
                 true
             );
             

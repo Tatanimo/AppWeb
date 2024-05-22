@@ -38,9 +38,9 @@ export default function Message({roomSerialize, contactSerialize, lastMessageSer
                 <h3 className="font-ChunkFive text-dark-blue text-3xl">{displayDateTime()}</h3>
             </div>
             <h1 className="font-ChunkFive text-dark-blue text-5xl my-4 capitalize">{contact.cities ? contact.cities.name : null}</h1>
-              <p className="text-black text-3xl">
+              <p className="text-black text-3xl line-clamp-4">
                 {lastMessage.authorId != contact.id && lastMessage.content ? "Vous: " : null}
-                {lastMessage.content ? lastMessage.content : "Aucun message envoyé"}
+                {lastMessage.content && lastMessage.type == "message" ? lastMessage.content : lastMessage.type == "appointment" ? "Demande de rendez-vous" : "Aucun message envoyé"}
               </p>
         </div>
     </a>
