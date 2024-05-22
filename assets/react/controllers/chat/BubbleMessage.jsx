@@ -66,7 +66,6 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
             // Prise de RDV -> appointmentAnswered.accepted = true -> ACCEPTER ou appointmentAnswered.accepted = false -> REFUSER
             case "answered-appointment":
                 const appointmentAnswered = JSON.parse(contentState);
-                console.log(appointmentAnswered)
                 return(
                     <div id="appointment-card" className="bg-white p-4 w-fit m-6">
                         <h4 className="font-bold text-xl">Rendez-vous {appointmentAnswered.accepted ? ("accepté") : "refusé"}</h4>

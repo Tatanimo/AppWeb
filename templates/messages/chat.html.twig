@@ -14,21 +14,15 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <!-- Mercure Message -->
-    <script type="application/json"
-            id="mercure-messages">{{ mercure('messages/' ~ uuid)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}</script>
 {% endblock %}
 {% block body %}
-    <input type="hidden"
-           id="jwt-messages"
-           value='{{ generateJWT()|json_encode|raw }}'>
     <section id="section-contact-info"
              class="py-6 px-12 bg-blue-dark-purple">
         <div {{ react_component('chat/ChatTopBar', {contactSerialize: contact|serialize}) }}></div>
     </section>
     <section id="section-chat"
              class="bg-beige p-10 h-[calc(100vh-96px-112px-128px)] overflow-y-auto">
-        <div {{ react_component('chat/LoadingChatRoom', {user: app.user.id, contact: contact.id, room: uuid}) }}></div>
+        <div {{ react_component('chat/LoadingChatRoom', {user: app.user.id, contact: contact.id, room: uuid, urlMercure: mercure('messages/' ~ uuid)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw, jwtToken: generateJWT()|json_encode|raw }) }}></div>
     </section>
     <section id="section-input-chat"
              class="bg-blue-dark-purple p-8 flex items-center justify-center">

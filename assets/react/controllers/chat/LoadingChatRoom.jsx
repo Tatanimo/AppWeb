@@ -5,7 +5,7 @@ import {EventSourcePolyfill} from "event-source-polyfill";
 import { endpoint } from "../../../config";
 import { Howl } from "howler";
 
-export default function LoadingChatRoom({user, contact, room}) {
+export default function LoadingChatRoom({user, contact, room, jwtToken, urlMercure}) {
     const [messages, setMessages] = useState([]);
     const [initScroll, setInitScroll] = useState(false);
 
@@ -22,9 +22,8 @@ export default function LoadingChatRoom({user, contact, room}) {
             .catch(e => console.error(e));
 
         // récupération des futurs messages envoyés
-        const url = JSON.parse(document.getElementById("mercure-messages").textContent);
-        const jwtInput = document.getElementById("jwt-messages");
-        const jwt = JSON.parse(jwtInput.value.replace(/\s/g, ""));
+        const url = JSON.parse(urlMercure);
+        const jwt = JSON.parse(jwtToken.replace(/\s/g, ""));
 
         const eventSource = new EventSourcePolyfill(url, {
             withCredentials: true,
