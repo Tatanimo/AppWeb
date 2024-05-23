@@ -48,6 +48,12 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
                             {type === "answered-appointment" &&
                                 <h1 className="text-3xl font-ChunkFive">Rendez-vous accepté !</h1>}
                             {type === "message" && contentState}
+                            {type === "image" && (
+                                <img className="max-w-1/2 h-auto" src={`${endpoint.img}/messages/${authorId}-${id}.jpg`} />
+                            )}
+                            {type === "pdf" && (
+                                <p>je suis un PDF</p>
+                            )}
                         </p>)
                     : (
                         <p className={`${classNameP} relative max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8`}>{contentState}</p>
