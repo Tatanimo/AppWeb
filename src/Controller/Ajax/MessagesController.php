@@ -154,8 +154,10 @@ class MessagesController extends AbstractController
         }
 
         $ext = $ext == "pdf" ? "pdf" : "jpg";
+        $to = $ext == "pdf" ? "pdf" : "img";
+        
         $newFilename = $user->getId().'-'.$newMessage->getId().'.'.$ext;
-        $destination = $this->getParameter('kernel.project_dir') . "/public/img/messages/";
+        $destination = $this->getParameter('kernel.project_dir') . "/public/" . $to . "/messages/";
         try {
             $file->move($destination, $newFilename);
         } catch (FileException $e) {

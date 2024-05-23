@@ -1,9 +1,8 @@
 import React from "react";
 import axios from "axios";
 
-export default function Appointment(contentState, authorId, userId, room, id) {
-    const appointment = JSON.parse(contentState.contentState);
-
+export default function Appointment({contentState, authorId, userId, room, id}) {
+    const appointment = JSON.parse(contentState);
     const answeredAppointment = async (appointment, answer) => {
         await axios.post("/ajax/appointments", appointment, {
             headers: {
@@ -44,7 +43,7 @@ export default function Appointment(contentState, authorId, userId, room, id) {
     return (
         <div id="appointment-card"
              className="bg-white p-4 w-fit m-6">
-            <h4 className="font-bold text-xl">Rendez-vous {appointment.accepted ? "accepté" : "refusé"}</h4>
+            <h4 className="font-bold text-xl">Rendez-vous {appointment.accepted != undefined ? (appointment.accepted ? "accepté" : "refusé") : null}</h4>
             <br/>
             {appointment.animals.map(animal => {
                 return (

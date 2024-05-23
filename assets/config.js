@@ -5,4 +5,5 @@ export const endpoint = {
     'img' : `${location.protocol}//${HostnameAndPort}/img`,
     'base': `${location.protocol}//${HostnameAndPort}`,
     'audio': `${location.protocol}//${HostnameAndPort}/audio`,
+    "pdf": `${location.protocol}//${HostnameAndPort}/pdf`,
 }

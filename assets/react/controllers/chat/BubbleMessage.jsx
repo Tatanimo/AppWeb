@@ -52,7 +52,9 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
                                 <img className="max-w-1/2 h-auto" src={`${endpoint.img}/messages/${authorId}-${id}.jpg`} />
                             )}
                             {type === "pdf" && (
-                                <p>je suis un PDF</p>
+                                <a href={`${endpoint.pdf}/messages/${authorId}-${id}.pdf`} download={true}>
+                                    Télécharger le PDF
+                                </a>
                             )}
                         </p>)
                     : (
