@@ -32,7 +32,7 @@ function SectionAllowedCategoriesAnimals({userId, professional}) {
                 {categoriesAnimals != null && categoriesAnimals.length > 0 ? categoriesAnimals.map((e, i) => {
                     return(
                         <div key={i} className="flex flex-row items-center group">
-                            <img className="w-6 mr-4" src={`${endpoint.img}/icons/animals/${e.name}.svg`} alt="icon" />
+                            <img className="w-6 mr-4" src={`${endpoint.img}/icons/animals/${e.name.toLowerCase()}.svg`} alt="icon" />
                             <p className="text-sm cursor-default">{e.name}</p>
                             {professionalObject.user.id == userId && categoriesAnimals.length > 1 ? (
                                 <button type='button' className='w-6 ml-2 opacity-0 transition-all group-hover:opacity-100 hover:fill-red-600 active:fill-red-500 active:scale-75' onClick={() => handleDelete(e)}>
