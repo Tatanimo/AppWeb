@@ -38,7 +38,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups("main")]
     private ?string $description = null;
 
@@ -85,9 +85,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Messages::class, mappedBy: 'author')]
     private Collection $messages;
 
-    #[ORM\OneToMany(targetEntity: Schedules::class, mappedBy: 'users')]
-    private Collection $schedules;
-
     #[ORM\OneToMany(targetEntity: Articles::class, mappedBy: 'users')]
     private Collection $articles;
 
@@ -112,7 +109,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->commentaries = new ArrayCollection();
         $this->animals = new ArrayCollection();
         $this->messages = new ArrayCollection();
-        $this->schedules = new ArrayCollection();
         $this->articles = new ArrayCollection();
         $this->reactions = new ArrayCollection();
         $this->reviews = new ArrayCollection();
@@ -415,36 +411,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($message->getAuthor() === $this) {
                 $message->setAuthor(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Schedules>
-     */
-    public function getSchedules(): Collection
-    {
-        return $this->schedules;
-    }
-
-    public function addSchedule(Schedules $schedule): static
-    {
-        if (!$this->schedules->contains($schedule)) {
-            $this->schedules->add($schedule);
-            $schedule->setUsers($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSchedule(Schedules $schedule): static
-    {
-        if ($this->schedules->removeElement($schedule)) {
-            // set the owning side to null (unless already changed)
-            if ($schedule->getUsers() === $this) {
-                $schedule->setUsers(null);
             }
         }
 

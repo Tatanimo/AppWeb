@@ -30,7 +30,7 @@ class UsersFixtures extends Fixture
             $password = $faker->word();
             $hashedPassword = $this->hasher->hashPassword($user, $password);
 
-            $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_USER'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
+            $user->setAddress($faker->address())->setBirthdate($faker->datetime(strtotime('-18 years')))->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_USER'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
             $user->setCreatedDate($faker->dateTimeThisDecade())->setDescription($faker->paragraph(3, true));
             $manager->persist($user);
         }
@@ -45,25 +45,27 @@ class UsersFixtures extends Fixture
             $password = $faker->word();
             $hashedPassword = $this->hasher->hashPassword($user, $password);
 
-            $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_ADMIN'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
+            $user->setAddress($faker->address())->setBirthdate($faker->datetime(strtotime('-18 years')))->setCities($cities)->setEmail($faker->email())->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_ADMIN'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
             $user->setCreatedDate($faker->dateTimeThisDecade())->setDescription($faker->paragraph(3, true));
 
             $manager->persist($user);
         }
 
-        $user = new Users();
+        for ($i = 0; $i < 3; $i++) {
+            $user = new Users();
 
-        $id = rand(1, 35853);
-        $cities = $this->citiesRepository->findOneBy(['id' => $id]);
+            $id = rand(1, 35853);
+            $cities = $this->citiesRepository->findOneBy(['id' => $id]);
 
-        $password = "Admin12345&!";
-        $hashedPassword = $this->hasher->hashPassword($user, $password);
+            $password = "Admin12345&!";
+            $hashedPassword = $this->hasher->hashPassword($user, $password);
 
-        $user->setAddress($faker->address())->setBirthdate($faker->datetime())->setCities($cities)->setEmail("admin@admin.fr")->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_ADMIN'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
-        $user->setCreatedDate($faker->dateTimeThisDecade())->setDescription($faker->paragraph(3, true));
+            $user->setAddress($faker->address())->setBirthdate($faker->datetime(strtotime('-18 years')))->setCities($cities)->setEmail("admin{$i}@admin{$i}.fr")->setFirstName($faker->firstName())->setLastName($faker->lastName())->setPhoneNumber($faker->e164PhoneNumber())->setRoles(['ROLE_ADMIN'])->setPassword($hashedPassword)->setIban($faker->iban('FR'));
+            $user->setCreatedDate($faker->dateTimeThisDecade())->setDescription($faker->paragraph(3, true));
 
-        $manager->persist($user);
+            $manager->persist($user);
 
-        $manager->flush();
+            $manager->flush();
+        }
     }
 }

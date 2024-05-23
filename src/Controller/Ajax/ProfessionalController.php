@@ -3,12 +3,19 @@
 namespace App\Controller\Ajax;
 
 use App\Entity\Professionals;
+use App\Entity\Schedules;
 use App\Entity\Users;
+use App\Repository\CategoryAnimalsRepository;
 use App\Repository\CitiesRepository;
 use App\Repository\ProfessionalsRepository;
+use App\Repository\SchedulesRepository;
 use App\Repository\ServicesTypeRepository;
 use App\Services\CalculatingDistance;
 use App\Services\Mercure\AlertService;
+use App\Utils\ArrayUtils;
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +26,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class ProfessionalController extends AbstractController
 {
     #[Route('/ajax/professional', name: 'app_addProfessional', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function addProfessional(Request $request, ServicesTypeRepository $servicesTypeRepository, CitiesRepository $citiesRepository, AlertService $alert, EntityManagerInterface $em): JsonResponse
+    public function addProfessional(Request $request, ServicesTypeRepository $servicesTypeRepository, CitiesRepository $citiesRepository, AlertService $alert, EntityManagerInterface $em, CategoryAnimalsRepository $categoryAnimalsRepository): JsonResponse
     {
         $user = $this->getUser();
 
@@ -34,14 +41,20 @@ class ProfessionalController extends AbstractController
         $housing = $data['housing'] ?? null;
         $address = $data['address'] ?? null;
         $price = $data['price'] ?? null;
+        $categories = $data['categories'] ?? null;
 
-        if (isset($serviceId) && isset($cityFetch) && isset($housing) && isset($address) && isset($price)) {
+        if (isset($serviceId) && isset($cityFetch) && isset($housing) && isset($address) && isset($price) && isset($categories)) {
             $professional = new Professionals();
 
             $service = $servicesTypeRepository->findOneBy(["id" => $serviceId]);
             $city = $citiesRepository->findOneBy(["id" => $cityFetch["id"]]);
 
             $professional->setUser($user)->setService($service)->setCity($city)->setLiveIn($housing)->setAddress($address)->setPrice($price);
+
+            foreach ($categories as $category) {
+                $categoryAnimal = $categoryAnimalsRepository->findOneBy(["id" => $category]);
+                $professional->addAllowedCategory($categoryAnimal);
+            }
 
             $type = $service->getType();
 
@@ -156,7 +169,6 @@ class ProfessionalController extends AbstractController
             $alert->generate("fail", "Erreur de suppression", "Une erreur s'est produite, le critère de votre compte professionnel n'a pas été supprimé. Veuillez réessayer.");
             return $this->json("Delete failed", 400);
         }
-
     }
 
     #[Route('/ajax/professional/criteria/{id}', name: 'app_setProfessionalCriteria', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
@@ -206,6 +218,63 @@ class ProfessionalController extends AbstractController
         return $this->json($professional, 200, context: ["groups" => "main"]);
     }
 
+    #[Route('/ajax/professional/schedules/{id}', name:'app_getProfessionalSchedulesById', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function getProfessionalSchedulesById(ProfessionalsRepository $professionalsRepository, SchedulesRepository $schedulesRepository, $id): JsonResponse
+    {
+        $professional = $professionalsRepository->findOneBy(["id" => $id]);
+
+        if (!isset($professional)) {
+            return $this->json("Professional not found", 400);
+        }
+
+        $schedules = $schedulesRepository->findBy(["professional" => $professional]);
+
+        return $this->json($schedules, 200, context: ["groups" => "main"]);
+    }
+
+    #[Route('/ajax/professional/schedules/{id}', name:'app_setProfessionalSchedulesById', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function setProfessionalSchedulesById(Request $request, ProfessionalsRepository $professionalsRepository, SchedulesRepository $schedulesRepository, EntityManagerInterface $em, AlertService $alert, $id): JsonResponse
+    {
+        $professional = $professionalsRepository->findOneBy(["id" => $id]);
+
+        if (!isset($professional)) {
+            return $this->json("Professional not found", 400);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $start_date = new DateTime($data[0]);
+        $start_date->modify("+1 day")->settime(0,0);
+        $end_date = new DateTime($data[1]);
+        $end_date->modify("+1 day")->settime(0,0);
+
+        $period = new DatePeriod(
+            $start_date,
+            new DateInterval('P1D'),
+            $end_date
+        );
+        
+        try {
+            foreach ($period as $date) {
+                $schedule = $schedulesRepository->findOneBy(["professional" => $professional, "unavailability" => $date]);
+                if (isset($schedule)) {
+                    $em->remove($schedule);
+                } else {
+                    $schedule = new Schedules();
+                    $schedule->setUnavailability($date)->setProfessional($professional);
+                    $em->persist($schedule);
+                }
+            }
+            $em->flush();
+        } catch (\Throwable $th) {
+            $alert->generate("fail", "Erreur de sauvegarde", "Une erreur s'est produite. Veuillez réessayer.");
+            return $this->json("Erreur de sauvegarde", 400);
+        }
+
+        $schedules = $schedulesRepository->findBy(["professional" => $professional]);
+        
+        return $this->json($schedules, 200, context: ["groups" => "main"]);
+    }
+
     #[Route('/ajax/professional/{id}', name:'app_getProfessionalById', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
     public function getProfessionalById(ProfessionalsRepository $professionalsRepository, $id): JsonResponse
     {
@@ -216,5 +285,61 @@ class ProfessionalController extends AbstractController
         }
 
         return $this->json($professional, 200, context: ["groups" => "main"]);
+    }
+
+    #[Route('/ajax/professionals/{service}/{idCity}/{area}', name: 'app_getProfesionnals', methods: ['GET'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function fetchProfessionalsInAreaAndService(CalculatingDistance $calculatingDistance, string $service, int $idCity, int $area, Request $request): JsonResponse 
+    {
+        $professionals = $calculatingDistance->getProfessionalsInAreaAndService($service, $idCity, $area);
+
+        if (!isset($professionals)) {
+            return $this->json("Utilisateurs introuvable", 401);
+        }
+
+        $data = $request->query;
+        
+        $start_date = new DateTime($data->get('startDate'));
+        $start_date->modify("+1 day")->settime(0,0);
+        $end_date = new DateTime($data->get('endDate'));
+        $end_date->modify("+2 days")->settime(0,0);
+
+        $period = new DatePeriod(
+            $start_date,
+            new DateInterval('P1D'),
+            $end_date
+        );
+
+        $selectedAnimals = json_decode($data->get('selectedAnimals'), true);
+        $selectedAnimalsCategoriesNames = array_column($selectedAnimals, 'name');
+
+        foreach ($professionals as $index => $professional) {
+            foreach ($period as $date) {
+                $schedules = $professional[0]->getSchedules()->toArray();
+                if (isset($schedules)) {
+                    $some = ArrayUtils::arraySome($schedules, function($a) use ($date) {
+                        return $a->getUnavailability() == $date;
+                    });
+                    if ($some) {
+                        unset($professionals[$index]);
+                    }
+                }
+            }
+
+            $allowedCategories = $professional[0]->getAllowedCategories()->toArray();
+            $allowedCategoriesName = array_map(function($e){
+                return $e->getName();
+            }, $allowedCategories);
+            foreach ($selectedAnimalsCategoriesNames as $category) {
+                if (!in_array($category, $allowedCategoriesName)) {
+                    unset($professionals[$index]);
+                }
+            }
+        }
+
+        usort($professionals, function($a, $b){
+            return $a[1] > $b[1];
+        });
+
+        return $this->json($professionals, 200, context: ["groups" => "main"]);
     }
 }

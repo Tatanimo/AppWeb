@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Users;
+use App\Repository\ProfessionalsRepository;
 use App\Repository\RoomsRepository;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,30 +15,32 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class MessagesController extends AbstractController
 {
     #[Route('/messages', name: 'app_messages', methods: ["GET"])]
-    public function index(#[CurrentUser] ?Users $user): Response
+    public function index(#[CurrentUser] ?Users $user, RoomsRepository $roomsRepository, UsersRepository $usersRepository): Response
     {
         if (!isset($user)) {
             $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Vous n'avez pas accès à la messagerie sans être connecté."]);
             return $this->redirectToRoute("app_home");
         }
 
-        return $this->render('messages/index.html.twig', [
-            
-        ]);
-    }
+        $rooms = $roomsRepository->findByReferenceId($user->getId());
+        $contacts = [];
+        foreach ($rooms as $room) {
+            $ids = explode("-", $room->getReference());
+            $id = array_filter($ids, function($e) use($user) {
+                return $e != $user->getId();
+            });
+            $contact = $usersRepository->findOneBy(["id" => $id]);
+            array_push($contacts, $contact);
+        }
 
-    #[Route('/messages/mock', name: 'app_mock')]
-    public function mock(UsersRepository $usersRepository): Response
-    {
-        $users = $usersRepository->findAllByCompaniesType("petsitter");
-        
-        return $this->render('messages/mockuser.html.twig', [
-            'users' => $users,
+        return $this->render('messages/index.html.twig', [
+            "rooms" => $rooms,
+            "contacts" => $contacts
         ]);
     }
     
     #[Route('/messages/{uuid}', name: 'app_chat')]
-    public function chat(#[CurrentUser] ?Users $user, RoomsRepository $roomsRepository, $uuid, UsersRepository $usersRepository): Response
+    public function chat(#[CurrentUser] ?Users $user, RoomsRepository $roomsRepository, $uuid, UsersRepository $usersRepository, ProfessionalsRepository $professionalsRepository): Response
     {
         if (!isset($user)) {
             $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Vous n'avez pas accès à la messagerie sans être connecté."]);
@@ -68,7 +71,8 @@ class MessagesController extends AbstractController
         
         return $this->render('messages/chat.html.twig', [
             "contact" => $contact,
-            "uuid" => $uuid
+            "uuid" => $uuid,
+            "rooms" => $rooms
         ]);
     }
 }

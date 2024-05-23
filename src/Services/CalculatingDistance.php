@@ -62,8 +62,10 @@ class CalculatingDistance
     
     
     $searchResult = array_filter($professionals, function($professional) use ($user) {
-      if ($user->getProfessionals()) {
-        return $professional->getId() == $user->getProfessionals()->getId();
+      if (isset($user)) {
+        if ($user->getProfessionals()) {
+          return $professional->getId() == $user->getProfessionals()->getId();
+        }
       }
     });
 

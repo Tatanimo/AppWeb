@@ -44,6 +44,7 @@ class Animals
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("main")]
     private ?CategoryAnimals $fk_category = null;
 
     #[Groups("main")]
@@ -53,15 +54,18 @@ class Animals
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $fk_user = null;
 
-    #[ORM\OneToMany(targetEntity: Schedules::class, mappedBy: 'animals')]
-    private Collection $schedules;
-
     #[Groups("main")]
     private array $images = [];
 
+    /**
+     * @var Collection<int, Appointments>
+     */
+    #[ORM\OneToMany(targetEntity: Appointments::class, mappedBy: 'animal')]
+    private Collection $appointments;
+
     public function __construct()
     {
-        $this->schedules = new ArrayCollection();
+        $this->appointments = new ArrayCollection();
     }
 
     public function getImages(): array 
@@ -182,29 +186,29 @@ class Animals
     }
 
     /**
-     * @return Collection<int, Schedules>
+     * @return Collection<int, Appointments>
      */
-    public function getSchedules(): Collection
+    public function getAppointments(): Collection
     {
-        return $this->schedules;
+        return $this->appointments;
     }
 
-    public function addSchedule(Schedules $schedule): static
+    public function addAppointment(Appointments $appointment): static
     {
-        if (!$this->schedules->contains($schedule)) {
-            $this->schedules->add($schedule);
-            $schedule->setAnimals($this);
+        if (!$this->appointments->contains($appointment)) {
+            $this->appointments->add($appointment);
+            $appointment->setAnimal($this);
         }
 
         return $this;
     }
 
-    public function removeSchedule(Schedules $schedule): static
+    public function removeAppointment(Appointments $appointment): static
     {
-        if ($this->schedules->removeElement($schedule)) {
+        if ($this->appointments->removeElement($appointment)) {
             // set the owning side to null (unless already changed)
-            if ($schedule->getAnimals() === $this) {
-                $schedule->setAnimals(null);
+            if ($appointment->getAnimal() === $this) {
+                $appointment->setAnimal(null);
             }
         }
 

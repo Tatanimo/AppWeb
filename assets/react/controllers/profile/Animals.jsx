@@ -71,7 +71,6 @@ function Animals({userId, profilUser}) {
     return (
         <>
         {animals.map((e, i) => {
-            console.log(e)
             const today = new Date();
             const birthdate = new Date(e.birthdate);
             const difference = datetimeDifference(birthdate, today);

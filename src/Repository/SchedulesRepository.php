@@ -7,12 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Agenda>
+ * @extends ServiceEntityRepository<Schedules>
  *
- * @method Agenda|null find($id, $lockMode = null, $lockVersion = null)
- * @method Agenda|null findOneBy(array $criteria, array $orderBy = null)
- * @method Agenda[]    findAll()
- * @method Agenda[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Schedules|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Schedules|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Schedules[]    findAll()
+ * @method Schedules[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class SchedulesRepository extends ServiceEntityRepository
 {
@@ -21,28 +21,28 @@ class SchedulesRepository extends ServiceEntityRepository
         parent::__construct($registry, Schedules::class);
     }
 
-//    /**
-//     * @return Agenda[] Returns an array of Agenda objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Schedules[] Returns an array of Schedules objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('s.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Agenda
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Schedules
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

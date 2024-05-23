@@ -30,6 +30,7 @@ module.exports = withMT({
                 "blue-dark-purple": "#6882C0",
                 "blue-purple": "rgba(152, 165, 212)",
                 "blue-purple-hover": "#8995bf",
+                "blue-purple-dark-hover": "#5e75ad",
                 "light-gray": "rgba(217, 217, 217)",
                 "orange": "rgba(245, 156, 35, 1)",
                 "dark-blue": "#112137",
@@ -41,7 +42,7 @@ module.exports = withMT({
                 "veterinarian-search": "url('./../../public/img/background/veterinarian-with-cat.png')",
                 "chat-shape-blue": "url('./../../public/img/shape/chat-shape-blue.svg')",
                 "chat-shape-turquoise": "url('./../../public/img/shape/chat-shape-turquoise.svg')",
-            }
+            },
         },
     },
     plugins: [

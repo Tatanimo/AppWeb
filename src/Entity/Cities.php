@@ -41,7 +41,7 @@ class Cities
 
     #[Groups("main")]
     #[ORM\Column(nullable: true)]
-    private ?int $insee_code = null;
+    private ?string $insee_code = null;
 
     #[Groups("main")]
     #[ORM\Column(length: 255, nullable: true)]
@@ -128,12 +128,12 @@ class Cities
         return $this;
     }
 
-    public function getInseeCode(): ?int
+    public function getInseeCode(): ?string
     {
         return $this->insee_code;
     }
 
-    public function setInseeCode(?int $insee_code): static
+    public function setInseeCode(?string $insee_code): static
     {
         $this->insee_code = $insee_code;
 

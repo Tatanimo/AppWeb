@@ -37,9 +37,16 @@ class CategoryAnimals
     #[ORM\JoinColumn(nullable: true)]
     private ?FamilyAnimals $fk_family = null;
 
+    /**
+     * @var Collection<int, Professionals>
+     */
+    #[ORM\ManyToMany(targetEntity: Professionals::class, mappedBy: 'allowed_categories')]
+    private Collection $professionals;
+
     public function __construct()
     {
         $this->animals = new ArrayCollection();
+        $this->professionals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,6 +128,33 @@ class CategoryAnimals
     public function setFkFamily(?FamilyAnimals $fk_family): static
     {
         $this->fk_family = $fk_family;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Professionals>
+     */
+    public function getProfessionals(): Collection
+    {
+        return $this->professionals;
+    }
+
+    public function addProfessional(Professionals $professional): static
+    {
+        if (!$this->professionals->contains($professional)) {
+            $this->professionals->add($professional);
+            $professional->addAllowedCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProfessional(Professionals $professional): static
+    {
+        if ($this->professionals->removeElement($professional)) {
+            $professional->removeAllowedCategory($this);
+        }
 
         return $this;
     }

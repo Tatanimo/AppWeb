@@ -6,9 +6,9 @@ import Select from 'react-select';
 import axios from 'axios';
 import { Spinner } from 'flowbite-react';
 
-async function fetchAnimals(){
+async function fetchAnimals(id){
     let response;
-    await axios.get('/ajax/animal/user', {
+    await axios.get(`/ajax/animal/user/${id}`, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
@@ -17,9 +17,14 @@ async function fetchAnimals(){
     return response;
 }
 
-async function fetchProfessionalsInAreaAndService(service, idCity, area){
+async function fetchProfessionalsInAreaAndService(service, idCity, area, date, selectedAnimals){
     let response;
-    await axios.get(`/ajax/users/${service}/${idCity}/${area}`, {
+    await axios.get(`/ajax/professionals/${service}/${idCity}/${area}`, {
+        params: {
+            startDate: date[0],
+            endDate: date[1],
+            selectedAnimals: JSON.stringify(selectedAnimals)
+        },
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
         }
@@ -28,12 +33,14 @@ async function fetchProfessionalsInAreaAndService(service, idCity, area){
     return response;
 }
 
-export default function SearchPetsitter({onPetsitters}) {
+export default function SearchPetsitter({id, onPetsittersFound}) {
     const [selectedAnimals, setSelectedAnimals] = useState([]);
     const [options, setOptions] = useState([]);
     const [city, setCity] = useState({});
     const [radius, setRadius] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
+    const startDate = useRef();
+    const endDate = useRef();
 
     useEffect(() => {
         const dateRangePickerEl = document.getElementById('dateRangePickerId');
@@ -44,34 +51,47 @@ export default function SearchPetsitter({onPetsitters}) {
             minDate : new Date(Date.now() + 86400000),
         }); 
 
-        fetchAnimals().then(res => {
-            let selectables = [];
-            res.forEach(animal => {
-                const select = {
-                    "value": animal.id,
-                    "label": animal.name
-                };
-                selectables.push(select);
+        if(id){
+            fetchAnimals(id).then(res => {
+                let selectables = [];
+                res.forEach(animal => {
+                    const select = {
+                        "value": animal.fk_category,
+                        "label": animal.name
+                    };
+                    selectables.push(select);
+                });
+                setOptions(selectables);
             });
-            setOptions(selectables);
-        });
+        }
     }, []);
 
     const handleForm = () => {
-        setIsLoading(true);
-        fetchProfessionalsInAreaAndService("petsitter", city.id, radius)
-        .then(res => {onPetsitters(res), console.log(res)})
-        .catch(err => console.error(err))
-        .finally(() => setIsLoading(false));
+        if (startDate.current.value != null && endDate.current.value != null) {
+            const startArray = startDate.current.value.split('/');
+            const endArray = endDate.current.value.split('/');
+            const start = new Date(startArray[2], startArray[1] - 1, startArray[0]);
+            const end = new Date(endArray[2], endArray[1] - 1, endArray[0]);
+
+            if (!isNaN(start) && !isNaN(end) && id ? selectedAnimals.length > 0 : true) {
+                const transformedSelectedAnimals = selectedAnimals.map(item => item.value);
+                setIsLoading(true);
+                fetchProfessionalsInAreaAndService("petsitter", city.id, radius, [start, end], transformedSelectedAnimals)
+                .then(res => {
+                    onPetsittersFound(res)})
+                .catch(err => console.error(err))
+                .finally(() => setIsLoading(false));
+            }
+        }
     }
-    
+
   return (
     <form>
         <span className="font-ChunkFive text-3xl">Je recherche quelqu'un du :</span>
         <div className="mt-6">
             <div className="flex items-center" id="dateRangePickerId">
                 <div className="relative w-1/2">
-                    <input name="start" type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Date de début" />
+                    <input name="start" ref={startDate} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Date de début" />
                     <div className="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none">
                         <svg className="w-4 h-4 text-black dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
@@ -85,7 +105,7 @@ export default function SearchPetsitter({onPetsitters}) {
                         <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                         </svg>
                     </div>
-                    <input name="end" type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Date de fin" />
+                    <input name="end" ref={endDate} type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Date de fin" />
                 </div>
             </div>
         </div>
@@ -104,10 +124,12 @@ export default function SearchPetsitter({onPetsitters}) {
             </div>
         </div>
         <br />
-        <div className='flex items-center'>
-            <span className="font-ChunkFive text-3xl pr-4">pour garder :</span>
-            <Select value={selectedAnimals} onChange={setSelectedAnimals} isMulti options={options} className='basic-multi-select w-1/2' classNamePrefix="select" id="select-animals" name="select-animals" />
-        </div>
+        {id ? (
+            <div className='flex items-center'>
+                <span className="font-ChunkFive text-3xl pr-4">pour garder :</span>
+                <Select value={selectedAnimals} onChange={setSelectedAnimals} isMulti options={options} className='basic-multi-select w-1/2' classNamePrefix="select" id="select-animals" name="select-animals" />
+            </div>
+        ) : null}
         <br />
         <div className='flex justify-end'>
             {isLoading ? (

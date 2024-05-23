@@ -45,3 +45,56 @@ input::-webkit-inner-spin-button {
 .react-calendar__month-view__days__day--weekend{
     color: unset;
 }
+
+.react-calendar__tile:disabled, .date-disabled{
+    background: repeating-linear-gradient(
+        -45deg,
+        #d3d3d3a8,
+        #d3d3d3a8 5px,
+        #fff 5px,
+        #fff 10px
+    );
+    color: #666 !important;
+    text-shadow: 
+    -1px -1px 0 #fff, 
+    1px -1px 0 #fff, 
+    -1px 1px 0 #fff, 
+    1px 1px 0 #fff; 
+    font-weight: unset !important;
+    background-color: unset !important;
+}
+
+.react-calendar__tile{
+    background-color: #c1e8c8;
+    color: #000;
+    font-weight: bold;
+}
+
+.react-calendar__tile:hover{
+    opacity: 0.75;
+    background-color: #c1e8c8 !important;
+}
+
+.react-calendar__tile:disabled:hover, .date-disabled:hover{
+    background: repeating-linear-gradient(-45deg, #d3d3d3a8, #d3d3d3a8 5px, #fff 5px, #fff 10px) !important;
+    opacity: 0.75;
+    background-color: unset !important;
+}
+
+.date-disabled:focus{
+    background: #1087ff !important;
+}
+
+.date-selected, .date-selected:hover{
+    background: #b6e2f7 !important;
+}
+
+#unavailable{
+    background: repeating-linear-gradient(
+        -45deg,
+        #d3d3d3a8, 
+        #d3d3d3a8 5px,
+        #fff 5px,
+        #fff 8px 
+    );
+}

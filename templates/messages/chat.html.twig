@@ -2,27 +2,30 @@
 
 {% block title %}Chat{% endblock %}
 
-{% block javascripts %}
+{% block stylesheets %}
     {{ parent() }}
-    <!-- Mercure Message -->
-    <script type="application/json" id="mercure-messages">
-        {{ mercure('messages/' ~ uuid)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}
-    </script>
+
+    <style>
+        footer {
+            display: none !important;
+        }
+    </style>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
-    <input type="hidden" id="jwt-messages" value='{{ generateJWT()|json_encode|raw }}'>
-    <section id="section-contact-info" class="py-12 px-24 bg-blue-dark-purple">
-        <div class="flex justify-between">
-            <h1 class="font-ChunkFive text-dark-blue text-5xl mx-4 min-w-fit">{{contact.lastname|upper}} {{contact.firstname|capitalize }}</h1>
-            <p class="text-xl mx-4 w-[40rem] font-medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum iaculis lacus a dignissim. Donec convallis iaculis neque</p>
-        </div>
-        <h1 class="font-ChunkFive text-dark-blue text-5xl my-4 mx-4">{{contact.cities.name|capitalize}}</h1>
+    <section id="section-contact-info"
+             class="py-6 px-12 bg-blue-dark-purple">
+        <div {{ react_component('chat/ChatTopBar', {contactSerialize: contact|serialize}) }}></div>
     </section>
-    <section id="section-chat" class="bg-beige p-10">
-        <div {{react_component('chat/LoadingChatRoom', {user: app.user.id, contact: contact.id, room: uuid})}}></div>
+    <section id="section-chat"
+             class="bg-beige p-10 h-[calc(100vh-96px-112px-128px)] overflow-y-auto">
+        <div {{ react_component('chat/LoadingChatRoom', {user: app.user.id, contact: contact.id, room: uuid, urlMercure: mercure('messages/' ~ uuid)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw, jwtToken: generateJWT()|json_encode|raw }) }}></div>
     </section>
-    <section id="section-input-chat" class="bg-blue-dark-purple p-10">
-        <div class="flex justify-between" {{react_component('chat/InputChat', {room: uuid, user: app.user.id})}}></div>
+    <section id="section-input-chat"
+             class="bg-blue-dark-purple p-8 flex items-center justify-center">
+        <div class="flex items-center justify-center gap-6 w-full" {{ react_component('chat/InputChat', {room: uuid, user: app.user.id}) }}></div>
     </section>
 {% endblock %}

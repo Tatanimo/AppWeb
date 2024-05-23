@@ -2,8 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Appointments;
 use App\Entity\Schedules;
 use App\Repository\AnimalsRepository;
+use App\Repository\ProfessionalsRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -11,7 +13,7 @@ use Faker\Factory;
 
 class SchedulesFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function __construct(private AnimalsRepository $animalsRepository)
+    public function __construct(private AnimalsRepository $animalsRepository, private ProfessionalsRepository $professionalsRepository)
     {
         
     }
@@ -19,13 +21,16 @@ class SchedulesFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
+        $professionals = $this->professionalsRepository->findAll();
 
-        for ($i=1; $i < 50 ; $i++) { 
-            $schedules = new Schedules();
-            $animal = $this->animalsRepository->randomAnimal();
-            $startDate = $faker->dateTimeThisDecade();
-            $schedules->setStartDate($startDate)->setEndDate($faker->dateTimeBetween($startDate))->setAnimals($animal)->setUsers($animal->getFkUser());
-            $manager->persist($schedules);            
+        foreach ($professionals as $professional) {
+            for ($i=0; $i < rand(0, 30); $i++) { 
+                $schedule = new Schedules();
+                $start = $faker->dateTimeBetween('now', '+2 months');
+                $schedule->setProfessional($professional)->setUnavailability($start);
+    
+                $manager->persist($schedule);
+            }
         }
 
         $manager->flush();
@@ -34,7 +39,7 @@ class SchedulesFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            AnimalsFixtures::class
+            ProfessionalsFixtures::class
         ];
     }
 }

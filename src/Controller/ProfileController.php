@@ -14,12 +14,12 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class ProfileController extends AbstractController
 {
     #[Route('/professionnel/{id}', name: 'app_profile_pro')]
-    public function professional(#[CurrentUser] ?Users $user, $id, ProfessionalsRepository $professionalsRepository): Response
+    public function professional($id, ProfessionalsRepository $professionalsRepository): Response
     {
         $professional = $professionalsRepository->findOneBy(["id" => $id]);
 
-        if (!isset($user)) {
-            $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Vous n'avez pas accès au profil sans être connecté."]);
+        if (!isset($professional)) {
+            $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Ce profil n'existe pas."]);
             return $this->redirectToRoute("app_home");
         }
 
@@ -42,11 +42,6 @@ class ProfileController extends AbstractController
     public function index(#[CurrentUser] ?Users $user, $id, UsersRepository $usersRepository): Response
     {
         $profil = $usersRepository->findOneBy(["id" => $id]);
-
-        if (!isset($user)) {
-            $this->addFlash('fail', ['title' => 'Erreur', 'message' => "Vous n'avez pas accès au profil sans être connecté."]);
-            return $this->redirectToRoute("app_home");
-        }
 
         return $this->render('profile/index.html.twig', [
             'profil' => $profil,

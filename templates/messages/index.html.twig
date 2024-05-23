@@ -11,7 +11,9 @@
     <section class="px-28 flex flex-col items-center">
         <div {{ react_component('headers/FirstHeader', {'content': 'Messages', 'color': 'dark-blue', 'className': 'pt-32 mb-16'}) }}></div>
     </section>
-    <section id="section-messages" class="mb-24">
-        <div {{ react_component('chat/Message')}}></div>
+    <section id="section-messages" class="mb-24 [&>div:first-child>a]:border-t-8">
+        {% for key, room in rooms %}
+            <div {{ react_component('chat/Message', {roomSerialize: room|serialize, contactSerialize: contacts[key]|serialize, lastMessageSerialize: room.getFkMessage.first|serialize})}}></div>
+        {% endfor %}
     </section>
 {% endblock %}

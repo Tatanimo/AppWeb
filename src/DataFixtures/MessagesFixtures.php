@@ -35,6 +35,7 @@ class MessagesFixtures extends Fixture implements DependentFixtureInterface
                 $message->setAuthor($arrayUsers[$randomAuthor]);
                 $message->setContent($faker->sentences(asText:true));
                 $message->setPublicationDate($faker->dateTimeThisYear());
+                $message->setType("message");
                 $manager->persist($message);
             }
         }

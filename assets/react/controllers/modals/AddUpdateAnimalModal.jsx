@@ -75,6 +75,7 @@ function AddUpdateAnimalModal({openModal, setOpenModal, animalId, setFetchById})
         .then(response => {
             setFetchById(response.data);
             setLoading(false);
+            setOpenModal(false);
         })
         .catch(error => {
             console.error(error)

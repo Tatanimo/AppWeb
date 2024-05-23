@@ -2,8 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\CategoryAnimals;
 use App\Entity\Professionals;
 use App\Entity\ServicesType;
+use App\Repository\CategoryAnimalsRepository;
 use App\Repository\CitiesRepository;
 use App\Repository\ServicesTypeRepository;
 use App\Repository\UsersRepository;
@@ -14,7 +16,7 @@ use Faker\Factory;
 
 class ProfessionalsFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function __construct(private UsersRepository $usersRepository, private CitiesRepository $citiesRepository, private ServicesTypeRepository $servicesTypeRepository)
+    public function __construct(private UsersRepository $usersRepository, private CitiesRepository $citiesRepository, private ServicesTypeRepository $servicesTypeRepository, private CategoryAnimalsRepository $categoryAnimalsRepository)
     {
         
     }
@@ -52,6 +54,15 @@ class ProfessionalsFixtures extends Fixture implements DependentFixtureInterface
 
                 $professional->setAddress($faker->address())->setCity($cities)->setDescription($faker->paragraph($randPar, true))->setLiveIn($liveIn[$randLivIn])->setPrice($faker->randomNumber(3))->setUser($user)->setCriteria($criteriaList)->setService($services[$randomServices]);
 
+                $categoriesAnimals = $this->categoryAnimalsRepository->findAll();
+                shuffle($categoriesAnimals);
+
+                for ($i=0; $i < rand(1, count($categoriesAnimals)) ; $i++) { 
+                    $in = array_rand($categoriesAnimals);
+                    $professional->addAllowedCategory($categoriesAnimals[$in]);
+                    unset($categoriesAnimals[$in]);
+                }
+
                 $manager->persist($professional);
                 $manager->flush();
             }
@@ -63,7 +74,7 @@ class ProfessionalsFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             UsersFixtures::class,
-            ServicesTypeFixtures::class
+            ServicesTypeFixtures::class,
         ];
     }
 }
