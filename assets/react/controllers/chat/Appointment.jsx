@@ -85,7 +85,7 @@ export default function Appointment({contentState, authorId, userId, room, id}) 
                 <p>{appointment.price}€</p>
             </div>
             <br/>
-            {authorId != userId && appointment.answered ? (
+            {authorId != userId && !appointment.answered ? (
                 <div className="flex items-center justify-between mt-3">
                     <button onClick={() => answeredAppointment(appointment, false)}
                             type="button"
