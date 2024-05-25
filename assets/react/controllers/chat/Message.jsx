@@ -50,7 +50,7 @@ export default function Message({roomSerialize, contactSerialize, lastMessageSer
               {lastMessage.content && lastMessage.type == "message" ? lastMessage.content : lastMessage.type == "appointment" ? "Demande de rendez-vous" : "Aucun message envoyé"}
             </p>
             {Array.isArray(JSON.parse(notifsStorage)) && JSON.parse(notifsStorage).includes(room.uuid) ? (
-              <div className='absolute bottom-0 right-0 w-8 h-8 bg-blue-300 rounded-full'></div>
+              <div className='absolute bottom-0 right-0 w-8 h-8 bg-blue-300 rounded-full animate-pulse'></div>
             ) : null}
         </div>
     </a>
