@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import LoginRegisterModal from "../modals/LoginRegisterModal";
 import ProfileDropdown from "../dropdown/ProfileDropdown";
 import { EventSourcePolyfill } from "event-source-polyfill";
-import { lastSegment } from "../../../config";
 
 export default function NavigationBar({userSerialize, professionalSerialize, jwtToken, urlMercure}) {
     const notifsStorage = localStorage.getItem("notifications");
@@ -30,7 +29,7 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                 let notifsArray = JSON.parse(localStorage.getItem("notifications"));
                 const uuid = JSON.parse(event.data).uuid.toString();
 
-                if (uuid != lastSegment) {
+                if (uuid != window.location.pathname.split("/").pop()) {
                     if (Array.isArray(notifsArray)) {
                         if (!notifsArray.includes(uuid)) {
                             notifsArray.push(uuid);
@@ -40,14 +39,16 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                     }
     
                     localStorage.setItem("notifications", JSON.stringify(notifsArray));
+                    window.dispatchEvent(new Event("storage"));
                     setNotifications(notifsArray.length);
                 }
             }
         }
 
+        // si on entre dans la chat room qui possède la notif, alors on enlève la notif
         if (Array.isArray(JSON.parse(notifsStorage))) {
-            if (JSON.parse(notifsStorage).includes(lastSegment)) {
-                const filter = JSON.parse(notifsStorage).filter((e) => e != lastSegment);
+            if (JSON.parse(notifsStorage).includes(window.location.pathname.split("/").pop())) {
+                const filter = JSON.parse(notifsStorage).filter((e) => e != window.location.pathname.split("/").pop());
                 localStorage.setItem("notifications", JSON.stringify(filter));
                 setNotifications(filter.length);
             }
@@ -86,6 +87,7 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                                  className="h-8"/>
                             {notifications > 0 ? (
                                 <div className="-top-2 -right-2 absolute rounded-full bg-red-300 p-2 flex justify-center items-center min-w-6 max-h-6">
+                                    <span className="top-[2px] right-[3px] z-10 absolute rounded-full bg-red-300 p-2 flex justify-center items-center animate-ping w-3/4 h-5/6"></span>
                                     <span className="font-sans">{notifications}</span>
                                 </div>
                             ) : null}
