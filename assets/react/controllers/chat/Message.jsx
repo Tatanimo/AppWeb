@@ -3,11 +3,11 @@ import { endpoint } from '../../../config'
 import datetimeDifference from 'datetime-difference';
 
 export default function Message({roomSerialize, contactSerialize, lastMessageSerialize}) {
-  const notifsStorage = localStorage.getItem("notifications");
   const room = JSON.parse(roomSerialize);
   const contact = JSON.parse(contactSerialize);
   const lastMessage = JSON.parse(lastMessageSerialize);
 
+  const [notifsStorage, setNotifsStorage] = useState(localStorage.getItem("notifications"));
   const [imgAvailable, setImgAvailable] = useState(true);
 
   const displayDateTime = () => {
@@ -23,6 +23,12 @@ export default function Message({roomSerialize, contactSerialize, lastMessageSer
       return date.toLocaleDateString();
     } 
   }
+
+  useEffect(() => {
+    window.addEventListener('storage', () => {
+      setNotifsStorage(localStorage.getItem("notifications"))
+    });
+  }, [])
 
   return (
     <a data-turbo="false" href={`${endpoint.base}/messages/${room.uuid}`} id="message" className="flex py-6 px-12 border-b-8 border-dark-blue cursor-pointer">

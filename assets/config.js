@@ -8,5 +8,3 @@ export const endpoint = {
     "pdf": `${location.protocol}//${HostnameAndPort}/pdf`,
     "videos": `${location.protocol}//${HostnameAndPort}/videos`,
 };
-
-export const lastSegment = window.location.pathname.split("/").pop();
