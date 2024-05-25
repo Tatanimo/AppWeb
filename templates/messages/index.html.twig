@@ -13,7 +13,7 @@
     </section>
     <section id="section-messages" class="mb-24 [&>div:first-child>a]:border-t-8">
         {% for key, room in rooms %}
-            <div {{ react_component('chat/Message', {roomSerialize: room|serialize, contactSerialize: contacts[key]|serialize, lastMessageSerialize: room.getFkMessage.first|serialize})}}></div>
+            <div data-turbo-temporary {{ react_component('chat/Message', {roomSerialize: room|serialize, contactSerialize: contacts[key]|serialize, lastMessageSerialize: room.getFkMessage.first|serialize})}}></div>
         {% endfor %}
     </section>
 {% endblock %}

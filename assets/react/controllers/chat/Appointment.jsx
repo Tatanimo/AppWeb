@@ -1,9 +1,8 @@
 import React from "react";
 import axios from "axios";
 
-export default function Appointment(contentState, authorId, userId, room, id) {
-    const appointment = JSON.parse(contentState.contentState);
-
+export default function Appointment({contentState, authorId, userId, room, id}) {
+    const appointment = JSON.parse(contentState);
     const answeredAppointment = async (appointment, answer) => {
         await axios.post("/ajax/appointments", appointment, {
             headers: {
@@ -41,10 +40,28 @@ export default function Appointment(contentState, authorId, userId, room, id) {
         });
     };
 
+    console.log(appointment.animals);
+
     return (
         <div id="appointment-card"
-             className="bg-white p-4 w-fit m-6">
-            <h4 className="font-bold text-xl">Rendez-vous {appointment.accepted ? "accepté" : "refusé"}</h4>
+             className="bg-white p-4 w-fit m-6 rounded">
+            <h4 className="font-ChunkFive text-2xl flex items-center gap-2">Garde
+                d'animaux {appointment.accepted != undefined ? (appointment.accepted ?
+                    <div className="main-container">
+                        <div className="check-container">
+                            <div className="check-background">
+                                <svg viewBox="0 0 65 51"
+                                     fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 25L27.3077 44L58.5 7"
+                                          stroke="white"
+                                          stroke-width="13"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div> : "refusé") : null}</h4>
             <br/>
             {appointment.animals.map(animal => {
                 return (
@@ -56,8 +73,12 @@ export default function Appointment(contentState, authorId, userId, room, id) {
                 );
             })}
             <div className="flex justify-between">
-                <p className="font-bold mr-2">Date de rendez-vous:</p>
-                <p>{new Date(appointment.date[0]).toLocaleDateString()} - {new Date(appointment.date[1]).toLocaleDateString()}</p>
+                <p className="font-bold mr-2">Date de début:</p>
+                <p>{new Date(appointment.date[0]).toLocaleDateString()}</p>
+            </div>
+            <div className="flex justify-between">
+                <p className="font-bold mr-2">Date de fin:</p>
+                <p>{new Date(appointment.date[1]).toLocaleDateString()}</p>
             </div>
             <div className="flex justify-between">
                 <p className="font-bold mr-2">Prix:</p>
@@ -65,13 +86,14 @@ export default function Appointment(contentState, authorId, userId, room, id) {
             </div>
             <br/>
             {authorId != userId && !appointment.answered ? (
-                <div className="flex justify-end mt-3">
+                <div className="flex items-center justify-between mt-3">
                     <button onClick={() => answeredAppointment(appointment, false)}
                             type="button"
-                            className="mr-2">Refuser
+                            className="bg-red-600 hover:bg-red-700 transition font-Roboto text-white px-4 py-2 rounded-[12px]">Refuser
                     </button>
                     <button onClick={() => answeredAppointment(appointment, true)}
-                            type="button">Accepter
+                            type="button"
+                            className="bg-green-600 hover:bg-green-700 transition font-Roboto text-white px-4 py-2 rounded-[12px]">Accepter
                     </button>
                 </div>
             ) : null}

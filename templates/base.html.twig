@@ -39,13 +39,15 @@
     </head>
     <body class="font-serif">
         {# Alerte #}
-        <header class="sticky top-0 w-full bg-white z-10" {{ react_component('navigation/NavigationBar', {'userSerialize': app.user ? app.user|serialize : null, 'professionalSerialize': app.user ? (app.user.professionals ? app.user.professionals|serialize : null) : null}) }}></header>
+        <header class="sticky top-0 w-full bg-white z-10" {{ react_component('navigation/NavigationBar', {'userSerialize': app.user ? app.user|serialize : null, 'professionalSerialize': app.user ? (app.user.professionals ? app.user.professionals|serialize : null) : null,
+        jwtToken: app.user ? generateJWT()|json_encode|raw : null, urlMercure: app.user ? mercure('notifications/' ~ app.user.id)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw : null
+        }) }}></header>
         <div class="fixed top-0 left-0 z-50">
             {# Flash #}
             {% for type, flash in app.flashes %}
                 <div {{ react_component('alerts/Alerts', {'type': type, 'flash': flash }) }}></div>
             {% endfor %}
-            {# Mercure #}
+            {# Mercure Alert #}
             <div data-turbo-temporary {{ react_component('alerts/Mercure', {jwtToken: generateJWT()|json_encode|raw, urlMercure: mercure('alerts/' ~ sessionUuid())|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }) }}></div>
         </div>
 

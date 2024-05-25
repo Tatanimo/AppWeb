@@ -10,9 +10,11 @@ use App\Repository\ProfessionalsRepository;
 use App\Repository\RoomsRepository;
 use App\Repository\UsersRepository;
 use App\Services\Mercure\MessageService;
+use App\Services\Mercure\NotificationService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -86,7 +88,7 @@ class MessagesController extends AbstractController
     }
 
     #[Route('/ajax/messages/{uuid}', name: 'app_ajax_post_messages', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function addMessage(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, MessageService $messageService, $uuid): JsonResponse
+    public function addMessage(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, MessageService $messageService, $uuid, NotificationService $notificationService): JsonResponse
     {
         if (!isset($user)) {
             return $this->json("Non authentifiée", 401);
@@ -112,15 +114,77 @@ class MessagesController extends AbstractController
             return $this->json("Erreur lors de l'envoie du message: $th", 401);
         }
 
-        if(!$messageService->generate($uuid, $message["content"], $message["author"], $message["publication_date"], "message")){
+        if(!$messageService->generate($uuid, $message["content"], $message["author"], $message["publication_date"], "message", $newMessage->getId())){
             return $this->json("Erreur dans l'envoie du message", 401);
+        }
+
+        if (!$notificationService->generate($room->getContactId($user->getId()), $uuid)) {
+            return $this->json("Erreur dans l'envoie de la notification", 401);
         }
         
         return $this->json("Message bien envoyé", 200);
     }
 
+    #[Route('/ajax/messages/file/{uuid}', name: 'app_ajax_post_file', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
+    public function addFile(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, MessageService $messageService, $uuid, NotificationService $notificationService): JsonResponse
+    {
+        if (!isset($user)) {
+            return $this->json("Non authentifiée", 401);
+        }
+
+        $file = $request->files->get('file');
+
+        if (!isset($file)) {
+            return $this->json("Fichier introuvable", 401);
+        }
+
+        $ext = $request->request->get("ext");
+
+        if (!isset($ext)) {
+            return $this->json("Extension introuvable", 401);
+        }
+        
+        try {
+            $newMessage = new Messages();
+            
+            $date = new DateTime();
+            
+            $room = $roomsRepository->findOneBy(["uuid" => $uuid]);
+            $newMessage->setRooms($room)->setAuthor($user)->setPublicationDate($date)->setContent("")->setType($ext == "pdf" ? "pdf" : "image");
+            
+            $em->persist($newMessage);
+            $em->flush();
+        } catch (\Throwable $th) {
+            return $this->json("Erreur lors de l'envoie du message: $th", 401);
+        }
+
+        $ext = $ext == "pdf" ? "pdf" : "jpg";
+        $to = $ext == "pdf" ? "pdf" : "img";
+        
+        $newFilename = $user->getId().'-'.$newMessage->getId().'.'.$ext;
+        $destination = $this->getParameter('kernel.project_dir') . "/public/" . $to . "/messages/";
+        try {
+            $file->move($destination, $newFilename);
+        } catch (FileException $e) {
+            return $this->json($e, 400);
+        }
+
+        $date = $newMessage->getPublicationDate();
+        $dateString = $date->format('d-m-Y H:i:s');
+
+        if(!$messageService->generate($uuid, $newMessage->getContent(), $newMessage->getAuthor()->getId(), $dateString, $newMessage->getType(), $newMessage->getId())){
+            return $this->json("Erreur dans l'envoie du message", 401);
+        }
+
+        if (!$notificationService->generate($room->getContactId($user->getId()), $uuid)) {
+            return $this->json("Erreur dans l'envoie de la notification", 401);
+        }
+        
+        return $this->json("Fichier bien envoyé", 200);
+    }
+
     #[Route('/ajax/messages/appointment/{uuid}', name: 'app_ajax_post_appointment_message', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function addAppointment(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, MessageService $messageService, $uuid): JsonResponse
+    public function addAppointment(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, MessageService $messageService, $uuid, NotificationService $notificationService): JsonResponse
     {
         if (!isset($user)) {
             return $this->json("Non authentifiée", 401);
@@ -151,8 +215,12 @@ class MessagesController extends AbstractController
         $date = $newMessage->getPublicationDate();
         $dateString = $date->format('d-m-Y H:i:s');
 
-        if(!$messageService->generate($uuid, $newMessage->getContent(), $newMessage->getAuthor()->getId(), $dateString, $type)){
+        if(!$messageService->generate($uuid, $newMessage->getContent(), $newMessage->getAuthor()->getId(), $dateString, $type, $newMessage->getId())){
             return $this->json("Erreur dans l'envoie du message", 401);
+        }
+
+        if (!$notificationService->generate($room->getContactId($user->getId()), $uuid)) {
+            return $this->json("Erreur dans l'envoie de la notification", 401);
         }
         
         return $this->json("Message bien envoyé", 200);
