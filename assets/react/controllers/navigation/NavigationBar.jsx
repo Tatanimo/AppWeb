@@ -30,16 +30,18 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                 let notifsArray = JSON.parse(localStorage.getItem("notifications"));
                 const uuid = JSON.parse(event.data).uuid.toString();
 
-                if (Array.isArray(notifsArray)) {
-                    if (!notifsArray.includes(uuid)) {
-                        notifsArray.push(uuid);
+                if (uuid != lastSegment) {
+                    if (Array.isArray(notifsArray)) {
+                        if (!notifsArray.includes(uuid)) {
+                            notifsArray.push(uuid);
+                        }
+                    } else {
+                        notifsArray = [JSON.parse(event.data).uuid];
                     }
-                } else {
-                    notifsArray = [JSON.parse(event.data).uuid];
+    
+                    localStorage.setItem("notifications", JSON.stringify(notifsArray));
+                    setNotifications(notifsArray.length);
                 }
-
-                localStorage.setItem("notifications", JSON.stringify(notifsArray));
-                setNotifications(notifsArray.length);
             }
         }
 
