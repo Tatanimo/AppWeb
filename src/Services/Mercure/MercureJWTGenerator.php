@@ -35,6 +35,7 @@ class MercureJWTGenerator extends AbstractExtension {
         $user = $this->security->getUser();
         if (isset($user)) {
             array_push($topic, "messages/{id}");
+            array_push($topic, "notifications/{id}");
         }
 
         $payload =  [

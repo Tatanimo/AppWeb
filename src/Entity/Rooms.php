@@ -81,4 +81,14 @@ class Rooms
 
         return $this;
     }
+
+    public function getContactId(int $id): int
+    {
+        $explode = explode("-",$this->reference);
+        $filter = array_filter($explode, function($e) use ($id){
+            return $e != $id;
+        });
+        $value = array_shift($filter); 
+        return $value;
+    }
 }

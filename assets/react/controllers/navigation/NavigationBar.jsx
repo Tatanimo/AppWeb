@@ -1,11 +1,56 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import LoginRegisterModal from "../modals/LoginRegisterModal";
 import ProfileDropdown from "../dropdown/ProfileDropdown";
+import { EventSourcePolyfill } from "event-source-polyfill";
+import { lastSegment } from "../../../config";
 
-export default function NavigationBar({userSerialize, professionalSerialize}) {
+export default function NavigationBar({userSerialize, professionalSerialize, jwtToken, urlMercure}) {
+    const notifsStorage = localStorage.getItem("notifications");
+
     const [openModal, setOpenModal] = useState(false);
+    const [notifications, setNotifications] = useState(Array.isArray(JSON.parse(notifsStorage)) ? JSON.parse(notifsStorage).length : 0);
+
     const user = userSerialize ? JSON.parse(userSerialize) : null;
     const professional = professionalSerialize ? JSON.parse(professionalSerialize) : null;
+
+    useEffect(() => {
+        if (user) {
+            const url = JSON.parse(urlMercure);
+            const jwt = JSON.parse(jwtToken.replace(/\s/g, ''));
+    
+            const eventSource = new EventSourcePolyfill(url, { 
+                withCredentials: true, 
+                headers: {
+                    'Authorization': `Bearer ${jwt}`
+                },
+                heartbeatTimeout: 120000,
+            });
+            
+            eventSource.onmessage = event => {
+                let notifsArray = JSON.parse(localStorage.getItem("notifications"));
+                const uuid = JSON.parse(event.data).uuid.toString();
+
+                if (Array.isArray(notifsArray)) {
+                    if (!notifsArray.includes(uuid)) {
+                        notifsArray.push(uuid);
+                    }
+                } else {
+                    notifsArray = [JSON.parse(event.data).uuid];
+                }
+
+                localStorage.setItem("notifications", JSON.stringify(notifsArray));
+                setNotifications(notifsArray.length);
+            }
+        }
+
+        if (Array.isArray(JSON.parse(notifsStorage))) {
+            if (JSON.parse(notifsStorage).includes(lastSegment)) {
+                const filter = JSON.parse(notifsStorage).filter((e) => e != lastSegment);
+                localStorage.setItem("notifications", JSON.stringify(filter));
+                setNotifications(filter.length);
+            }
+        }
+    }, []);
 
     return (
         <>
@@ -34,9 +79,14 @@ export default function NavigationBar({userSerialize, professionalSerialize}) {
                 </ul>
                 <ul className="flex items-center gap-6">
                     <li className="hover:bg-light-gray p-2 rounded-xl transition">
-                        <a href="/messages">
+                        <a href="/messages" className="relative">
                             <img src="/img/icons/mail.svg"
                                  className="h-8"/>
+                            {notifications > 0 ? (
+                                <div className="-top-2 -right-2 absolute rounded-full bg-red-300 p-2 flex justify-center items-center min-w-6 max-h-6">
+                                    <span className="font-sans">{notifications}</span>
+                                </div>
+                            ) : null}
                         </a>
                     </li>
                     <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
