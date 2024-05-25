@@ -126,7 +126,7 @@ class MessagesController extends AbstractController
     }
 
     #[Route('/ajax/messages/file/{uuid}', name: 'app_ajax_post_file', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function addFile(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, MessageService $messageService, $uuid): JsonResponse
+    public function addFile(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, MessageService $messageService, $uuid, NotificationService $notificationService): JsonResponse
     {
         if (!isset($user)) {
             return $this->json("Non authentifiée", 401);
@@ -174,6 +174,10 @@ class MessagesController extends AbstractController
 
         if(!$messageService->generate($uuid, $newMessage->getContent(), $newMessage->getAuthor()->getId(), $dateString, $newMessage->getType(), $newMessage->getId())){
             return $this->json("Erreur dans l'envoie du message", 401);
+        }
+
+        if (!$notificationService->generate($room->getContactId($user->getId()), $uuid)) {
+            return $this->json("Erreur dans l'envoie de la notification", 401);
         }
         
         return $this->json("Fichier bien envoyé", 200);
