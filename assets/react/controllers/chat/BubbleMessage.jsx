@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {endpoint} from "../../../config";
 import Appointment from "./Appointment";
 import ResultAppointment from "./ResultAppointment";
+import ImageModal from "../modals/ImageModal";
 
 export default function BubbleMessage({content, publicationDate, authorId, userId, shape, type, id, room}) {
     const [classNameP, setClassNameP] = useState("bg-blue-dark-purple");
@@ -9,9 +10,7 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
     const [classNameShape, setClassNameShape] = useState("");
     const [imgAvailable, setImgAvailable] = useState(true);
     const [contentState, setContentState] = useState(content);
-
-    const [response, setResponse] = useState();
-    const [userResponse, setUserResponse] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         if (authorId == userId) {
@@ -61,7 +60,7 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
                 );
             case "image":
                 return (
-                    <img className="max-w-1/2 h-auto"
+                    <img onClick={() => setOpenModal(true)} className="max-w-1/2 w-fit h-auto cursor-zoom-in"
                     src={`${endpoint.img}/messages/${authorId}-${id}.jpg`}/>
                 );
             case "pdf":
@@ -110,6 +109,13 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
     };
 
     return (
-        bubbleContent()
+        <>
+            {bubbleContent()}
+            {
+                openModal ? (
+                    <ImageModal openModal={openModal} setOpenModal={setOpenModal} image={`${endpoint.img}/messages/${authorId}-${id}.jpg`}/>
+                ) : null
+            }
+        </>
     );
 }
