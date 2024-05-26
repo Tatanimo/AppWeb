@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {endpoint} from "../../../config";
 import Appointment from "./Appointment";
+import ResultAppointment from "./ResultAppointment";
 
 export default function BubbleMessage({content, publicationDate, authorId, userId, shape, type, id, room}) {
     const [classNameP, setClassNameP] = useState("bg-blue-dark-purple");
@@ -8,6 +9,9 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
     const [classNameShape, setClassNameShape] = useState("");
     const [imgAvailable, setImgAvailable] = useState(true);
     const [contentState, setContentState] = useState(content);
+
+    const [response, setResponse] = useState();
+    const [userResponse, setUserResponse] = useState(false);
 
     useEffect(() => {
         if (authorId == userId) {
@@ -44,26 +48,15 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
                                                                     authorId={authorId}
                                                                     userId={userId}
                                                                     room={room}
-                                                                    id={id}/>}
+                                                                    id={id}
+                                                                    response={response}
+                                                                    userResponse={userResponse}
+                                                                    setUserResponse={setUserResponse}
+                                                                    setResponse={setResponse}
+                                                                    setContentState={setContentState}/>}
                             {type === "answered-appointment" &&
-                                <span className="text-xl font-Roboto font-semibold flex items-center gap-2">
-                                    Rendez-vous accepté !
-                                    <div className="main-container">
-                                        <div className="check-container">
-                                            <div className="check-background">
-                                                <svg viewBox="0 0 65 51"
-                                                     fill="none"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M7 25L27.3077 44L58.5 7"
-                                                          stroke="white"
-                                                          stroke-width="13"
-                                                          stroke-linecap="round"
-                                                          stroke-linejoin="round"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                </span>}
+                                <ResultAppointment response={response}/>
+                            }
                             {type === "message" && contentState}
                             {type === "image" && (
                                 <img className="max-w-1/2 h-auto"
