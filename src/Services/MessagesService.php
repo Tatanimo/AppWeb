@@ -10,7 +10,6 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -62,8 +61,9 @@ class MessagesService
         $recentMessages = array_reverse($messages);
         $typeArray = $this->getTypes($recentMessages);
         $key = array_search("answered-appointment", $typeArray);
+        $answered = null;
 
-        if ($key) {
+        if ($key !== false) {
             $answered = $recentMessages[$key];
         }
 
