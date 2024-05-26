@@ -94,7 +94,6 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
                     <div className="w-[64px]"></div>
                 ) : null}
                 {shape ? (
-<<<<<<< HEAD
                     <div className={`${classNameP} relative max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8 ${classNameShape}`}>
                         {contentType()}
                     </div>)
@@ -103,37 +102,6 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
                         {contentType()}
                     </div>
                 )}
-=======
-                        <p className={`${classNameP} relative max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8 ${classNameShape}`}>
-                            {type === "appointment" && <Appointment contentState={contentState}
-                                                                    authorId={authorId}
-                                                                    userId={userId}
-                                                                    room={room}
-                                                                    id={id}
-                                                                    response={response}
-                                                                    userResponse={userResponse}
-                                                                    setUserResponse={setUserResponse}
-                                                                    setResponse={setResponse}
-                                                                    setContentState={setContentState}/>}
-                            {type === "answered-appointment" &&
-                                <ResultAppointment response={response}/>
-                            }
-                            {type === "message" && contentState}
-                            {type === "image" && (
-                                <img className="max-w-1/2 h-auto"
-                                     src={`${endpoint.img}/messages/${authorId}-${id}.jpg`}/>
-                            )}
-                            {type === "pdf" && (
-                                <a href={`${endpoint.pdf}/messages/${authorId}-${id}.pdf`}
-                                   download={true}>
-                                    Télécharger le PDF
-                                </a>
-                            )}
-                        </p>)
-                    : (
-                        <p className={`${classNameP} relative max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8`}>{contentState}</p>
-                    )}
->>>>>>> b8fe254144a0a0480dfe2def2e4f0c296a7c9c04
                 {authorId == userId ? (
                     <div className="w-[64px]"></div>
                 ) : null}
