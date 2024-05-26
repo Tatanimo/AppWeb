@@ -24,6 +24,57 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
         }
     }, []);
 
+    const contentType = () => {
+        switch (type) {
+            case "appointment":
+                return (
+                    <Appointment contentState={contentState}
+                    authorId={authorId}
+                    userId={userId}
+                    room={room}
+                    id={id}/>
+                );
+            case "answered-appointment":
+                return (
+                    <span className="text-xl font-Roboto font-semibold flex items-center gap-2">
+                        Rendez-vous {JSON.parse(contentState).accepted ? "accepté" : "refusé"} !
+                        <div className="main-container">
+                            <div className="check-container">
+                                <div className="check-background">
+                                    <svg viewBox="0 0 65 51"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 25L27.3077 44L58.5 7"
+                                            stroke="white"
+                                            strokeWidth="13"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div> 
+                    </span>
+                );
+            case "image":
+                return (
+                    <img className="max-w-1/2 h-auto"
+                    src={`${endpoint.img}/messages/${authorId}-${id}.jpg`}/>
+                );
+            case "pdf":
+                return (
+                    <a href={`${endpoint.pdf}/messages/${authorId}-${id}.pdf`}
+                    download={true}>
+                        Télécharger le PDF
+                    </a>  
+                );
+            case "message":
+            default:
+                return (
+                    <p>{contentState}</p>
+                );
+        }
+    }
+
     const bubbleContent = () => {
         return (
             <div id={`message-bubble-${authorId}`}
@@ -39,46 +90,14 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
                     <div className="w-[64px]"></div>
                 ) : null}
                 {shape ? (
-                        <p className={`${classNameP} relative max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8 ${classNameShape}`}>
-                            {type === "appointment" && <Appointment contentState={contentState}
-                                                                    authorId={authorId}
-                                                                    userId={userId}
-                                                                    room={room}
-                                                                    id={id}/>}
-                            {type === "answered-appointment" &&
-                                <span className="text-xl font-Roboto font-semibold flex items-center gap-2">
-                                    Rendez-vous accepté !
-                                    <div className="main-container">
-                                        <div className="check-container">
-                                            <div className="check-background">
-                                                <svg viewBox="0 0 65 51"
-                                                     fill="none"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M7 25L27.3077 44L58.5 7"
-                                                          stroke="white"
-                                                          stroke-width="13"
-                                                          stroke-linecap="round"
-                                                          stroke-linejoin="round"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div> 
-                                </span>}
-                            {type === "message" && contentState}
-                            {type === "image" && (
-                                <img className="max-w-1/2 h-auto"
-                                     src={`${endpoint.img}/messages/${authorId}-${id}.jpg`}/>
-                            )}
-                            {type === "pdf" && (
-                                <a href={`${endpoint.pdf}/messages/${authorId}-${id}.pdf`}
-                                   download={true}>
-                                    Télécharger le PDF
-                                </a>
-                            )}
-                        </p>)
-                    : (
-                        <p className={`${classNameP} relative max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8`}>{contentState}</p>
-                    )}
+                    <div className={`${classNameP} relative max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8 ${classNameShape}`}>
+                        {contentType()}
+                    </div>)
+                : (
+                    <div className={`${classNameP} relative max-w-[50%] rounded-[30px] w-fit ml-8 py-4 px-8`}>
+                        {contentType()}
+                    </div>
+                )}
                 {authorId == userId ? (
                     <div className="w-[64px]"></div>
                 ) : null}

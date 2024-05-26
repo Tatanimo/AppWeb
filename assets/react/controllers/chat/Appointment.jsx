@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 export default function Appointment({contentState, authorId, userId, room, id}) {
-    const appointment = JSON.parse(contentState);
+    const [appointment, setAppointment] = useState(JSON.parse(contentState));
     const answeredAppointment = async (appointment, answer) => {
         await axios.post("/ajax/appointments", appointment, {
             headers: {
@@ -13,7 +13,7 @@ export default function Appointment({contentState, authorId, userId, room, id}) 
                 appointment.answered = true;
                 appointment.accepted = answer;
                 updateMessage(appointment).then(
-                    setContentState(JSON.stringify(appointment)),
+                    setAppointment(appointment),
                 );
             })
             .catch(err => console.error(err));
@@ -40,8 +40,6 @@ export default function Appointment({contentState, authorId, userId, room, id}) 
         });
     };
 
-    console.log(appointment.animals);
-
     return (
         <div id="appointment-card"
              className="bg-white p-4 w-fit m-6 rounded">
@@ -55,9 +53,9 @@ export default function Appointment({contentState, authorId, userId, room, id}) 
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7 25L27.3077 44L58.5 7"
                                           stroke="white"
-                                          stroke-width="13"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"/>
+                                          strokeWidth="13"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"/>
                                 </svg>
                             </div>
                         </div>
