@@ -9,7 +9,7 @@ function ProfileDropdown({user, professional}) {
     <>
         <Menu>
             <MenuHandler>
-                <Button>
+                <Button className='shadow-none hover:shadow-none'>
                     <img src="/img/icons/user_profile.svg"className="h-8"/>
                 </Button>
             </MenuHandler>

@@ -33,7 +33,7 @@ class ProfileController extends AbstractController
         }
         
         try {
-            $user->setDescription($description);
+            $user->setDescription(htmlspecialchars($description));
             $em->persist($user);
             $em->flush();
             $alertService->generate("success", "Félicitation", "La description a bien été sauvegardé");
