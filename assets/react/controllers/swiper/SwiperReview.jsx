@@ -3,18 +3,18 @@ import ReviewCard from "../review/ReviewCard";
 // Import Swiper React components
 import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
-import "swiper/css/free-mode";
+import "swiper/css/navigation";
 // import required modules
-import {FreeMode} from "swiper/modules";
+import {Navigation} from "swiper/modules";
 
 export default () => {
     return (
         <Swiper
-            slidesPerView={"auto"}
-            spaceBetween={30}
-            freeMode={true}
-            modules={[FreeMode]}
-            className="mySwiper flex gap-2 overflow-hidden [&_.swiper-slide]:!w-[350px] w-[1000px]"
+            slidesPerView={1}
+            spaceBetween={16}
+            navigation={true}
+            modules={[Navigation]}
+            className="mySwiper flex gap-1 overflow-hidden [&_.swiper-slide]:!w-full xl:w-[1150px] lg:w-[700px] md:w-[500px] w-[300px]"
         >
             <SwiperSlide>
                 <ReviewCard img="img/background/dog-with-toy.png"

@@ -8,17 +8,17 @@ export default function Footer() {
     return (
         <>
             <div className="flex lg:flex-row flex-col w-full">
-                <div className="w-1/2 flex items-start justify-center">
+                <div className="lg:w-1/2 w-full flex items-start justify-center mb-8 lg:mb-0">
                     <a href="/"
-                       className="w-1/2">
+                       className="lg:w-1/2 w-full">
                         <img src={`${endpoint.img}/icons/logo_tatanimo.svg`}
                              alt="logo"
                              className="w-full"/>
                     </a>
                 </div>
-                <div className="w-1/2 flex items-center justify-center flex-col lg:flex-row">
-                    <div className="w-1/2">
-                        <ul className="flex flex-col gap-6">
+                <div className="lg:w-1/2 w-full flex items-center justify-center flex-col lg:flex-row px-4 lg:px-0">
+                    <div className="lg:w-1/2 w-full mb-8 lg:mb-0">
+                        <ul className="flex flex-col lg:gap-6 gap-4">
                             <li>
                                 <ThirdHeader content="Social"
                                              color="white"
@@ -50,8 +50,8 @@ export default function Footer() {
                             </li>
                         </ul>
                     </div>
-                    <div className="w-1/2">
-                        <ul className="flex flex-col gap-6">
+                    <div className="lg:w-1/2 w-full">
+                        <ul className="flex flex-col lg:gap-6 gap-4">
                             <li>
                                 <ThirdHeader content="Mentions"
                                              color="white"
