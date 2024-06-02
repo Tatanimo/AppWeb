@@ -24,7 +24,7 @@ function ProfileDropdown({user, professional}) {
                         <MenuItem>Profil <span className='capitalize'>{professional.service.type}</span></MenuItem>
                     </a>
                 )}
-                <hr />
+                <hr className='my-2' />
                 <a href="/logout">
                     <MenuItem>Déconnexion</MenuItem>
                 </a>
