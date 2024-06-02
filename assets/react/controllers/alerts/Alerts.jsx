@@ -13,6 +13,9 @@ export default function Alerts({type, flash, fix}) {
             case 'fail':
                 setColor('red');
                 break;
+            case 'info':
+                setColor('blue');
+                break;
             default:
                 setColor('gray');
                 break;

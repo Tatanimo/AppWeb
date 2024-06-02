@@ -77,9 +77,8 @@ export default function SearchPetsitter({id, onPetsittersFound}) {
                 const transformedSelectedAnimals = selectedAnimals.map(item => item.value);
                 setIsLoading(true);
                 fetchProfessionalsInAreaAndService("petsitter", city.id, radius, [start, end], transformedSelectedAnimals)
-                .then(res => {
-                    onPetsittersFound(res)})
-                .catch(err => console.error(err))
+                .then(res => res.length == 0 ? onPetsittersFound("not found") : onPetsittersFound(res))
+                .catch(err => onPetsittersFound("not found"))
                 .finally(() => setIsLoading(false));
             }
         }
