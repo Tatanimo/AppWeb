@@ -52,7 +52,8 @@ class GoogleAnalyticsController extends AbstractController
             ->setDateRanges([new DateRange([
                 'start_date' => '2020-01-01',
                 'end_date' => 'today',
-            ])])
+                ])
+            ])
             ->setMetrics([new Metric([
                     'name' => 'totalUsers',
                 ])

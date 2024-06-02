@@ -47,7 +47,11 @@ export default function Message({roomSerialize, contactSerialize, lastMessageSer
             <h1 className="font-ChunkFive text-dark-blue text-5xl my-4 capitalize">{contact.cities ? contact.cities.name : null}</h1>
             <p className="text-black text-3xl line-clamp-4">
               {lastMessage.authorId != contact.id && lastMessage.content ? "Vous: " : null}
-              {lastMessage.content && lastMessage.type == "message" ? lastMessage.content : lastMessage.type == "appointment" ? "Demande de rendez-vous" : "Aucun message envoyé"}
+              {lastMessage.content && lastMessage.type == "message" ? lastMessage.content : lastMessage.type == "appointment" ? "Demande de rendez-vous" : 
+              lastMessage.type == "answered-appointment" ?
+              (JSON.parse(lastMessage.content).accepted ? "Rendez-vous accepté !" : "Rendez-vous refusé !") :
+              lastMessage.type == "image" ? "Une image a été envoyée" :
+              lastMessage.type == "pdf" ? "Un pdf a été envoyé" : "Aucun message envoyé"}
             </p>
             {Array.isArray(JSON.parse(notifsStorage)) && JSON.parse(notifsStorage).includes(room.uuid) ? (
               <div className='absolute bottom-0 right-0 w-8 h-8 bg-blue-300 rounded-full animate-pulse'></div>

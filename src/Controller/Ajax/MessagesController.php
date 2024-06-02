@@ -11,6 +11,7 @@ use App\Repository\RoomsRepository;
 use App\Repository\UsersRepository;
 use App\Services\Mercure\MessageService;
 use App\Services\Mercure\NotificationService;
+use App\Services\MessagesService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +25,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class MessagesController extends AbstractController
 {
     #[Route('/ajax/messages', name: 'app_ajax_add_messages', methods: ['POST'], condition: "request.headers.get('X-Requested-With') === '%app.requested_ajax%'")]
-    public function addRoom(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, UsersRepository $usersRepository): JsonResponse
+    public function addRoom(#[CurrentUser] ?Users $user, Request $request, EntityManagerInterface $em, RoomsRepository $roomsRepository, UsersRepository $usersRepository, MessagesService $messageService): JsonResponse
     {
         if (!isset($user)) {
             return $this->json("Non authentifiée", 401);
@@ -38,38 +39,21 @@ class MessagesController extends AbstractController
 
         $reference = $user->getId() < $contact ? $user->getId().'-'.$contact : $contact.'-'.$user->getId();
 
-        $roomAlreadyExist = $roomsRepository->findOneBy(["reference" => $reference]);
+        $room = $roomsRepository->findOneBy(["reference" => $reference]);
 
-        if (isset($roomAlreadyExist)) {
-            return $this->json($roomAlreadyExist->getUuid(), 200);
+        if (!isset($room)) {
+            try {
+                $room = new Rooms();
+                $room->setReference($reference)->setUuid(Uuid::v3(Uuid::fromString(Uuid::NAMESPACE_OID), $reference));
+        
+                $em->persist($room);
+                $em->flush();
+            } catch (\Throwable $th) {
+                return $this->json("Erreur dans la génération de la room: $th", 401);
+            }
         }
 
-        $appointment = json_decode($request->getContent(), true)["appointment"];
-
-        if (!isset($appointment)) {
-            return $this->json("rendez-vous non trouvé", 401);
-        }
-
-        try {
-            $room = new Rooms();
-            $room->setReference($reference)->setUuid(Uuid::v3(Uuid::fromString(Uuid::NAMESPACE_OID), $reference));
-    
-            $em->persist($room);
-            $em->flush();
-        } catch (\Throwable $th) {
-            return $this->json("Erreur dans la génération de la room: $th", 401);
-        }
-
-        try {
-            $message = new Messages();
-            
-            $message->setAuthor($user)->setType("appointment")->setRooms($room)->setContent(json_encode($appointment))->setPublicationDate(new DateTime());
-
-            $em->persist($message);
-            $em->flush();
-        } catch (\Throwable $th) {
-            return $this->json("Erreur dans la génération du message: $th", 401);
-        }
+        $messageService->appointment($room);
 
         return $this->json($room->getUuid(), 200);
     }

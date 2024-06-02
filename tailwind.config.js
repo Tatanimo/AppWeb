@@ -17,6 +17,9 @@ module.exports = withMT({
         },
     ],
     theme: {
+        screens: {
+            'mobile-l': {'max': '425px'},
+        },
         extend: {
             fontFamily: {
                 "serif": ["'Playfair Display'", "Arial", "serif"],

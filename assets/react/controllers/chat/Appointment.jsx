@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import {endpoint} from "../../../config";
 
 export default function Appointment({contentState, authorId, userId, room, id}) {
-    const appointment = JSON.parse(contentState);
+    const [appointment, setAppointment] = useState(JSON.parse(contentState));
+
     const answeredAppointment = async (appointment, answer) => {
         await axios.post("/ajax/appointments", appointment, {
             headers: {
@@ -12,8 +14,9 @@ export default function Appointment({contentState, authorId, userId, room, id}) 
             .then(res => {
                 appointment.answered = true;
                 appointment.accepted = answer;
+
                 updateMessage(appointment).then(
-                    setContentState(JSON.stringify(appointment)),
+                    setAppointment(appointment),
                 );
             })
             .catch(err => console.error(err));
@@ -40,35 +43,26 @@ export default function Appointment({contentState, authorId, userId, room, id}) 
         });
     };
 
-    console.log(appointment.animals);
-
     return (
         <div id="appointment-card"
              className="bg-white p-4 w-fit m-6 rounded">
             <h4 className="font-ChunkFive text-2xl flex items-center gap-2">Garde
-                d'animaux {appointment.accepted != undefined ? (appointment.accepted ?
-                    <div className="main-container">
-                        <div className="check-container">
-                            <div className="check-background">
-                                <svg viewBox="0 0 65 51"
-                                     fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7 25L27.3077 44L58.5 7"
-                                          stroke="white"
-                                          stroke-width="13"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div> : "refusé") : null}</h4>
+                d'animaux {appointment.accepted !== undefined ? (appointment.accepted ?
+                <img src={`${endpoint.img}/icons/success.svg`}
+                        alt="Succès"
+                        className="h-[24px]"/> 
+                        : 
+                <img src={`${endpoint.img}/icons/cancel.svg`}
+                    alt="Refusé"
+                    className="h-[24px]"/>) : null}
+            </h4>
             <br/>
             {appointment.animals.map(animal => {
                 return (
                     <div key={animal.id}
                          className="flex justify-between">
                         <p className="font-bold mr-2">Animal:</p>
-                        <p>{animal.fk_category.name} ({animal.race}) - {animal.name}</p>
+                        <p>{animal.fk_category.name} {animal.race ? `(${animal.race})` : null} - {animal.name}</p>
                     </div>
                 );
             })}
@@ -95,7 +89,7 @@ export default function Appointment({contentState, authorId, userId, room, id}) 
                             type="button"
                             className="bg-green-600 hover:bg-green-700 transition font-Roboto text-white px-4 py-2 rounded-[12px]">Accepter
                     </button>
-                </div>
+                </div> 
             ) : null}
         </div>
     );

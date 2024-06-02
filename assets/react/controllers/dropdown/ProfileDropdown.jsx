@@ -9,7 +9,7 @@ function ProfileDropdown({user, professional}) {
     <>
         <Menu>
             <MenuHandler>
-                <Button>
+                <Button className='shadow-none hover:shadow-none'>
                     <img src="/img/icons/user_profile.svg"className="h-8"/>
                 </Button>
             </MenuHandler>
@@ -24,7 +24,7 @@ function ProfileDropdown({user, professional}) {
                         <MenuItem>Profil <span className='capitalize'>{professional.service.type}</span></MenuItem>
                     </a>
                 )}
-                <hr />
+                <hr className='my-2' />
                 <a href="/logout">
                     <MenuItem>Déconnexion</MenuItem>
                 </a>
