@@ -7,7 +7,7 @@ function Petsitting({id}) {
     const [petsitters, setPetsitters] = useState([]);
   return (
     <>
-        <div className="bg-beige w-full p-4 md:p-12 rounded-3xl">
+        <div className="bg-beige w-full p-4 md:p-12 sm:rounded-3xl">
             <SearchPetsitter id={id} onPetsittersFound={setPetsitters} />
         </div>
         <div className={`${petsitters.length > 1 && petsitters != "not found" ? "grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 justify-items-center grid-rows-1 gap-5" : ""} mt-8`}>
