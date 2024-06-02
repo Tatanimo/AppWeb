@@ -3,7 +3,7 @@ import { Menu, MenuHandler, MenuList, MenuItem, Button } from '@material-tailwin
 
 export default function HamburgerMenuDropdown({notifications}) {
     const [openBurger, setOpenBurger] = useState(false);
-console.log(openBurger)
+
   return (
     <Menu open={openBurger} handler={setOpenBurger}>
         <MenuHandler>
