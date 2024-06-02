@@ -63,11 +63,11 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                 <div className="xl:hidden flex items-center pe-8 justify-between">
                     <a href="/">
                         <img src="/img/icons/logo_tatanimo.svg"
-                            className="h-24"/>
+                            className="h-24 mobile-l:h-16"/>
                     </a>
                     <ul className="flex items-center gap-6">
                         <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
-                            <HamburgerMenuDropdown notifications={notifications} />
+                            <HamburgerMenuDropdown user={user} notifications={notifications} />
                         </li>
                         <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
                                 {user ? (
@@ -106,7 +106,7 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                         </li>
                     </ul>
                     <ul className="flex items-center gap-6">
-                        <li className="hover:bg-light-gray p-2 rounded-xl transition">
+                        {user ? <li className="hover:bg-light-gray p-2 rounded-xl transition">
                             <a href="/messages" className="relative">
                                 <img src="/img/icons/mail.svg"
                                     className="h-8"/>
@@ -117,7 +117,7 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                                     </div>
                                 ) : null}
                             </a>
-                        </li>
+                        </li> : null}
                         <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
                             {user ? (
                                 <ProfileDropdown user={user} professional={professional} />

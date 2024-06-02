@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Menu, MenuHandler, MenuList, MenuItem, Button } from '@material-tailwind/react'
 
-export default function HamburgerMenuDropdown({notifications}) {
+export default function HamburgerMenuDropdown({user, notifications}) {
     const [openBurger, setOpenBurger] = useState(false);
 
   return (
@@ -28,16 +28,20 @@ export default function HamburgerMenuDropdown({notifications}) {
             <a href={`/contact`}>
                 <MenuItem>Contact</MenuItem>
             </a>
-            <hr className='my-2' />
-            <a href="/messages" className='relative'>
-                <MenuItem>Messagerie</MenuItem>
-                {notifications > 0 ? (
-                <div className="top-1 right-8 absolute rounded-full bg-red-300 p-2 flex justify-center items-center min-w-6 max-h-6">
-                    <span className="top-[2px] right-[3px] z-10 absolute rounded-full bg-red-300 p-2 flex justify-center items-center animate-ping w-3/4 h-5/6"></span>
-                    <span className="font-sans">{notifications}</span>
-                </div>
-                ) : null}
-            </a>
+            {user ? (
+                <>
+                    <hr className='my-2' />
+                    <a href="/messages" className='relative'>
+                        <MenuItem>Messagerie</MenuItem>
+                        {notifications > 0 ? (
+                        <div className="top-1 right-8 absolute rounded-full bg-red-300 p-2 flex justify-center items-center min-w-6 max-h-6">
+                            <span className="top-[2px] right-[3px] z-10 absolute rounded-full bg-red-300 p-2 flex justify-center items-center animate-ping w-3/4 h-5/6"></span>
+                            <span className="font-sans">{notifications}</span>
+                        </div>
+                        ) : null}
+                    </a>
+                </>
+            ) : null}
         </MenuList>
     </Menu>
   )
