@@ -2,6 +2,10 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+              content="Bienvenue sur Tatanimo, le site pour prêter vos animaux !">
         <title>{% block title %}{% endblock %} - Tatanimo</title>
         <link rel="icon"
               href="{{ asset('img/icons/logo_tatanimo.svg') }}">
@@ -14,7 +18,7 @@
               rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
               rel="stylesheet">
-        
+
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -40,7 +44,7 @@
     <body class="font-serif">
         {# Alerte #}
         <header class="sticky top-0 w-full bg-white z-10" {{ react_component('navigation/NavigationBar', {'userSerialize': app.user ? app.user|serialize : null, 'professionalSerialize': app.user ? (app.user.professionals ? app.user.professionals|serialize : null) : null,
-        jwtToken: app.user ? generateJWT()|json_encode|raw : null, urlMercure: app.user ? mercure('notifications/' ~ app.user.id)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw : null
+            jwtToken: app.user ? generateJWT()|json_encode|raw : null, urlMercure: app.user ? mercure('notifications/' ~ app.user.id)|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw : null
         }) }}></header>
         <div class="fixed top-0 left-0 z-50">
             {# Flash #}
