@@ -4,13 +4,13 @@
 
 {% block body %}
     {% set profilUser = app.user is not null ? app.user.id == professional.user.id : null %}
-    <div class="m-12 mt-0 flex justify-center lg-max:flex-col lg-max:gap-4 lg-max:items-center mobile-l:m-0">
-        <div id="left-body" class="flex flex-col items-center mr-16 max-w-96 lg-max:mx-0 mobile-l:w-full">
-            <section id="sec-avatar" class="p-4 mobile-l:w-full">
-                <div class="mobile-l:w-full w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/SquareImage', {srcPath: findUserImages(professional.user.id) ? 'img/users/user-' ~ professional.user.id ~ '-1.jpg' : null, main: true, userId: professional.user.id, number: 1, profilUser: profilUser})}}>
+    <div class="m-12 mt-0 flex justify-center lg-max:flex-col lg-max:gap-4 lg-max:items-center lg-max:m-0">
+        <div id="left-body" class="flex flex-col items-center mr-16 max-w-96 lg-max:mx-0 lg-max:w-full">
+            <section id="sec-avatar" class="p-4 lg-max:w-full">
+                <div class="lg-max:w-full w-96 aspect-square overflow-hidden rounded-tl-[100px] rounded-br-[100px]" {{react_component('images/SquareImage', {srcPath: findUserImages(professional.user.id) ? 'img/users/user-' ~ professional.user.id ~ '-1.jpg' : null, main: true, userId: professional.user.id, number: 1, profilUser: profilUser})}}>
                 </div>
             </section>
-            <section id="sec-desc-mobile" class="mobile-l:flex w-full flex-col items-center hidden">
+            <section id="sec-desc-mobile" class="lg-max:flex w-full flex-col items-center hidden">
                 <div class="flex flex-row">
                     <h1 class="text-4xl font-ChunkFive mr-4 capitalize">{{professional.user.lastName}}</h1> 
                     <h1 class="text-4xl font-ChunkFive capitalize">{{professional.user.firstName}}</h1>
@@ -27,10 +27,10 @@
                     <div {{react_component("profile/ProfessionalDescription", {description: professional.description, professionalId: professional.id})}}></div>
                 {% else %}
                     <br>
-                    <p class="min-w-96 text-2xl">{{professional.description}}</p>
+                    <p class="min-w-96 text-2xl lg-max:min-w-full lg-max:p-4">{{professional.description}}</p>
                 {% endif %}
             </section>
-            <section id="sec-agenda-appointment" class="w-full mt-12 sticky top-28 mobile-l:flex mobile-l:flex-col mobile-l:items-center">
+            <section id="sec-agenda-appointment" class="w-full mt-12 sticky top-28 lg-max:flex lg-max:flex-col lg-max:items-center">
                 <h1 class="text-4xl font-ChunkFive mr-4 capitalize">Agenda</h1>
                 <div class="mobile-l:scale-75" {{react_component('calendar/Professional', {id: professional.id, userId: app.user ? (app.user.professionals ? app.user.professionals.id : null) : null, appointment: false})}}></div>
                 <div class="flex items-center mt-2">
@@ -48,8 +48,8 @@
                 {% endif %}
             </section>
         </div>
-        <div id="right-body" class="flex flex-col max-w-[600px] mobile-l:mb-4">
-            <section id="sec-desc" class="mobile-l:hidden">
+        <div id="right-body" class="flex flex-col max-w-[600px] lg-max:mb-4">
+            <section id="sec-desc" class="lg-max:hidden">
                 <div class="flex flex-row">
                     <h1 class="text-4xl font-ChunkFive mr-4 capitalize">{{professional.user.lastName}}</h1> 
                     <h1 class="text-4xl font-ChunkFive capitalize">{{professional.user.firstName}}</h1>

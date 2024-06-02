@@ -11,7 +11,7 @@ function PetsitterCard({professional, dist}) {
   return (
     <a id="card-petsitter" className='flex flex-col mx-4 my-2 p-4 rounded-2xl border-8 border-[#F59C23] max-w-[416px] w-full cursor-pointer transition-all active:scale-90 hover:opacity-70' href={`/profil/professionnel/${professional.id}`}>
         <div id="card-petsitter-header" className='flex mb-2'>
-            <div id="photo-profile" className='overflow-hidden rounded-full aspect-square bg-gray-200 min-w-32 max-w-32 mr-4'>
+            <div id="photo-profile" className='overflow-hidden rounded-full aspect-square bg-gray-200 sm:min-w-32 sm:max-w-32 min-w-24 max-w-24 mr-4'>
                 {imgValid ? (
                     <img src={`${endpoint.img}/users/user-${professional.user.id}-1.jpg`} onError={() => setImgValid(false)} alt="utilisateur" />
                 ) : null}
@@ -24,9 +24,9 @@ function PetsitterCard({professional, dist}) {
                 {animals ? (
                     <div className='flex'>
                         <img src={`${endpoint.img}/icons/paw.svg`} alt="logo d'une patte" />
-                        <p className='mr-2'>{animals}</p>
+                        <p className='mr-2 whitespace-nowrap'>{animals}</p>
                         <img src={`${endpoint.img}/icons/house.svg`} alt="logo d'une maison" />
-                        <p>{professional.LiveIn == "appartment" ? "appartement" : "maison"}</p>
+                        <p className='whitespace-nowrap'>{professional.LiveIn == "appartment" ? "appartement" : "maison"}</p>
                     </div>
                 ) : null}
             </div>

@@ -86,7 +86,7 @@ export default function SearchPetsitter({id, onPetsittersFound}) {
 
   return (
     <form>
-        <span className="font-ChunkFive text-3xl">Je recherche quelqu'un du :</span>
+        <span className="font-ChunkFive xl:text-3xl lg:text-xl">Je recherche quelqu'un du :</span>
         <div className="mt-6">
             <div className="flex items-center" id="dateRangePickerId">
                 <div className="relative w-1/2">
@@ -97,7 +97,7 @@ export default function SearchPetsitter({id, onPetsittersFound}) {
                         </svg>
                     </div>
                 </div>
-                <span className="mx-4 text-black font-ChunkFive text-3xl">au</span>
+                <span className="mx-4 text-black font-ChunkFive xl:text-3xl lg:text-xl">au</span>
                 <div className="relative w-1/2">
                     <div className="absolute inset-y-0 end-0 flex items-center pe-3 pointer-events-none">
                         <svg className="w-4 h-4 text-black dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -109,28 +109,30 @@ export default function SearchPetsitter({id, onPetsittersFound}) {
             </div>
         </div>
         <br />
-        <div className='flex'>
-            <div className='flex'>
-                <span className="font-ChunkFive text-3xl mr-6">aux environs de :</span>
+        <div className='flex flex-col sm:flex-row gap-4'>
+            <div className='flex sm:items-center lg:flex-row flex-col items-start'>
+                <span className="font-ChunkFive xl:text-3xl lg:text-xl lg:mr-6">aux environs de :</span>
                 <CitiesInput onCitySelect={setCity} marginTop={0} />
             </div>
-            <div className='flex'>
-                <span className="font-ChunkFive text-3xl mx-6">dans un rayon de :</span>
-                <div className='flex bg-[#EEF0F4] items-center pl-4 rounded-2xl overflow-hidden'>
-                    <input onChange={(e) => setRadius(parseInt(e.target.value))} type='number' name="radius-of" className='bg-inherit text-xl w-16 border-none' id="radius-of" />
+            <div className='flex flex-row sm:lg-max:flex-col items-center'>
+                <span className="font-ChunkFive xl:text-3xl lg:text-xl sm:lg-max:mx-0 mr-6 lg:ml-6">dans un rayon de :</span>
+                <div className='flex bg-[#EEF0F4] items-center pl-4 rounded-2xl overflow-hidden lg-max:mt-1 max-w-24'>
+                    <input onChange={(e) => setRadius(parseInt(e.target.value))} type='number' name="radius-of" className='bg-inherit text-xl w-10 py-1 px-0 border-none' id="radius-of" />
                     <span className='pr-4 text-xl'>km</span>
                 </div>
             </div>
         </div>
-        <br />
         {id ? (
-            <div className='flex items-center'>
-                <span className="font-ChunkFive text-3xl pr-4">pour garder :</span>
-                <Select value={selectedAnimals} onChange={setSelectedAnimals} isMulti options={options} className='basic-multi-select w-1/2' classNamePrefix="select" id="select-animals" name="select-animals" />
-            </div>
+            <>
+                <br />
+                <div className='flex sm:items-center flex-col sm:flex-row items-start'>
+                    <span className="font-ChunkFive xl:text-3xl lg:text-xl pr-4">pour garder :</span>
+                    <Select value={selectedAnimals} onChange={setSelectedAnimals} isMulti options={options} className='basic-multi-select w-full sm:w-1/2' classNamePrefix="select" id="select-animals" name="select-animals" />
+                </div>
+            </>
         ) : null}
         <br />
-        <div className='flex justify-end'>
+        <div className='flex justify-center sm:justify-end'>
             {isLoading ? (
                 <>
                     <Spinner className={`w-16 h-auto fill-blue-purple`} />
