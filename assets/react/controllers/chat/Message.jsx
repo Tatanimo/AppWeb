@@ -34,7 +34,7 @@ export default function Message({roomSerialize, contactSerialize, lastMessageSer
     <a data-turbo="false" href={`${endpoint.base}/messages/${room.uuid}`} id="message" className="flex py-6 px-12 border-b-8 border-dark-blue cursor-pointer">
         <div id="message-img" className="overflow-hidden border-8 border-dark-blue rounded-full content-center min-w-[240px] min-h-[240px] max-w-[240px] max-h-[240px] bg-gray-100 mr-12">
           {imgAvailable ? (
-            <img src={`${endpoint.img}/users/user-${contact.id}-1.jpg`} onError={() => setImgAvailable(false)} className="object-cover" alt="image d'utilisateur" />
+            <img src={`${endpoint.img}/users/user-${contact.id}-1.jpg?${performance.now()}`} onError={() => setImgAvailable(false)} className="object-cover" alt="image d'utilisateur" />
           ) : null}
         </div>
         <div id="message-content" className='w-full relative'>

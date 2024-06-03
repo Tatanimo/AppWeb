@@ -18,7 +18,7 @@ function ProfileDropdown({user, professional}) {
                             <img onError={() => {
                                 setImgIsTrue(false);
                             }}
-                                 src={`${imgIsTrue ? `${endpoint.img}/users/user-${user.id}-1.jpg` : ``}`}
+                                 src={`${imgIsTrue ? `${endpoint.img}/users/user-${user.id}-1.jpg?${performance.now()}` : ``}`}
                                  className="h-8 rounded-full"/>
                         }
                         {!imgIsTrue &&
