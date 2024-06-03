@@ -25,7 +25,7 @@ export default function Footer() {
                                              className=""/>
                             </li>
                             <li>
-                                <a href="#"
+                                <a target="_blank" href="https://www.instagram.com/tatanimo_mds/"
                                    className="hover:underline text-white">
                                     <Paragraph content="Instagram"
                                                color="white"
@@ -33,7 +33,7 @@ export default function Footer() {
                                 </a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a target="_blank" href="#"
                                    className="hover:underline text-white">
                                     <Paragraph content="Linkedin"
                                                color="white"
@@ -41,7 +41,7 @@ export default function Footer() {
                                 </a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a target="_blank" href="https://www.facebook.com/profile.php?id=100079220963277"
                                    className="hover:underline text-white">
                                     <Paragraph content="Facebook"
                                                color="white"
@@ -58,7 +58,7 @@ export default function Footer() {
                                              className=""/>
                             </li>
                             <li>
-                                <a href="#"
+                                <a href="/legal-mentions"
                                    className="hover:underline text-white">
                                     <Paragraph content="Mentions légales"
                                                color="white"
@@ -74,7 +74,7 @@ export default function Footer() {
                                 </a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a href="/services"
                                    className="hover:underline text-white">
                                     <Paragraph content="Services"
                                                color="white"

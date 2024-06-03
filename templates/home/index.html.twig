@@ -40,7 +40,7 @@
         <img src="{{ asset('videos/temp-square.svg') }}"
              alt="videos"
              class="pb-16">
-        <div class="2xl:w-1/4 lg:w-2/4 pb-16" {{ react_component('button/ButtonLink', {'content': 'Nous découvrir', 'className': 'inline-block mt-4 w-full flex items-center justify-center'}) }}></div>
+        <div class="2xl:w-1/4 lg:w-2/4 pb-16" {{ react_component('button/ButtonLink', {'content': 'Nous découvrir', 'className': 'inline-block mt-4 w-full flex items-center justify-center', href: "/about"}) }}></div>
     </section>
     <section class="xl:px-28 lg:px-16 px-8 xl:py-16 lg:py-12 py-6 xl:pt-[600px] pt-12 flex flex-col items-center">
         <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Vos avis', 'color': 'black'}) }}></div>
