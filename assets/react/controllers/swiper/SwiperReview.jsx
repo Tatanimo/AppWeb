@@ -13,6 +13,7 @@ export default () => {
             slidesPerView={1}
             spaceBetween={16}
             navigation={true}
+            loop={true}
             modules={[Navigation]}
             className="mySwiper flex gap-1 overflow-hidden [&_.swiper-slide]:!w-full xl:w-[1150px] lg:w-[700px] md:w-[500px] w-[300px]"
         >

@@ -16,7 +16,7 @@ export default function Footer() {
                              className="w-full"/>
                     </a>
                 </div>
-                <div className="lg:w-1/2 w-full flex items-center justify-center flex-col lg:flex-row px-4 lg:px-0">
+                <div className="lg:w-1/2 w-full flex items-start justify-center flex-col lg:flex-row px-4 lg:px-0">
                     <div className="lg:w-1/2 w-full mb-8 lg:mb-0">
                         <ul className="flex flex-col lg:gap-6 gap-4">
                             <li>
