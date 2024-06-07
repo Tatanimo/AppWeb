@@ -12,15 +12,18 @@
         <div {{ react_component('headers/FirstHeader', {'content': 'Le blog', 'color': 'black', 'className': 'lg:pt-32 pt-16 lg:mb-16 mb-8 lg:px-28 px-16'}) }}></div>
         <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
             {% for article in articles %}
-                <div class="rounded-3xl border-2 border-orange flex flex-col items-center p-8">
-                    <img src="{{ asset('img/articles/'~article.image) }}"
-                         alt="Image d'entête d'articles"
-                         class="w-[325px] rounded-3xl mb-4"/>
-                    <div {{ react_component('headers/ThirdHeader', {"content": "15/05/24", "color": "black"}) }}></div>
-                    <div {{ react_component('headers/FourthHeader', {content: article.title, color: "black"}) }}></div>
-                    <p class="line-clamp-3 flex-1">{{ article.content }}</p>
-                    <div class="mt-8" {{ react_component('button/ArticleLink', {content: "Lire la suite", href: article.slug}) }}></div>
-                </div>
+                {% if article.state %}
+                    {% set publishDate = article.publicationDate|date('d/m/Y') %}
+                    <div class="rounded-3xl border-2 border-orange flex flex-col items-center p-8">
+                        <img src="{{ asset('img/articles/'~article.image) }}"
+                             alt="Image d'entête d'articles"
+                             class="w-[325px] rounded-3xl mb-4"/>
+                        <div {{ react_component('headers/ThirdHeader', {content: publishDate, "color": "black"}) }}></div>
+                        <div {{ react_component('headers/FourthHeader', {content: article.title, color: "black"}) }}></div>
+                        <p class="line-clamp-3 flex-1">{{ article.content }}</p>
+                        <div class="mt-8" {{ react_component('button/ArticleLink', {content: "Lire la suite", href: article.slug}) }}></div>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     </section>
