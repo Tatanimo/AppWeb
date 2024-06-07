@@ -18,4 +18,14 @@ class BlogController extends AbstractController
             'articles' => $articles,
         ]);
     }
+
+    #[Route('/blog/{slug}', name: 'app_detail_article')]
+    public function details($slug, ArticlesRepository $articlesRepository): Response
+    {
+        $article = $articlesRepository->findOneBy(["slug" => $slug]);
+
+        return $this->render('blog/slug/index.html.twig', [
+            'article' => $article,
+        ]);
+    }
 }

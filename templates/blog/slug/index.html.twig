@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlogController!{% endblock %}
+
+{% block body %}
+    <section>
+        <img src="{{ asset('img/articles/'~article.image) }}"
+             alt="image background article"
+             class="w-full h-[350px] object-cover">
+    </section>
+    <section class="flex flex-col items-center lg:px-28 px-8 mb-16">
+        <div {{ react_component('headers/FirstHeader', {content: article.title, 'color': 'black', 'className': 'lg:pt-32 pt-16 lg:mb-16 mb-8 lg:px-28 px-0'}) }}></div>
+        <div {{ react_component('paragraph/Paragraph', {content: article.content, 'color': 'black'}) }}></div>
+    </section>
+{% endblock %}
