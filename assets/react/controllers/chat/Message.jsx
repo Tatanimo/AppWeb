@@ -34,7 +34,7 @@ export default function Message({roomSerialize, contactSerialize, lastMessageSer
         <a data-turbo="false"
            href={`${endpoint.base}/messages/${room.uuid}`}
            id="message"
-           className="flex md:flex-row flex-col py-6 px-12 border-b-8 border-dark-blue cursor-pointer">
+           className="flex md:flex-row flex-col py-6 px-12 border-b-8 border-dark-blue cursor-pointer transition hover:bg-gray-200">
             <div id="message-img"
                  className="flex items-center overflow-hidden border-8 border-dark-blue rounded-full content-center lg:min-w-[240px] lg:min-h-[240px] lg:max-w-[240px] lg:max-h-[240px] min-w-[120px] min-h-[120px] max-w-[120px] max-h-[120px] bg-gray-100 md:mr-12 mr-0 mb-4 md:mb-0">
                 {imgAvailable ? (
