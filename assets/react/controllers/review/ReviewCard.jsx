@@ -12,7 +12,7 @@ export default function ReviewCard({img, intStar, name}) {
     }
 
     return (
-        <div className="border border-black p-12 rounded-3xl w-full flex lg:flex-row flex-col gap-4">
+        <div className="border border-black lg:p-12 p-6 rounded-3xl w-full flex lg:flex-row flex-col gap-4">
             <div>
                 <img src={img}
                      alt="Image de profil utilisateur"

@@ -15,7 +15,7 @@ export default () => {
             navigation={true}
             loop={true}
             modules={[Navigation]}
-            className="mySwiper flex gap-1 overflow-hidden [&_.swiper-slide]:!w-full xl:w-[1150px] lg:w-[700px] md:w-[500px] w-[300px]"
+            className="mySwiper flex gap-1 overflow-hidden [&_.swiper-slide]:!w-full xl:w-[1150px] lg:w-[700px] w-[300px]"
         >
             <SwiperSlide>
                 <ReviewCard img="img/background/dog-with-toy.png"
