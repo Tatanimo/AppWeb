@@ -6,9 +6,7 @@ import {endpoint} from "../../../config";
 function ProfileDropdown({user, professional}) {
     const [openModal, setOpenModal] = useState(false);
     const [imgIsTrue, setImgIsTrue] = useState(true);
-
-    console.log(user);
-
+    
     return (
         <>
             <Menu>

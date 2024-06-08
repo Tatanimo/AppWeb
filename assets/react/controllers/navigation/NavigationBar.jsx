@@ -3,6 +3,7 @@ import LoginRegisterModal from "../modals/LoginRegisterModal";
 import ProfileDropdown from "../dropdown/ProfileDropdown";
 import {EventSourcePolyfill} from "event-source-polyfill";
 import HamburgerMenuDropdown from "../dropdown/HamburgerMenuDropdown";
+import {endpoint} from "../../../config";
 
 export default function NavigationBar({userSerialize, professionalSerialize, jwtToken, urlMercure}) {
     const notifsStorage = localStorage.getItem("notifications");
@@ -62,7 +63,8 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                 <div className="xl:hidden flex items-center pe-8 justify-between">
                     <a href="/">
                         <img src="/img/icons/logo_tatanimo.svg"
-                             className="h-24 mobile-l:h-16"/>
+                             className="h-24 mobile-l:h-16"
+                             alt="Logo Tatanimo"/>
                     </a>
                     <ul className="flex items-center gap-6">
                         <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
@@ -78,7 +80,8 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                                    className="cursor-pointer"
                                    onClick={() => setOpenModal(true)}>
                                     <img src="/img/icons/login.svg"
-                                         className="h-8"/>
+                                         className="h-8"
+                                         alt="Icône login"/>
                                 </a>
                             )}
                         </li>
@@ -108,11 +111,19 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                         </li>
                     </ul>
                     <ul className="flex items-center gap-6">
+                        <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
+                            <a href="/admin/fr">
+                                <img src={`${endpoint.img}/icons/admin.svg`}
+                                     alt="Icône admin"
+                                     className="h-10"/>
+                            </a>
+                        </li>
                         {user ? <li className="hover:bg-light-gray p-2 rounded-xl transition">
                             <a href="/messages"
                                className="relative">
                                 <img src="/img/icons/mail.svg"
-                                     className="h-8"/>
+                                     className="h-8"
+                                     alt="Icône mail"/>
                                 {notifications > 0 ? (
                                     <div className="-top-2 -right-2 absolute rounded-full bg-red-300 p-2 flex justify-center items-center min-w-6 max-h-6">
                                         <span className="top-[2px] right-[3px] z-10 absolute rounded-full bg-red-300 p-2 flex justify-center items-center animate-ping w-3/4 h-5/6"></span>
@@ -130,7 +141,8 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                                    className="cursor-pointer"
                                    onClick={() => setOpenModal(true)}>
                                     <img src="/img/icons/login.svg"
-                                         className="h-8"/>
+                                         className="h-8"
+                                         alt="Icône login"/>
                                 </a>
                             )}
                         </li>
