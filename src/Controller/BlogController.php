@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ArticlesRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,9 +14,11 @@ class BlogController extends AbstractController
     public function index(ArticlesRepository $articlesRepository): Response
     {
         $articles = $articlesRepository->findBy([], ['publication_date' => 'DESC']);
+        $dateNow = new DateTime();
 
         return $this->render('blog/index.html.twig', [
             'articles' => $articles,
+            'dateNow' => $dateNow,
         ]);
     }
 
