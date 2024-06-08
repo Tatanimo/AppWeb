@@ -33,7 +33,7 @@ function ProfileDropdown({user, professional}) {
                         <MenuItem>Profil</MenuItem>
                     </a>
                     {!professional ? (
-                        <MenuItem onClick={setOpenModal}>Devenir professionnel</MenuItem>
+                        <MenuItem id="link-professional" onClick={setOpenModal}>Devenir professionnel</MenuItem>
                     ) : (
                         <a href={`/profil/professionnel/${professional.id}`}>
                             <MenuItem>Profil <span className="capitalize">{professional.service.type}</span></MenuItem>

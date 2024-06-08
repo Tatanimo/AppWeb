@@ -34,7 +34,7 @@ export default () => {
             slidesPerView={getSlidesPerView()}
             spaceBetween={32}
             loop={true}
-            className="mySwiper flex gap-1 overflow-hidden"
+            className="mySwiper flex gap-1 overflow-hidden [&>div]:cursor-grab [&>div]:active:cursor-grabbing"
         >
             <SwiperSlide className="[&>div]:!flex-col">
                 <ReviewCard img="img/background/dog-with-toy.png"

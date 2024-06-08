@@ -33,7 +33,17 @@
     <section class="xl:px-28 lg:px-16 px-8 xl:py-16 lg:py-12 py-6 flex flex-col items-center">
         <div {{ react_component('headers/SecondHeader', {'content': 'Je souhaite garder des animaux', 'color': 'black', 'className': 'pb-10'}) }}></div>
         <div {{ react_component('paragraph/Paragraph', {'content': "En tant que petsitter, vous aurez l'opportunité de prendre soin des animaux de compagnie de personnes occupées ou en déplacement. Que ce soit pour des visites régulières à domicile, des promenades énergisantes ou des séjours de garde prolongés, vous serez là pour assurer le bien-être et le bonheur des animaux.", 'color': 'black', 'fontSize': 'text-6xl'}) }}></div>
-        <div {{ react_component('button/ButtonLink', {'content': 'JE SOUHAITE DEVENIR PETSITTER', 'className': 'inline-block mt-4', href: ""}) }}></div>
+        <div {{ react_component('button/ButtonLink', {'content': 'JE SOUHAITE DEVENIR PETSITTER', 'className': 'inline-block mt-4', href: app.user ? (app.user.professionals ? "/profil/professionnel/" ~ app.user.professionals.id : "#?" ~ date().timestamp) : "#?"~ date().timestamp}) }} 
+        onclick="
+        {% if app.user is null %}
+            document.getElementById('link-login').click();
+        {% elseif app.user.professionals is null %}
+            document.getElementById(':rc:').click();
+            setTimeout(() => {
+                document.getElementById('link-professional').click();
+            }, 10);
+        {% endif %}
+        "></div>
     </section>
     <section class="xl:px-28 lg:px-16 px-8 pt-32 flex flex-col items-center bg-cat-legs-bg xl:h-[850px] h-full">
         <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Lorem Ipsum', 'color': 'black'}) }}></div>
