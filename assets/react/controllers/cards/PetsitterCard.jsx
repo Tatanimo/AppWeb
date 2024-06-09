@@ -13,7 +13,7 @@ function PetsitterCard({professional, dist}) {
         <div id="card-petsitter-header" className='flex mb-2'>
             <div id="photo-profile" className='overflow-hidden rounded-full aspect-square bg-gray-200 sm:min-w-32 sm:max-w-32 min-w-24 max-w-24 mr-4'>
                 {imgValid ? (
-                    <img src={`${endpoint.img}/users/user-${professional.user.id}-1.jpg`} onError={() => setImgValid(false)} alt="utilisateur" />
+                    <img src={`${endpoint.img}/users/user-${professional.user.id}-1.jpg?${performance.now()}`} onError={() => setImgValid(false)} alt="utilisateur" />
                 ) : null}
             </div>
             <div className='flex flex-col place-content-between'>
@@ -23,8 +23,12 @@ function PetsitterCard({professional, dist}) {
                 </div>
                 {animals ? (
                     <div className='flex'>
-                        <img src={`${endpoint.img}/icons/paw.svg`} alt="logo d'une patte" />
-                        <p className='mr-2 whitespace-nowrap'>{animals}</p>
+                        ${animals ? (
+                            <>
+                                <img src={`${endpoint.img}/icons/paw.svg`} alt="logo d'une patte" />
+                                <p className='mr-2 whitespace-nowrap'>{animals}</p>
+                            </>
+                        ) : null}
                         <img src={`${endpoint.img}/icons/house.svg`} alt="logo d'une maison" />
                         <p className='whitespace-nowrap'>{professional.LiveIn == "appartment" ? "appartement" : "maison"}</p>
                     </div>

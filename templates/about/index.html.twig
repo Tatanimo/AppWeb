@@ -8,49 +8,46 @@
              alt="Chien et enfant devant une rivière"
              class="w-full object-cover">
     </section>
-    <section class="px-28 flex flex-col items-center">
-        <div {{ react_component('headers/FirstHeader', {'content': 'Qui sommes-nous', 'color': 'black', 'className': 'pt-32 mb-16'}) }}></div>
-        <div class="w-full pb-32">
-            <img src="{{ asset('videos/temp-square.svg') }}"
-                 class="w-full">
+    <section class="flex flex-col items-center">
+        <div {{ react_component('headers/FirstHeader', {'content': 'Qui sommes-nous', 'color': 'black', 'className': 'lg:pt-32 pt-16 lg:mb-16 mb-8 lg:px-28 px-16'}) }}></div>
+        <div class="w-full lg:pb-32 pb-16 lg:px-28 px-8">
+            <div class="w-full h-full flex items-center flex-col" {{ react_component('images/AdminImage', {'classDiv': 'sm:w-3/4 w-full h-3/4 aspect-video bg-gray-300','alt': 'video', 'className': 'w-full aspect-video', 'id': "video-concept", "userSerialize": app.user ? app.user|serialize : null, 'src': findEditableImage("video-concept"), 'aspect': '16/9' }) }}></div>
         </div>
-        <div class="bg-beige rounded-br-full rounded-tl-full py-24 px-48">
-            <div {{ react_component('paragraph/Paragraph', {'content': "« La garde d'animaux est une responsabilité qui nécessite patience, attention et amour pour assurer le bien-être de nos compagnons à quatre pattes. »", 'color': 'black', 'className': 'italic text-4xl text-center font-bold'}) }}></div>
+        <div class="bg-beige lg:rounded-br-full lg:rounded-tl-full lg:py-24 lg:px-48 md:py-16 md:px-24 py-8 px-8">
+            <div {{ react_component('paragraph/Paragraph', {'content': "« La garde d'animaux est une responsabilité qui nécessite patience, attention et amour pour assurer le bien-être de nos compagnons à quatre pattes. »", 'color': 'black', 'className': 'italic lg:text-2xl text-xl text-center font-bold'}) }}></div>
         </div>
     </section>
-    <section class="px-28 flex flex-col items-center">
-        <div {{ react_component('headers/FirstHeader', {'content': "L'équipe", 'color': 'black', 'className': 'pt-32 mb-16'}) }}></div>
-        <div class="flex w-full items-center gap-24">
-            <div class="w-1/2">
-                <img src="{{ asset('img/background/girl-team.png') }}"
-                     alt="Team de fille"
-                     class="w-full object-cover">
+    <section class="lg:px-28 px-8 flex flex-col items-center">
+        <div {{ react_component('headers/FirstHeader', {'content': "L'équipe", 'color': 'black', 'className': 'lg:pt-32 pt-16 lg:mb-16 mb-8'}) }}></div>
+        <div class="flex lg:flex-row flex-col w-full items-center gap-24">
+            <div class="lg:w-1/2 w-full flex justify-center items-center">
+                <div class="w-full h-full max-w-[500px] flex items-center flex-col justify-center" {{ react_component('images/AdminImage', {'classDiv': 'aspect-square bg-gray-300 w-full object-cover rounded-2xl','alt': 'image section comment ça marche', 'className': 'w-full object-cover rounded-2xl', 'id': "background-team", "userSerialize": app.user ? app.user|serialize : null, 'src': findEditableImage("background-team"), 'aspect': '1/1' }) }}></div>
             </div>
-            <div class="w-1/2">
+            <div class="lg:w-1/2 w-full">
                 <div {{ react_component('paragraph/Paragraph', {'content': 'Chez Tatanimo, nous sommes une équipe de 7 personnes, tous passionnées par les animaux.', 'color': 'black'}) }}></div>
                 <div {{ react_component('paragraph/Paragraph', {'content': 'Notre équipe se compose d’un chef de projet et d’un assistant chef de projet, de 3 développeurs, d’une community manager et chargé de marketing et d’une graphiste et webdesigner. ', 'color': 'black'}) }}></div>
                 <div {{ react_component('paragraph/Paragraph', {'content': 'Notre but est de rendre la garde de ses animaux plus facile et plus rassurante pour les propriétaires.', 'color': 'black'}) }}></div>
             </div>
         </div>
     </section>
-    <section class="px-28 flex flex-col items-center">
-        <div {{ react_component('headers/FirstHeader', {'content': "Le concept", 'color': 'black', 'className': 'pt-32 mb-16'}) }}></div>
+    <section class="lg:px-28 px-8 flex flex-col items-center">
+        <div {{ react_component('headers/FirstHeader', {'content': "Le concept", 'color': 'black', 'className': 'lg:pt-32 pt-16 lg:mb-16 mb-8'}) }}></div>
         <div {{ react_component('paragraph/Paragraph', {'content': "Tatanimo est une plateforme de rencontres dédiée aux amoureux des animaux ! Que vous soyez propriétaire cherchant une garde fiable ou professionnel passionné par les animaux offrant ses services, notre site facilite la mise en relation. Explorez les profils détaillés, planifiez les gardes, échangez en toute sécurité, et assurez le bien-être de vos compagnons à quatre pattes. Rejoignez-nous pour créer des liens durables entre amoureux des animaux et offrir à nos compagnons une attention digne de leur amour inconditionnel.", 'color': 'black'}) }}></div>
     </section>
-    <section class="px-28 pb-32 flex flex-col items-center">
-        <div {{ react_component('headers/FirstHeader', {'content': "Nos valeurs", 'color': 'black', 'className': 'pt-32 mb-16'}) }}></div>
-        <div class="flex items-center gap-64">
+    <section class="lg:px-28 px-8 lg:py-32 py-16 flex flex-col items-center">
+        <div {{ react_component('headers/FirstHeader', {'content': "Nos valeurs", 'color': 'black', 'className': 'lg:pt-32 pt-16 lg:mb-16 mb-8'}) }}></div>
+        <div class="flex lg:flex-row flex-col items-center 2xl:gap-48 gap-32">
             <div class="flex flex-col items-center gap-4">
                 <img src="{{ asset('img/icons/user-heart.svg') }}">
-                <div {{ react_component('paragraph/Paragraph', {'content': 'Bien être animal', 'color': 'black', 'className': 'text-4xl font-ChunkFive'}) }}></div>
+                <div {{ react_component('paragraph/Paragraph', {'content': 'Bien être animal', 'color': 'black', 'className': 'text-2xl font-ChunkFive'}) }}></div>
             </div>
             <div class="flex flex-col items-center gap-4">
                 <img src="{{ asset('img/icons/doc-glass.svg') }}">
-                <div {{ react_component('paragraph/Paragraph', {'content': 'Transparence', 'color': 'black', 'className': 'text-4xl font-ChunkFive'}) }}></div>
+                <div {{ react_component('paragraph/Paragraph', {'content': 'Transparence', 'color': 'black', 'className': 'text-2xl font-ChunkFive'}) }}></div>
             </div>
             <div class="flex flex-col items-center gap-4">
                 <img src="{{ asset('img/icons/agreement.svg') }}">
-                <div {{ react_component('paragraph/Paragraph', {'content': 'Professionnalisme', 'color': 'black', 'className': 'text-4xl font-ChunkFive'}) }}></div>
+                <div {{ react_component('paragraph/Paragraph', {'content': 'Professionnalisme', 'color': 'black', 'className': 'text-2xl font-ChunkFive'}) }}></div>
             </div>
         </div>
     </section>

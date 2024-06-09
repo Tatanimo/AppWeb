@@ -61,7 +61,7 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
             case "image":
                 return (
                     <img onClick={() => setOpenModal(true)} className="max-w-1/2 w-fit h-auto cursor-zoom-in"
-                    src={`${endpoint.img}/messages/${authorId}-${id}.jpg`}/>
+                    src={`${endpoint.img}/messages/${authorId}-${id}.jpg?${performance.now()}`}/>
                 );
             case "pdf":
                 return (
@@ -83,7 +83,7 @@ export default function BubbleMessage({content, publicationDate, authorId, userI
             <div id={`message-bubble-${authorId}`}
                  className={`m-4 flex ${classNameDiv} px-24`}>
                 {shape && authorId != userId ? (imgAvailable ? (
-                    <img src={`${endpoint.img}/users/user-${authorId}-1.jpg`}
+                    <img src={`${endpoint.img}/users/user-${authorId}-1.jpg?${performance.now()}`}
                          className="w-[64px] h-[64px] self-end object-cover rounded-full"
                          onError={() => setImgAvailable(false)}
                          alt="image d'utilisateur"/>

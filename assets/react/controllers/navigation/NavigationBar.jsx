@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import LoginRegisterModal from "../modals/LoginRegisterModal";
 import ProfileDropdown from "../dropdown/ProfileDropdown";
-import { EventSourcePolyfill } from "event-source-polyfill";
-import { ReactSVG } from 'react-svg';
+import {EventSourcePolyfill} from "event-source-polyfill";
 import HamburgerMenuDropdown from "../dropdown/HamburgerMenuDropdown";
+import {endpoint} from "../../../config";
 
 export default function NavigationBar({userSerialize, professionalSerialize, jwtToken, urlMercure}) {
     const notifsStorage = localStorage.getItem("notifications");
@@ -17,16 +17,16 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
     useEffect(() => {
         if (user) {
             const url = JSON.parse(urlMercure);
-            const jwt = JSON.parse(jwtToken.replace(/\s/g, ''));
-    
-            const eventSource = new EventSourcePolyfill(url, { 
-                withCredentials: true, 
+            const jwt = JSON.parse(jwtToken.replace(/\s/g, ""));
+
+            const eventSource = new EventSourcePolyfill(url, {
+                withCredentials: true,
                 headers: {
-                    'Authorization': `Bearer ${jwt}`
+                    "Authorization": `Bearer ${jwt}`,
                 },
                 heartbeatTimeout: 120000,
             });
-            
+
             eventSource.onmessage = event => {
                 let notifsArray = JSON.parse(localStorage.getItem("notifications"));
                 const uuid = JSON.parse(event.data).uuid.toString();
@@ -39,12 +39,12 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                     } else {
                         notifsArray = [JSON.parse(event.data).uuid];
                     }
-    
+
                     localStorage.setItem("notifications", JSON.stringify(notifsArray));
                     window.dispatchEvent(new Event("storage"));
                     setNotifications(notifsArray.length);
                 }
-            }
+            };
         }
 
         // si on entre dans la chat room qui possède la notif, alors on enlève la notif
@@ -63,53 +63,69 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                 <div className="xl:hidden flex items-center pe-8 justify-between">
                     <a href="/">
                         <img src="/img/icons/logo_tatanimo.svg"
-                            className="h-24 mobile-l:h-16"/>
+                             className="h-24 mobile-l:h-16"
+                             alt="Logo Tatanimo"/>
                     </a>
                     <ul className="flex items-center gap-6">
                         <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
-                            <HamburgerMenuDropdown user={user} notifications={notifications} />
+                            <HamburgerMenuDropdown user={user}
+                                                   notifications={notifications}/>
                         </li>
                         <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
-                                {user ? (
-                                    <ProfileDropdown user={user} professional={professional} />
-                                ) : (
-                                    <a id="link-login" className="cursor-pointer"
-                                    onClick={() => setOpenModal(true)}>
-                                        <img src="/img/icons/login.svg"
-                                            className="h-8"/>
-                                    </a>
-                                )}
+                            {user ? (
+                                <ProfileDropdown user={user}
+                                                 professional={professional}/>
+                            ) : (
+                                <a id="link-login"
+                                   className="cursor-pointer"
+                                   onClick={() => setOpenModal(true)}>
+                                    <img src="/img/icons/login.svg"
+                                         className="h-8"
+                                         alt="Icône login"/>
+                                </a>
+                            )}
                         </li>
                     </ul>
                 </div>
                 <div className="xl:flex items-center pe-8 justify-between hidden">
                     <a href="/">
                         <img src="/img/icons/logo_tatanimo.svg"
-                            className="h-24"/>
+                             className="h-24"/>
                     </a>
                     <ul className="flex items-center gap-12 text-xl font-ChunkFive">
                         <li>
                             <a href="/about"
-                            className="hover:underline">QUI SOMMES-NOUS</a>
+                               className="hover:underline">QUI SOMMES-NOUS</a>
                         </li>
                         <li>
                             <a href="/services"
-                            className="hover:underline">SERVICES</a>
+                               className="hover:underline">SERVICES</a>
                         </li>
                         <li>
-                            <a href="#"
-                            className="hover:underline">BLOG</a>
+                            <a href="/blog"
+                               className="hover:underline">BLOG</a>
                         </li>
                         <li>
                             <a href="/contact"
-                            className="hover:underline">CONTACT</a>
+                               className="hover:underline">CONTACT</a>
                         </li>
                     </ul>
                     <ul className="flex items-center gap-6">
+                        {user ? (user.roles.includes("ROLE_ADMIN") ? (
+                            <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
+                                <a href="/admin/fr">
+                                    <img src={`${endpoint.img}/icons/admin.svg`}
+                                        alt="Icône admin"
+                                        className="h-10"/>
+                                </a>
+                            </li>
+                        ) : null) : null}
                         {user ? <li className="hover:bg-light-gray p-2 rounded-xl transition">
-                            <a href="/messages" className="relative">
+                            <a href="/messages"
+                               className="relative">
                                 <img src="/img/icons/mail.svg"
-                                    className="h-8"/>
+                                     className="h-8"
+                                     alt="Icône mail"/>
                                 {notifications > 0 ? (
                                     <div className="-top-2 -right-2 absolute rounded-full bg-red-300 p-2 flex justify-center items-center min-w-6 max-h-6">
                                         <span className="top-[2px] right-[3px] z-10 absolute rounded-full bg-red-300 p-2 flex justify-center items-center animate-ping w-3/4 h-5/6"></span>
@@ -120,12 +136,15 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                         </li> : null}
                         <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
                             {user ? (
-                                <ProfileDropdown user={user} professional={professional} />
+                                <ProfileDropdown user={user}
+                                                 professional={professional}/>
                             ) : (
-                                <a id="link-login" className="cursor-pointer"
-                                onClick={() => setOpenModal(true)}>
+                                <a id="link-login"
+                                   className="cursor-pointer"
+                                   onClick={() => setOpenModal(true)}>
                                     <img src="/img/icons/login.svg"
-                                        className="h-8"/>
+                                         className="h-8"
+                                         alt="Icône login"/>
                                 </a>
                             )}
                         </li>

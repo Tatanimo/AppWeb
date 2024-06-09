@@ -25,7 +25,7 @@ export default function ChatTopBar({contactSerialize}) {
                 <a href={`${endpoint.base}/profil/${contact.id}`}
                    className="overflow-hidden rounded-full bg-gray-200 w-[80px] h-[80px]">
                     {!imgNotFound ? (
-                        <img src={`${endpoint.img}/users/user-${contact.id}-1.jpg`}
+                        <img src={`${endpoint.img}/users/user-${contact.id}-1.jpg?${performance.now()}`}
                         className="w-[80px] h-[80px] object-cover rounded-full hover:scale-110 transition"
                         alt="Logo utilisateur"
                         onError={() => setImgNotFound(true)}/>

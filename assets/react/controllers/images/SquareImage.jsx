@@ -73,7 +73,7 @@ export default function SquareImage({srcPath, main, number, userId, animalId, pr
     return (
       <>
         <div onClick={() => profilUser ? setOpenModal(true) : null} className={`transition-opacity bg-light-gray ${profilUser ? "cursor-pointer" : null} relative group hover:opacity-85 aspect-square ${main ? 'w-full' : 'w-1/3' }`}>  
-          {newImage ? <img src={newImage} className="w-full h-full object-cover" alt="user image" /> : srcPath ? <img src={`/${srcPath}`} className="w-full h-full object-cover" alt="user image" /> : null}
+          {newImage ? <img src={newImage} className="w-full h-full object-cover" alt="user image" /> : srcPath ? <img src={`/${srcPath}?${performance.now()}`} className="w-full h-full object-cover" alt="user image" /> : null}
           {profilUser ? (
             <span className="transition-opacity duration-300 absolute left-1/2 top-1/2 font-ChunkFive font-bolder text-5xl -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100">+</span>
           ) : null}

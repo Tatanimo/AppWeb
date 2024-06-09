@@ -7,7 +7,7 @@
         <div class="lg:w-1/2 w-full h-full flex flex-col justify-center items-start">
             <div {{ react_component('headers/FirstHeader', {'content': 'Confiez vos animaux en toute confiance', 'color': 'white'}) }}></div>
             <div class="text-white pb-12 hidden lg:inline-block" {{ react_component('paragraph/Paragraph', {'content': "Confiez-nous vos compagnons à quatre pattes et partez l'esprit tranquille !
-                Bienvenue
+                Bienvenuez
                 chez Tatanimo notre
                 site de garde d'animaux, où le bonheur et le bien-être de vos précieux compagnons sont notre priorité
                 absolue.", 'color': 'white'}) }}></div>
@@ -17,9 +17,7 @@
     </section>
     <section class="xl:px-28 lg:px-16 px-8 xl:py-16 lg:py-12 py-6 flex xl:gap-20 lg:gap-16 gap-8 lg:flex-row flex-col">
         <div class="lg:w-1/2 w-full">
-            <img src="{{ asset('img/background/dog-on-beach.png') }}"
-                 class="object-cover w-full xl:h-full lg:h-[400px] h-[250px]"
-                 alt="dog on a summer beach with sea">
+            <div class="w-full h-full flex items-center flex-col justify-center" {{ react_component('images/AdminImage', {'classDiv': 'w-3/4 aspect-square bg-gray-300','alt': 'image section comment ça marche', 'className': 'w-full h-full aspect-square', 'id': "background-how-it-works", "userSerialize": app.user ? app.user|serialize : null, 'src': findEditableImage("background-how-it-works"), 'aspect': '1/1' }) }}></div>
         </div>
         <div class="lg:w-1/2 w-full flex flex-col items-center justify-center">
             <div {{ react_component('headers/SecondHeader', {'content': 'Comment ça marche ?', 'color': 'black'}) }}></div>
@@ -33,20 +31,82 @@
     <section class="xl:px-28 lg:px-16 px-8 xl:py-16 lg:py-12 py-6 flex flex-col items-center">
         <div {{ react_component('headers/SecondHeader', {'content': 'Je souhaite garder des animaux', 'color': 'black', 'className': 'pb-10'}) }}></div>
         <div {{ react_component('paragraph/Paragraph', {'content': "En tant que petsitter, vous aurez l'opportunité de prendre soin des animaux de compagnie de personnes occupées ou en déplacement. Que ce soit pour des visites régulières à domicile, des promenades énergisantes ou des séjours de garde prolongés, vous serez là pour assurer le bien-être et le bonheur des animaux.", 'color': 'black', 'fontSize': 'text-6xl'}) }}></div>
-        <div {{ react_component('button/ButtonLink', {'content': 'JE SOUHAITE DEVENIR PETSITTER', 'className': 'inline-block mt-4', href: ""}) }}></div>
+        <div {{ react_component('button/ButtonLink', {'content': 'JE SOUHAITE DEVENIR PETSITTER', 'className': 'inline-block mt-4', href: app.user ? (app.user.professionals ? "/profil/professionnel/" ~ app.user.professionals.id : "#?" ~ date().timestamp) : "#?"~ date().timestamp}) }} 
+        onclick="
+        {% if app.user is null %}
+            document.getElementById('link-login').click();
+        {% elseif app.user.professionals is null %}
+            document.getElementById(':rc:').click();
+            setTimeout(() => {
+                document.getElementById('link-professional').click();
+            }, 10);
+        {% endif %}
+        "></div>
     </section>
-    <section class="xl:px-28 lg:px-16 px-8 pt-32 flex flex-col items-center bg-cat-legs-bg h-[850px]">
-        <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Lorem Ipsum', 'color': 'black'}) }}></div>
-        <img src="{{ asset('videos/temp-square.svg') }}"
-             alt="videos"
-             class="pb-16">
-        <div class="2xl:w-1/4 lg:w-2/4 pb-16" {{ react_component('button/ButtonLink', {'content': 'Nous découvrir', 'className': 'inline-block mt-4 w-full flex items-center justify-center'}) }}></div>
+    <section class="xl:px-28 lg:px-16 px-8 pt-32 flex flex-col items-center bg-cat-legs-bg h-full relative">
+        <div class="bg-white absolute bottom-0 w-full h-1/3"></div>
+        <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Découvrir le concept', 'color': 'black'}) }}></div>
+        <div class="w-full h-full flex items-center flex-col" {{ react_component('images/AdminImage', {'classDiv': 'sm:w-3/4 w-full h-3/4 aspect-video bg-gray-300','alt': 'video', 'className': 'w-full aspect-video', 'id': "video-concept", "userSerialize": app.user ? app.user|serialize : null, 'src': findEditableImage("video-concept"), 'aspect': '16/9' }) }}></div>
+        <div class="2xl:w-1/4 lg:w-2/4 pt-8 z-10" {{ react_component('button/ButtonLink', {'content': 'Nous découvrir', 'className': 'inline-block mt-4 w-full flex items-center justify-center', href: "/about"}) }}></div>
     </section>
-    <section class="xl:px-28 lg:px-16 px-8 xl:py-16 lg:py-12 py-6 xl:pt-[600px] pt-12 flex flex-col items-center">
+    <section class="xl:px-28 lg:px-16 px-8 xl:py-12 lg:py-8 py-4 flex flex-col items-center">
         <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Vos avis', 'color': 'black'}) }}></div>
-        <div class="w-full" {{ react_component('swiper/SwiperReview') }}></div>
+        <div class="w-full" {{ react_component('swiper/SwiperReview', {ratingsSerialize: ratings|serialize()}) }}></div>
+        {% if app.user %}
+            {% set rating = ratingIssued() %}
+            <br>
+            <div class="mt-8" {{ react_component('headers/FourthHeader', {'content': 'Laisser un avis sur le site', 'color': 'black'}) }}></div>
+            <form action="/" method="post">
+                <label for="rating" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Votre note :</label>
+                <div class="flex flex-wrap mb-4 [&>div>input:checked~label>svg]:text-turquoise [&>div:has(~div>input:checked)>label>svg]:text-turquoise [&>div>label:hover>svg]:!text-turquoise [&:has(div>label:hover)>div>label:not(:hover)>svg]:text-gray-300 [&>div:has(~div>label:hover)>label>svg]:!text-turquoise">
+                    <div class="flex items-center sm:me-4 me-2">
+                        <input {% if rating.rating == 1 %}checked{% endif %} id="red-radio" type="radio" value="1" name="rating" class="hidden w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="red-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer">
+                            <svg class="w-6 h-6 transition-all text-gray-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="flex items-center sm:me-4 me-2">
+                        <input {% if rating.rating == 2 %}checked{% endif %} id="green-radio" type="radio" value="2" name="rating" class="hidden w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 dark:focus:ring-green-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="green-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer">
+                            <svg class="w-6 h-6 transition-all text-gray-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="flex items-center sm:me-4 me-2">
+                        <input {% if rating.rating == 3 %}checked{% endif %} id="purple-radio" type="radio" value="3" name="rating" class="hidden w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="purple-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer">
+                            <svg class="w-6 h-6 transition-all text-gray-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="flex items-center sm:me-4 me-2">
+                        <input {% if rating.rating == 4 %}checked{% endif %} id="teal-radio" type="radio" value="4" name="rating" class="hidden w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 focus:ring-teal-500 dark:focus:ring-teal-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="teal-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer">
+                            <svg class="w-6 h-6 transition-all text-gray-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                            </svg>
+                        </label>
+                    </div>
+                    <div class="flex items-center sm:me-4 me-2">
+                        <input {% if rating.rating == 5 %}checked{% endif %} id="yellow-radio" type="radio" value="5" name="rating" class="hidden w-4 h-4 text-yellow-400 bg-gray-100 border-gray-300 focus:ring-yellow-500 dark:focus:ring-yellow-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="yellow-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 cursor-pointer">
+                            <svg class="w-6 h-6 transition-all text-gray-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                            </svg>
+                        </label>
+                    </div>
+                </div>
+                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Votre commentaire :</label>
+                <textarea id="message" name="comment" rows="4" class="block p-2.5 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Écrivez ce que vous pensez ici..." maxlength="254">{{rating.comment}}</textarea>
+                <button type="submit" class="inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase">Envoyer votre avis</button>
+            </form>
+        {% endif %}
     </section>
-    <section class="xl:px-28 lg:px-16 px-8 xl:py-16 lg:py-12 py-6 pb-32 flex flex-col items-center">
+    <section class="xl:px-28 lg:px-16 px-8 xl:py-12 lg:py-8 py-4 pb-32 flex flex-col items-center">
         <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Retrouvez nous sur Instagram', 'color': 'black'}) }}></div>
         <div class="grid lg:grid-cols-4 lg:grid-rows-2 grid-cols-2 grid-rows-4 gap-2">
             <div class="hover:opacity-75 transition">

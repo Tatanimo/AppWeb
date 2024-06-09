@@ -103,6 +103,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Reviews::class, mappedBy: 'user')]
     private Collection $reviews;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?RatingsWebsite $ratingsWebsite = null;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -532,6 +535,23 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
                 $review->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRatingsWebsite(): ?RatingsWebsite
+    {
+        return $this->ratingsWebsite;
+    }
+
+    public function setRatingsWebsite(RatingsWebsite $ratingsWebsite): static
+    {
+        // set the owning side of the relation if necessary
+        if ($ratingsWebsite->getUser() !== $this) {
+            $ratingsWebsite->setUser($this);
+        }
+
+        $this->ratingsWebsite = $ratingsWebsite;
 
         return $this;
     }

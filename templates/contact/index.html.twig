@@ -3,12 +3,12 @@
 {% block title %}Hello ContactController!{% endblock %}
 
 {% block body %}
-    <section class="h-full bg-beige px-28 py-16 flex flex-col items-center">
+    <section class="h-full bg-beige lg:px-28 lg:py-16 px-16 py-8 flex flex-col items-center">
         <div {{ react_component('headers/FirstHeader', {'content': 'Nous contacter', 'color': 'black'}) }}></div>
-        <div {{ react_component('paragraph/Paragraph', {'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum iaculis lacus a dignissim. Donec convallis iaculis neque, et elementum magna elementum in. Nunc dignissim nunc nunc, viverra fermentum tellus bibendum non.', 'color': 'black', 'className': 'pb-24'}) }}></div>
+        <div {{ react_component('paragraph/Paragraph', {'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum iaculis lacus a dignissim. Donec convallis iaculis neque, et elementum magna elementum in. Nunc dignissim nunc nunc, viverra fermentum tellus bibendum non.', 'color': 'black', 'className': 'lg:pb-24 pb-8'}) }}></div>
         <div class="w-full flex justify-between">
             <div id="grid-img-contact"
-                 class="w-fit grid grid-cols-2 grid-rows-5">
+                 class="w-fit grid-cols-2 grid-rows-5 hidden lg:grid">
                 <div class="overflow-hidden h-fit w-fit rounded-full">
                     <img src="{{ asset('img/img-rounded/cat-on-snow.png') }}"
                          alt="Chat dans la neige"
@@ -35,10 +35,10 @@
                          class="hover:scale-110 transition"/>
                 </div>
             </div>
-            <div class="w-7/12">
+            <div class="lg:w-7/12 w-full">
                 {{ form_start(form_controller) }}
                 <div class="w-full flex flex-col gap-6 items-center">
-                    <div class="flex gap-8 w-full">
+                    <div class="flex lg:flex-row flex-col gap-8 w-full">
                         <div class="flex flex-col w-full">
                             {{ form_label(form_controller.lastname) }}
                             {{ form_widget(form_controller.lastname) }}
@@ -79,7 +79,8 @@
                         <div {{ react_component('paragraph/Paragraph', {'content': 'adresse du siège'}) }}></div>
                     </div>
                     <div class="flex gap-4 items-center">
-                        <a href="#"
+                        <a target="_blank"
+                           href="https://www.instagram.com/tatanimo_mds/"
                            class="w-16 h-16 rounded-2xl p-2 hover:scale-110 hover:bg-beige-hover transition">
                             <img src="{{ asset('img/icons/instagram.svg') }}"
                                  alt="Instagram"/>
@@ -89,7 +90,8 @@
                             <img src="{{ asset('img/icons/tiktok.svg') }}"
                                  alt="Instagram"/>
                         </a>
-                        <a href="#"
+                        <a target="_blank"
+                           href="https://www.facebook.com/profile.php?id=100079220963277"
                            class="w-16 h-16 rounded-2xl p-2 hover:scale-110 hover:bg-beige-hover transition">
                             <img src="{{ asset('img/icons/facebook.svg') }}"
                                  alt="Instagram"/>
