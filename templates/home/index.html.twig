@@ -7,7 +7,7 @@
         <div class="lg:w-1/2 w-full h-full flex flex-col justify-center items-start">
             <div {{ react_component('headers/FirstHeader', {'content': 'Confiez vos animaux en toute confiance', 'color': 'white'}) }}></div>
             <div class="text-white pb-12 hidden lg:inline-block" {{ react_component('paragraph/Paragraph', {'content': "Confiez-nous vos compagnons à quatre pattes et partez l'esprit tranquille !
-                Bienvenue
+                Bienvenuez
                 chez Tatanimo notre
                 site de garde d'animaux, où le bonheur et le bien-être de vos précieux compagnons sont notre priorité
                 absolue.", 'color': 'white'}) }}></div>
@@ -49,13 +49,13 @@
         <div class="w-full h-full flex items-center flex-col" {{ react_component('images/AdminImage', {'classDiv': 'sm:w-3/4 w-full h-3/4 aspect-video bg-gray-300','alt': 'video', 'className': 'w-full aspect-video', 'id': "video-concept", "userSerialize": app.user ? app.user|serialize : null, 'src': findEditableImage("video-concept"), 'aspect': '16/9' }) }}></div>
         <div class="2xl:w-1/4 lg:w-2/4 pt-8 z-10" {{ react_component('button/ButtonLink', {'content': 'Nous découvrir', 'className': 'inline-block mt-4 w-full flex items-center justify-center', href: "/about"}) }}></div>
     </section>
-    <section class="xl:px-28 lg:px-16 px-8 xl:py-16 lg:py-12 py-6 pt-12 flex flex-col items-center">
+    <section class="xl:px-28 lg:px-16 px-8 xl:py-12 lg:py-8 py-4 flex flex-col items-center">
         <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Vos avis', 'color': 'black'}) }}></div>
         <div class="w-full" {{ react_component('swiper/SwiperReview', {ratingsSerialize: ratings|serialize()}) }}></div>
         {% if app.user %}
             {% set rating = ratingIssued() %}
             <br>
-            <div class="" {{ react_component('headers/FourthHeader', {'content': 'Laisser un avis sur le site', 'color': 'black'}) }}></div>
+            <div class="mt-8" {{ react_component('headers/FourthHeader', {'content': 'Laisser un avis sur le site', 'color': 'black'}) }}></div>
             <form action="/" method="post">
                 <label for="rating" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Votre note :</label>
                 <div class="flex flex-wrap mb-4 [&>div>input:checked~label>svg]:text-turquoise [&>div:has(~div>input:checked)>label>svg]:text-turquoise [&>div>label:hover>svg]:!text-turquoise [&:has(div>label:hover)>div>label:not(:hover)>svg]:text-gray-300 [&>div:has(~div>label:hover)>label>svg]:!text-turquoise">
@@ -106,7 +106,7 @@
             </form>
         {% endif %}
     </section>
-    <section class="xl:px-28 lg:px-16 px-8 xl:py-16 lg:py-12 py-6 pb-32 flex flex-col items-center">
+    <section class="xl:px-28 lg:px-16 px-8 xl:py-12 lg:py-8 py-4 pb-32 flex flex-col items-center">
         <div class="pb-12" {{ react_component('headers/SecondHeader', {'content': 'Retrouvez nous sur Instagram', 'color': 'black'}) }}></div>
         <div class="grid lg:grid-cols-4 lg:grid-rows-2 grid-cols-2 grid-rows-4 gap-2">
             <div class="hover:opacity-75 transition">

@@ -15,6 +15,7 @@
                 <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Statistiques</h1>
                 <div class="flex flex-wrap -m-4 text-center">
                     <div class="p-4 md:w-1/4 sm:w-1/2 w-full" {{ react_component('stats/StatCard', {"controller":"google_analytics","endpoint": "users","title":"Nombre d'utilisateurs total"}) }}></div>
+                    <div class="p-4 md:w-1/4 sm:w-1/2 w-full" {{ react_component('stats/StatCard', {"controller":"ratings","endpoint": "total-rating","title":"Avis des utilisateurs"}) }}></div>
                 </div>
             </div>
         </div>
