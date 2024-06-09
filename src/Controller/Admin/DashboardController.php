@@ -33,8 +33,9 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         return [
-            MenuItem::subMenu('Home', 'fa fa-home')->setSubItems([
-                MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
+            MenuItem::subMenu('Home', 'fa fa-table-columns')->setSubItems([
+                MenuItem::linkToDashboard('Dashboard', 'fa fa-table-columns'),
+                MenuItem::linkToUrl('Accueil', 'fa fa-home', '/'),
                 MenuItem::linkToRoute('Composants', 'fa-brands fa-react', 'app_admin_components'),
             ]),
 

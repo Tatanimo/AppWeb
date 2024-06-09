@@ -40,6 +40,12 @@ function ProfileDropdown({user, professional}) {
                         </a>
                     )}
                     <hr className="my-2"/>
+                    {user ? (user.roles.includes("ROLE_ADMIN") ? (
+                        <a href="/admin/fr">
+                            <MenuItem>Administration</MenuItem>
+                        </a>
+                    ) : null) : null}
+                    <hr className="my-2"/>
                     <a href="/logout">
                         <MenuItem>Déconnexion</MenuItem>
                     </a>

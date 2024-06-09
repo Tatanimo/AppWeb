@@ -10,6 +10,7 @@ parameters:
     app.user_images_folder: '%kernel.project_dir%/public/img/users/'
     app.animals_images_folder: '%kernel.project_dir%/public/img/animals/'
     app.professionals_images_folder: '%kernel.project_dir%/public/img/professionals/'
+    app.editable_images_folder: '%kernel.project_dir%/public/img/editable/'
 services:
     App\Services\UuidSession:
         tags: 

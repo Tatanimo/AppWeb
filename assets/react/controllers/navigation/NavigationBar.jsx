@@ -111,13 +111,15 @@ export default function NavigationBar({userSerialize, professionalSerialize, jwt
                         </li>
                     </ul>
                     <ul className="flex items-center gap-6">
-                        <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
-                            <a href="/admin/fr">
-                                <img src={`${endpoint.img}/icons/admin.svg`}
-                                     alt="Icône admin"
-                                     className="h-10"/>
-                            </a>
-                        </li>
+                        {user ? (user.roles.includes("ROLE_ADMIN") ? (
+                            <li className="hover:bg-light-gray p-2 rounded-xl transition [&>*]:p-0 [&>*]:m-0 [&>*]:bg-transparent">
+                                <a href="/admin/fr">
+                                    <img src={`${endpoint.img}/icons/admin.svg`}
+                                        alt="Icône admin"
+                                        className="h-10"/>
+                                </a>
+                            </li>
+                        ) : null) : null}
                         {user ? <li className="hover:bg-light-gray p-2 rounded-xl transition">
                             <a href="/messages"
                                className="relative">
