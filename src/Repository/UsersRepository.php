@@ -39,6 +39,25 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
         $this->getEntityManager()->flush();
     }
 
+    /**
+    * @return Users[] Returns an array of User objects
+    */
+   public function findSinceOneMonth(): array
+   {
+        $now = new \DateTime('now');
+        $since = new \Datetime('last month');
+
+       return $this->createQueryBuilder('u')
+           ->andWhere('u.created_date <= :now')
+           ->andWhere('u.created_date >= :since')
+           ->setParameter('now', $now)
+           ->setParameter('since', $since)
+           ->orderBy('u.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
    /**
     * @return Users[] Returns an array of User objects
     */
