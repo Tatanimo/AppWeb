@@ -7,19 +7,17 @@ import "swiper/css/navigation";
 // import required modules
 import {Navigation} from "swiper/modules";
 
-export default () => {
-
+export default ({ratingsSerialize}) => {
     const [width, setWidth] = useState(window.innerWidth);
+    const [ratings, setRatings] = useState(JSON.parse(ratingsSerialize));
 
     useEffect(() => {
         const handleResize = () => {
-        setWidth(window.innerWidth);
+            setWidth(window.innerWidth);
         };
 
-        // Ajouter un event listener pour la mise à jour de la taille de la fenêtre
         window.addEventListener('resize', handleResize);
 
-        // Nettoyage du event listener lors du démontage du composant
         return () => {
         window.removeEventListener('resize', handleResize);
         };
@@ -28,54 +26,24 @@ export default () => {
     const getSlidesPerView = () => {
         return width > 1440 ? 4.25 : width > 1024 ? 3.25 : width > 640 ? 2.25 : 1.25;
     }
-
+    
+    console.log(ratings[0].user)
     return (
         <Swiper
             slidesPerView={getSlidesPerView()}
             spaceBetween={32}
             loop={true}
             className="mySwiper flex gap-1 overflow-hidden [&>div]:cursor-grab [&>div]:active:cursor-grabbing"
-        >
-            <SwiperSlide className="[&>div]:!flex-col">
-                <ReviewCard img="img/background/dog-with-toy.png"
-                            intStar={1}
-                            name="Garde de Rockett"/>
-            </SwiperSlide>
-            <SwiperSlide className="[&>div]:!flex-col">
-                <ReviewCard img="img/background/dog-with-toy.png"
-                            intStar={3}
-                            name="Garde de Rockett"/>
-            </SwiperSlide>
-            <SwiperSlide className="[&>div]:!flex-col">
-                <ReviewCard img="img/background/dog-with-toy.png"
-                            intStar={4}
-                            name="Garde de Rockett"/>
-            </SwiperSlide>
-            <SwiperSlide className="[&>div]:!flex-col">
-                <ReviewCard img="img/background/dog-with-toy.png"
-                            intStar={5}
-                            name="Garde de Rockett"/>
-            </SwiperSlide>
-            <SwiperSlide className="[&>div]:!flex-col">
-                <ReviewCard img="img/background/dog-with-toy.png"
-                            intStar={5}
-                            name="Garde de Rockett"/>
-            </SwiperSlide>
-            <SwiperSlide className="[&>div]:!flex-col">
-                <ReviewCard img="img/background/dog-with-toy.png"
-                            intStar={5}
-                            name="Garde de Rockett"/>
-            </SwiperSlide>
-            <SwiperSlide className="[&>div]:!flex-col">
-                <ReviewCard img="img/background/dog-with-toy.png"
-                            intStar={5}
-                            name="Garde de Rockett"/>
-            </SwiperSlide>
-            <SwiperSlide className="[&>div]:!flex-col">
-                <ReviewCard img="img/background/dog-with-toy.png"
-                            intStar={5}
-                            name="Garde de Rockett"/>
-            </SwiperSlide>
+        >   
+            {ratings.map((rating, index) => (
+                <SwiperSlide key={index} className="[&>div]:!flex-col">
+                    <ReviewCard img={`img/users/user-${rating.user.id}-1.jpg`}
+                                intStar={rating.rating}
+                                firstname={rating.user.first_name}
+                                lastname={rating.user.last_name}
+                                comment={rating.comment}/>
+                </SwiperSlide>
+            ))}
         </Swiper>
     );
 };
