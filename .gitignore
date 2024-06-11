@@ -43,3 +43,7 @@ jwt.txt
 /public/img/users/
 /public/img/messages/
 /public/pdf/messages/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
