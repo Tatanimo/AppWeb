@@ -10,3 +10,16 @@ L'équipe a décidé de partir sur une application web en premier lieu avec plus
 Et quelques idées secondaires en tête :
 * plusieurs services professionnels : vétérinaire - petsitter - toiletteur.
 * transformer l'application en réseau social, avec des posts et une messagerie ouverte à tous.
+
+## Spécificités techniques de l'application web 
+### Symfony
+Utilisation du Framework PHP Symfony pour le backend de l'application. 
+Son usage aura permis d'accélérer le développement de cette partie, notamment grâce à son architecture MVC déjà intégrée.
+### UX-React
+Nous avons utilisé React pour créer une interface utilisateur dynamique et réactive avec grande efficacité.
+Pour pouvoir utiliser React sur une application Symfony, il faut utiliser le composant UX-React.
+### Tailwind
+Tailwind permet de simplifer le design de l'application grâce à son utilisation avec des classes utilitaires.
+De plus, tailwind est permissif au niveau de la modulabilité, c'est-à-dire que l'on peut largement configuré tailwind pour qu'il puisse correspondre à nos besoins.
+### Doctrine
+L'ORM Doctrine vient avec le framework Symfony. Il permet de manipuler une base de données plus facilement via l'utilisation d'objets.
