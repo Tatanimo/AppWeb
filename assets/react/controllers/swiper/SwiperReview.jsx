@@ -27,13 +27,12 @@ export default ({ratingsSerialize}) => {
         return width > 1440 ? 4.25 : width > 1024 ? 3.25 : width > 640 ? 2.25 : 1.25;
     }
     
-    console.log(ratings[0].user)
     return (
         <Swiper
             slidesPerView={getSlidesPerView()}
             spaceBetween={32}
             loop={true}
-            className="mySwiper flex gap-1 overflow-hidden [&>div]:cursor-grab [&>div]:active:cursor-grabbing"
+            className="mySwiper flex gap-1 overflow-hidden [&>div]:cursor-grab [&>div]:active:cursor-grabbing [&>div]:flex [&>div]:items-end"
         >   
             {ratings.map((rating, index) => (
                 <SwiperSlide key={index} className="[&>div]:!flex-col">

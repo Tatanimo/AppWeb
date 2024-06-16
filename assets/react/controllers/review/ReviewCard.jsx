@@ -32,7 +32,7 @@ export default function ReviewCard({img, intStar, firstname, lastname, comment})
                     <span className="capitalize">{firstname} </span>
                     <span className="uppercase">{lastname}</span>
                 </p>
-                <p className="break-words absolute opacity-0 invisible group-hover:visible group-hover:relative group-hover:opacity-100 transition-opacity duration-1000">{comment}</p>
+                <p className="break-words">{comment}</p>
             </div>
         </div>
     );

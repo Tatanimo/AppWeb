@@ -31,6 +31,12 @@ export default function AdminImage({id, className, alt, userSerialize, classDiv,
     const cropperRef = useRef(null);
     const cropperImage = useRef(null);
 
+    const cancel = () => {
+        setBeforeCropImage(null);
+        setPreviewVideo(null);
+        setFile(null);
+    }
+
     const onCrop = () => {
         if (timerRef.current) {
           clearTimeout(timerRef.current);
@@ -140,7 +146,10 @@ export default function AdminImage({id, className, alt, userSerialize, classDiv,
             loading ? (
                 <Spinner className="mt-4 inline-block justify-center float-right h-10 w-10 text-blue-purple"/>
             ) : (
-                <button className='z-10 mt-4 inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase' onClick={() => saveImage()}>Sauvegarder</button>
+                <div className='flex gap-4'>
+                    <button className='z-10 mt-4 inline-block justify-center active:scale-95 hover:bg-gray-500 transition font-ChunkFive text-white text-xl bg-gray-400 px-7 py-5 rounded-xl uppercase' onClick={() => cancel()}>Annuler</button>
+                    <button className='z-10 mt-4 inline-block justify-center active:scale-95 hover:bg-blue-purple-hover transition font-ChunkFive text-white text-xl bg-blue-purple px-7 py-5 rounded-xl uppercase' onClick={() => saveImage()}>Sauvegarder</button>
+                </div>
             )
         ) : null}
     </>

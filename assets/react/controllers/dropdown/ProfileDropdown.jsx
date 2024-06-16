@@ -39,11 +39,13 @@ function ProfileDropdown({user, professional}) {
                             <MenuItem>Profil <span className="capitalize">{professional.service.type}</span></MenuItem>
                         </a>
                     )}
-                    <hr className="my-2"/>
                     {user ? (user.roles.includes("ROLE_ADMIN") ? (
-                        <a href="/admin/fr">
-                            <MenuItem>Administration</MenuItem>
-                        </a>
+                        <>
+                            <hr className="my-2"/>
+                            <a href="/admin/fr">
+                                <MenuItem>Administration</MenuItem>
+                            </a>
+                        </>
                     ) : null) : null}
                     <hr className="my-2"/>
                     <a href="/logout">

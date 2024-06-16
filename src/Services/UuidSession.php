@@ -11,7 +11,7 @@ class UuidSession extends AbstractExtension {
     {
     }
 
-    public function getFunctions()
+    public function getFunctions() : array
     {
         return [
             new TwigFunction('sessionUuid', [$this, 'sessionUuid']),

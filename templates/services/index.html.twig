@@ -7,7 +7,7 @@
         <div class="flex items-center justify-center" {{ react_component('headers/FirstHeader', {"content": "Nos services", "color": "black", "className": "xl:mb-24 lg:mb-16 mb-8"}) }}></div>
         <div class="flex lg:flex-row flex-col items-center justify-center gap-14">
             <a href="{{ path('app_services_petsitting') }}"
-               class="relative border-8 border-orange rounded-[76px] group overflow-hidden">
+               class="relative border-8 border-orange rounded-[76px] group overflow-hidden w-full sm:w-1/2 max-w-[40rem]">
                 <div class="overflow-hidden">
                     <img src="{{ asset('img/background/girl-wearing-dog.png') }}"
                          alt="Fille portant un labrador dans une forêt."
@@ -15,12 +15,13 @@
                 </div>
                 <div {{ react_component('headers/SecondHeader', {"content": "Petsitting", "color": "white", "className": "capitalize pe-8"}) }} class="absolute bottom-0 right-0"></div>
             </a>
-            <a href="{{ path('app_services_veterinarian') }}"
-               class="relative border-8 border-orange rounded-[76px] group overflow-hidden">
+            <a
+               class="relative border-8 border-gray-400 cursor-not-allowed rounded-[76px] group overflow-hidden w-full sm:w-1/2 max-w-[40rem]">
                 <div class="overflow-hidden">
                     <img src="{{ asset('img/background/veterinarian-with-cat.png') }}"
                          alt="Vétérinaire qui s'occupe d'un chat roux."
                          class="transition group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gray-400 opacity-50 z-10"></div>
                 </div>
                 <div {{ react_component('headers/SecondHeader', {"content": "Vétérinaire", "color": "white", "className": "capitalize pe-8"}) }} class="absolute bottom-0 right-0"></div>
             </a>
