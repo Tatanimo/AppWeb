@@ -23,7 +23,7 @@ function PetsitterCard({professional, dist}) {
                 </div>
                 {animals ? (
                     <div className='flex'>
-                        ${animals ? (
+                        {animals ? (
                             <>
                                 <img src={`${endpoint.img}/icons/paw.svg`} alt="logo d'une patte" />
                                 <p className='mr-2 whitespace-nowrap'>{animals}</p>
